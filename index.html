@@ -1,0 +1,4624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giovanna Ferrari — Art</title>
+  <meta name="description" content="Transformative art to evoke personal evolution. Mixed media paintings by Giovanna Ferrari.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --text: #f5f0eb;
+      --text-dim: rgba(245, 240, 235, 0.5);
+      --text-muted: rgba(245, 240, 235, 0.25);
+      --serif: 'Cormorant Garamond', 'Georgia', serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+    }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.75rem 1.25rem;
+      z-index: 10001;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 2rem 3rem;
+      background: transparent;
+      transition: background 0.4s var(--ease), padding 0.4s var(--ease);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .nav.is-scrolled {
+      background: rgba(10, 10, 10, 0.82);
+      backdrop-filter: blur(12px);
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(245, 240, 235, 0.06);
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+      font-family: var(--serif);
+      font-size: clamp(1.125rem, 2.2vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.65);
+    }
+
+    .nav__logo img {
+      width: clamp(28px, 4vw, 38px);
+      height: auto;
+      flex-shrink: 0;
+      display: block;
+      filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.55));
+      transition: transform 0.3s var(--ease), filter 0.3s var(--ease);
+    }
+
+    .nav__logo:hover img {
+      transform: scale(1.06) translateY(-1px);
+    }
+
+    .nav__logo-text {
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav.is-scrolled .nav__logo {
+      text-shadow: none;
+    }
+
+    .nav.is-scrolled .nav__logo img {
+      filter: none;
+    }
+
+    .nav__toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      margin-left: auto;
+      flex-shrink: 0;
+      background: rgba(10, 10, 10, 0.35);
+      border: 1px solid rgba(245, 240, 235, 0.22);
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 110;
+      transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+    }
+
+    .nav.is-scrolled .nav__toggle {
+      background: rgba(245, 240, 235, 0.04);
+      border-color: rgba(245, 240, 235, 0.14);
+    }
+
+    .nav__toggle:hover {
+      background: rgba(245, 240, 235, 0.08);
+      border-color: rgba(245, 240, 235, 0.35);
+    }
+
+    .nav__toggle:focus-visible {
+      outline: 2px solid rgba(245, 240, 235, 0.6);
+      outline-offset: 3px;
+    }
+
+    .nav__toggle-bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: 0 auto;
+      background: var(--text);
+      border-radius: 1px;
+      transition: transform 0.35s var(--ease), opacity 0.35s;
+    }
+
+    .nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .nav__backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 98;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease);
+    }
+
+    .nav__backdrop.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: clamp(1.25rem, 2.5vw, 2.25rem);
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav__links a {
+      font-family: var(--sans);
+      font-size: clamp(0.75rem, 1vw, 0.875rem);
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(245, 240, 235, 0.88);
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+      transition: color 0.3s var(--ease), opacity 0.3s var(--ease);
+    }
+
+    .nav.is-scrolled .nav__links a {
+      color: rgba(245, 240, 235, 0.78);
+      text-shadow: none;
+    }
+
+    .nav__links a:hover { color: var(--text); }
+
+    .nav__links a.nav__link--contact {
+      color: var(--text);
+      border: 1px solid rgba(245, 240, 235, 0.35);
+      padding: 0.625rem 1.125rem;
+      text-shadow: none;
+    }
+
+    .nav.is-scrolled .nav__links a.nav__link--contact {
+      border-color: rgba(245, 240, 235, 0.28);
+    }
+
+    .nav__links a.nav__link--contact:hover {
+      background: rgba(245, 240, 235, 0.08);
+      border-color: rgba(245, 240, 235, 0.5);
+    }
+
+/* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero__image {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero__image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.1);
+      transition: transform 8s linear, filter 8s linear;
+      filter: brightness(0.88) saturate(1.15);
+    }
+
+    .hero.active .hero__image img {
+      transform: scale(1);
+    }
+
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(10,10,10,0.82) 0%,
+        rgba(10,10,10,0.2) 40%,
+        rgba(10,10,10,0.05) 60%,
+        rgba(10,10,10,0.15) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      padding: 0 3rem 6rem;
+      max-width: 1000px;
+    }
+
+    .hero__tagline {
+      font-family: var(--sans);
+      font-size: clamp(0.625rem, 1vw, 0.75rem);
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s var(--ease) 0.6s;
+    }
+
+    .hero.active .hero__tagline {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero__title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero__title-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .hero__title .word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      margin-right: 0.22em;
+    }
+
+    .hero__title .word span {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform 1s var(--ease);
+    }
+
+    .hero.active .hero__title .word span {
+      transform: translateY(0);
+    }
+
+    .hero__title-line:first-child .word:nth-child(1) span { transition-delay: 0s; }
+    .hero__title-line:first-child .word:nth-child(2) span { transition-delay: 0.08s; }
+    .hero__title-line:first-child .word:nth-child(3) span { transition-delay: 0.16s; }
+    .hero__title-line:first-child .word:nth-child(4) span { transition-delay: 0.24s; }
+    .hero__title-line:last-child .word:nth-child(1) span { transition-delay: 0.32s; }
+    .hero__title-line:last-child .word:nth-child(2) span { transition-delay: 0.4s; }
+
+    .hero__statement {
+      font-family: var(--serif);
+      font-size: clamp(1.0625rem, 1.75vw, 1.375rem);
+      font-weight: 600;
+      font-style: normal;
+      line-height: 1.65;
+      color: rgba(245, 240, 235, 0.88);
+      max-width: 42rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s var(--ease) 0.8s;
+    }
+
+    .hero.active .hero__statement {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero__scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 3rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeInUp 1s var(--ease) 1.5s forwards;
+    }
+
+    .hero__scroll span {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      writing-mode: vertical-rl;
+    }
+
+    .hero__scroll-line {
+      width: 1px;
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__scroll-line::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--text-dim);
+    }
+
+    .hero__scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--text);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { top: -100%; }
+      50% { top: 100%; }
+      100% { top: 100%; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- Statement Section ---------- */
+    .statement-panel {
+      position: relative;
+      width: 100%;
+    }
+
+    .statement-panel__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .statement-panel__bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      opacity: 0.42;
+      filter: brightness(1.12) saturate(1.08) grayscale(5%);
+      transform: scale(1.05);
+    }
+
+    .statement-panel__bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 28%,
+        rgba(10, 10, 10, 0.35) 72%,
+        rgba(10, 10, 10, 0.72) 100%
+      );
+      pointer-events: none;
+    }
+
+    .statement-panel__bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.78) 0%,
+        rgba(10, 10, 10, 0.48) 45%,
+        rgba(10, 10, 10, 0.78) 100%
+      );
+      pointer-events: none;
+    }
+
+    .statement {
+      position: relative;
+      z-index: 1;
+      padding: 12rem 3rem;
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .statement__title {
+      font-family: var(--sans);
+      font-size: clamp(0.625rem, 1vw, 0.75rem);
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 2.5rem;
+    }
+
+    .statement__body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .statement__text {
+      font-family: var(--serif);
+      font-size: clamp(1.0625rem, 1.75vw, 1.3125rem);
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text);
+    }
+
+    .statement__text .s-word {
+      display: inline-block;
+      opacity: 0.08;
+      transition: opacity 0.6s var(--ease-smooth);
+      margin: 0 0.1em;
+    }
+
+    .statement__text .s-word.lit {
+      opacity: 1;
+    }
+
+    .statement__author {
+      margin-top: 3rem;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ffffff;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 0.8s var(--ease);
+    }
+
+    .statement__author.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .statement-panel--poem .statement__author {
+      opacity: 1;
+      transform: none;
+    }
+
+    .statement-panel--entropy-prose .statement {
+      max-height: min(88vh, 920px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      justify-content: flex-start;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(245, 240, 235, 0.2) transparent;
+    }
+
+    .statement-panel--entropy-prose .statement::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .statement-panel--entropy-prose .statement::-webkit-scrollbar-thumb {
+      background: rgba(245, 240, 235, 0.18);
+      border-radius: 999px;
+    }
+
+    .statement__heading {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+
+    .statement__subheading {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.5vw, 1.125rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgba(245, 240, 235, 0.62);
+      margin: -1.25rem 0 2rem;
+    }
+
+    .statement__quote {
+      margin: 0;
+      padding-left: 1.25rem;
+      border-left: 1px solid rgba(245, 240, 235, 0.22);
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.6vw, 1.1875rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.75;
+      color: rgba(245, 240, 235, 0.88);
+    }
+
+    .statement__demons {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .statement__demons li {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.6vw, 1.1875rem);
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(245, 240, 235, 0.82);
+    }
+
+    .statement-panel--split {
+      display: grid;
+      grid-template-columns: minmax(300px, 1.12fr) minmax(320px, 1fr);
+      align-items: stretch;
+      min-height: min(88vh, 920px);
+      background: var(--bg);
+    }
+
+    .statement-panel--split .statement-panel__visual {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.25rem 2.5rem 2.5rem;
+      background: var(--bg);
+    }
+
+    .statement-panel--split .statement-panel__visual > img {
+      width: 100%;
+      height: 100%;
+      max-height: min(84vh, 840px);
+      object-fit: contain;
+      object-position: center center;
+      filter: brightness(1.24) saturate(1.12) contrast(1.02);
+    }
+
+    .train-variants {
+      width: 100%;
+      padding: clamp(4rem, 10vh, 7rem) 0 clamp(5rem, 12vh, 8rem);
+      background-color: var(--bg);
+      overflow: visible;
+    }
+
+    .train-variants__scroll-track {
+      position: relative;
+      height: 240vh;
+    }
+
+    .train-variants__scene {
+      position: sticky;
+      top: clamp(5rem, 14vh, 9rem);
+      width: 75vw;
+      max-width: 75vw;
+      margin: 0 auto;
+      min-height: min(70vh, 660px);
+      overflow: hidden;
+      isolation: isolate;
+      background: transparent;
+    }
+
+    .train-variants__verse {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(0.75rem, 3vh, 2rem);
+      z-index: 60;
+      width: min(96%, 48rem);
+      margin: 0;
+      padding: 0 0.5rem;
+      text-align: center;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .train-variants__scene::after {
+      content: '';
+      position: absolute;
+      inset: -5% 0;
+      z-index: 40;
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        transparent 58%,
+        rgba(10, 10, 10, 0.18) 80%,
+        rgba(10, 10, 10, 0.42) 100%
+      );
+    }
+
+    .train-variants__caption {
+      position: absolute;
+      inset: 0;
+      z-index: 55;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: clamp(0.5rem, 2vh, 1.25rem) 1rem 0;
+      pointer-events: none;
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 3.2vw, 1.75rem);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      text-transform: lowercase;
+      text-align: center;
+      color: var(--text);
+      text-shadow:
+        0 2px 20px rgba(10, 10, 10, 0.9),
+        0 0 48px rgba(10, 10, 10, 0.65);
+    }
+
+    .train-variants__verse-line {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4.25vw, 2.75rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(245, 240, 235, 0.9);
+      margin: 0;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.65s var(--ease-smooth), transform 0.65s var(--ease-smooth);
+    }
+
+    .train-variants__verse-line.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .train-variants.is-tickling .train-variants__verse-line.is-visible {
+      text-shadow: 0 2px 16px rgba(10, 10, 10, 0.85);
+    }
+
+    .train-variants__verse-line + .train-variants__verse-line {
+      margin-top: 0.65rem;
+    }
+
+    .train-variants__track {
+      position: relative;
+      z-index: 42;
+      width: 75vw;
+      max-width: 75vw;
+      height: min(70vh, 660px);
+      transform-style: preserve-3d;
+      perspective: 1600px;
+      perspective-origin: left center;
+    }
+
+    .train-variants__track::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 46;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          ellipse 95% 85% at 8% 50%,
+          transparent 0%,
+          rgba(5, 5, 5, 0.25) 45%,
+          rgba(5, 5, 5, 0.75) 100%
+        );
+    }
+
+    .train-variants__item {
+      --depth: 0;
+      --frame: clamp(180px, 30vw, 360px);
+      --train-hue: 0deg;
+      --train-bright: 1.08;
+      --scale: calc(1 - var(--depth) * 0.0195);
+      position: absolute;
+      left: 0;
+      top: 50%;
+      z-index: calc(45 - var(--depth));
+      width: var(--frame);
+      height: var(--frame);
+      max-width: var(--frame);
+      max-height: min(62vh, 580px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #050505;
+      box-shadow:
+        inset 0 0 calc(18px + var(--depth) * 0.4px) rgba(0, 0, 0, 0.72),
+        0 0 0 1px rgba(245, 240, 235, 0.14),
+        0 0 calc(20px - var(--depth) * 0.35px) rgba(0, 0, 0, 0.45);
+      transform:
+        translate(
+          calc((var(--depth) / 43) * (75vw - var(--frame) * var(--scale))),
+          -50%
+        )
+        scale(var(--scale));
+      transform-origin: left center;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .train-variants__item[data-depth="0"] {
+      z-index: 45;
+    }
+
+    .train-variants__item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center calc(16% + var(--depth) * 0.18%);
+    }
+
+    .train-variants__item:not([data-depth="0"]):not(.train-variants__item--snake-head) img {
+      transform: scaleX(-1);
+      transform-origin: center center;
+    }
+
+    .train-variants__item[data-depth="0"] img {
+      transform: none;
+    }
+
+    .train-variants__item--snake-head {
+      --frame: clamp(220px, 40vw, 460px);
+      --scale: calc((1 - 42 * 0.0195) * 1.95);
+      opacity: 1;
+      z-index: 50;
+      box-shadow:
+        inset 0 0 14px rgba(0, 0, 0, 0.28),
+        0 0 0 2px rgba(245, 240, 235, 0.55),
+        0 0 48px rgba(245, 240, 235, 0.22),
+        0 0 80px rgba(245, 240, 235, 0.1);
+    }
+
+    .train-variants__item--snake-head img {
+      object-position: center 18%;
+      transform: scale(1.05);
+      transform-origin: center center;
+      opacity: 1;
+      filter: brightness(1.34) saturate(1.14) contrast(1.08);
+    }
+
+    .statement-panel--split .statement-panel__visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(
+          ellipse 88% 78% at center,
+          transparent 22%,
+          rgba(10, 10, 10, 0.2) 58%,
+          rgba(10, 10, 10, 0.72) 100%
+        ),
+        linear-gradient(to right, transparent 72%, rgba(10, 10, 10, 0.45) 100%);
+    }
+
+    .statement-panel--split .statement {
+      max-width: none;
+      margin: 0;
+      padding: 6rem 3.5rem 6rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* ---------- Entropy Lab ---------- */
+    .entropy-lab-section {
+      border-top: 1px solid rgba(245, 240, 235, 0.06);
+      background: #0a0a0a;
+    }
+
+    .entropy-lab-section .series-intro {
+      padding: 8rem 3rem 3rem;
+    }
+
+    .entropy-lab-section .statement-panel--split {
+      border-top: none;
+    }
+
+    .entropy-lab-section .statement-panel--poem,
+    .entropy-lab-section .statement-panel--entropy-prose {
+      grid-template-columns: minmax(240px, 1fr) minmax(280px, 1fr);
+      gap: 150px;
+      align-items: start;
+      max-width: min(1280px, 94vw);
+      margin: 0 auto;
+      min-height: auto;
+    }
+
+    .entropy-lab-section .statement-panel--poem .statement-panel__visual,
+    .entropy-lab-section .statement-panel--entropy-prose .statement-panel__visual {
+      padding: 2rem 0 2rem 1.5rem;
+      align-items: flex-start;
+      align-self: start;
+    }
+
+    .entropy-lab-section .statement-panel--poem .statement-panel__visual > img,
+    .entropy-lab-section .statement-panel--entropy-prose .statement-panel__visual > img {
+      object-position: top center;
+    }
+
+    .entropy-lab-section .statement-panel--poem .statement,
+    .entropy-lab-section .statement-panel--entropy-prose .statement {
+      padding: 2rem 1.5rem 3rem 0;
+      justify-content: flex-start;
+      align-self: start;
+    }
+
+    .entropy-lab-section .statement-panel--poem .statement-panel__visual::after,
+    .entropy-lab-section .statement-panel--entropy-prose .statement-panel__visual::after {
+      background:
+        radial-gradient(
+          ellipse 88% 78% at center,
+          transparent 22%,
+          rgba(10, 10, 10, 0.2) 58%,
+          rgba(10, 10, 10, 0.72) 100%
+        ),
+        linear-gradient(to right, transparent 88%, rgba(10, 10, 10, 0.2) 100%);
+    }
+
+    .umbrella-warhol {
+      width: 100%;
+      overflow: visible;
+      padding: clamp(2rem, 6vh, 3.5rem) 0 clamp(2.5rem, 8vh, 4rem);
+    }
+
+    .umbrella-warhol__strip {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: clamp(1rem, 2vw, 1.75rem);
+      width: max-content;
+      max-width: none;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+      box-sizing: border-box;
+    }
+
+    .umbrella-warhol__item {
+      flex: 0 0 auto;
+      width: clamp(300px, 36vw, 480px);
+      height: min(70vh, 660px);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border-radius: 2px;
+      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.32);
+    }
+
+    .umbrella-warhol__item img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+    }
+
+    .umbrella-warhol__item--original img {
+      filter: brightness(1.06) saturate(1.04) contrast(1.02);
+    }
+
+    .umbrella-warhol__item--pink img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(298deg) saturate(2.1) contrast(1.1) brightness(1.03);
+    }
+
+    .umbrella-warhol__item--cyan img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(172deg) saturate(1.9) contrast(1.1) brightness(0.98);
+    }
+
+    .umbrella-warhol__item--gold img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(38deg) saturate(2.2) contrast(1.08) brightness(1.04);
+    }
+
+    .umbrella-warhol__item--lime img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(88deg) saturate(2) contrast(1.12) brightness(0.97);
+    }
+
+    .umbrella-warhol__item--orange img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(12deg) saturate(2.3) contrast(1.12) brightness(1);
+    }
+
+    .umbrella-warhol__item--violet img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(262deg) saturate(2.1) contrast(1.08) brightness(0.95);
+    }
+
+    .umbrella-warhol__item--blue img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(208deg) saturate(1.85) contrast(1.1) brightness(0.94);
+    }
+
+    .umbrella-warhol__item--coral img {
+      filter: grayscale(0.35) sepia(0.45) hue-rotate(330deg) saturate(2.15) contrast(1.1) brightness(1.02);
+    }
+
+    .entropy-lab-carousel__panel:has(.umbrella-warhol).is-active {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .entropy-lab-section .entropy-panel--energy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: min(1200px, 96vw);
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 0;
+      box-sizing: border-box;
+    }
+
+    .entropy-lab-section .entropy-panel__desc {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.65vw, 1.3125rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(245, 240, 235, 0.72);
+      text-align: center;
+      max-width: 26rem;
+      margin: 0 auto 1.25rem;
+    }
+
+    .entropy-lab-section .statement-panel--energy-doodles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 1.75rem);
+      width: 100%;
+      margin: 0 auto;
+      min-height: min(64vh, 680px);
+      padding: 0 0 2rem;
+      box-sizing: border-box;
+    }
+
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual {
+      flex: 0 1 auto;
+      width: min(22vw, 200px);
+      height: min(24vh, 210px);
+      padding: 0;
+      margin: 0;
+      background: rgba(245, 240, 235, 0.03);
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(245, 240, 235, 0.08);
+      cursor: zoom-in;
+    }
+
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual::after {
+      display: none;
+    }
+
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual > img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      filter: brightness(1.08) saturate(1.06);
+    }
+
+    .entropy-lab-carousel__panel:has(.entropy-panel--energy).is-active {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .entropy-lab-carousel {
+      max-width: 100%;
+      padding: 0 0 4rem;
+    }
+
+    .entropy-lab-carousel__nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem 1.25rem;
+      padding: 0 2rem 2.5rem;
+    }
+
+    .entropy-lab-carousel__nav-item {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      color: rgba(245, 240, 235, 0.45);
+      background: transparent;
+      border: 1px solid rgba(245, 240, 235, 0.14);
+      border-radius: 999px;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
+    }
+
+    .entropy-lab-carousel__nav-item:hover,
+    .entropy-lab-carousel__nav-item:focus-visible {
+      color: var(--text);
+      border-color: rgba(245, 240, 235, 0.35);
+      outline: none;
+    }
+
+    .entropy-lab-carousel__nav-item.is-active {
+      color: var(--text);
+      border-color: rgba(245, 240, 235, 0.42);
+      background: rgba(245, 240, 235, 0.06);
+    }
+
+    .entropy-lab-carousel__viewport {
+      position: relative;
+    }
+
+    .entropy-lab-carousel__panel {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.55s var(--ease), visibility 0.55s var(--ease);
+    }
+
+    .entropy-lab-carousel__panel.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .entropy-lab-carousel__panel[hidden] {
+      display: none;
+    }
+
+    .entropy-lab-carousel__controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2.5rem 2rem 0;
+    }
+
+    .entropy-lab-carousel__arrow {
+      border-color: rgba(245, 240, 235, 0.2);
+    }
+
+    .entropy-lab-carousel__arrow:hover:not(:disabled) {
+      border-color: rgba(245, 240, 235, 0.45);
+      background: rgba(245, 240, 235, 0.06);
+    }
+
+    .entropy-lab-carousel__counter {
+      min-width: 5rem;
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      color: rgba(245, 240, 235, 0.55);
+    }
+
+    .entropy-lab-section .train-variants {
+      padding: 0 0 clamp(2rem, 6vh, 4rem);
+      background-color: transparent;
+    }
+
+    /* ---------- Series Divider ---------- */
+    .series-intro {
+      padding: 12rem 3rem 10rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      position: relative;
+    }
+
+    .series-intro__number {
+      font-family: var(--serif);
+      font-size: clamp(5rem, 12vw, 10rem);
+      font-weight: 300;
+      color: rgba(245, 240, 235, 0.04);
+      line-height: 1;
+      position: absolute;
+      z-index: 0;
+    }
+
+    .series-intro__title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s var(--ease);
+    }
+
+    .series-intro__title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .series-intro__line {
+      width: 0;
+      height: 1px;
+      background: rgba(245, 240, 235, 0.2);
+      margin-top: 2rem;
+      transition: width 1.2s var(--ease) 0.3s;
+    }
+
+    .series-intro__line.visible {
+      width: 80px;
+    }
+
+    .series-intro__desc,
+    .contact-section__desc {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245, 240, 235, 0.78);
+      line-height: 1.55;
+    }
+
+    .series-intro__desc {
+      margin-top: 1.25rem;
+      max-width: 500px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s var(--ease) 0.4s;
+    }
+
+    .series-intro__desc.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- Inspiration video section ---------- */
+    .inspiration-section {
+      position: relative;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .inspiration-section .series-intro {
+      padding-top: 10rem;
+    }
+
+    .inspiration-section__video {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .inspiration-section__video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.55) saturate(1.1);
+    }
+
+    .inspiration-section__overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(10, 10, 10, 0.72) 0%,
+          rgba(10, 10, 10, 0.45) 35%,
+          rgba(10, 10, 10, 0.55) 70%,
+          rgba(10, 10, 10, 0.82) 100%);
+    }
+
+    .inspiration-section__content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .inspiration-section .series-intro__number {
+      color: rgba(245, 240, 235, 0.06);
+    }
+
+    .inspiration-carousel {
+      padding: 0 1.5rem 5rem;
+      margin-top: -100px;
+    }
+
+    .inspiration-carousel .series-showcase__stage {
+      min-height: min(88vh, 920px);
+      background: transparent;
+      padding: 1.5rem 1rem 2rem;
+    }
+
+    .inspiration-carousel .series-showcase__backdrop {
+      display: none;
+    }
+
+    .inspiration-carousel .series-showcase__slides {
+      width: min(96vw, 1080px);
+      height: min(74vh, 760px);
+      margin: 0 auto;
+    }
+
+    .inspiration-carousel .series-showcase__figure img {
+      border-radius: 2px;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5);
+    }
+
+    .inspiration-carousel__caption {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245, 240, 235, 0.88);
+      text-align: center;
+      margin: 1.25rem 0 0;
+      letter-spacing: 0.02em;
+    }
+
+    .inspiration-carousel .series-showcase__controls {
+      position: relative;
+      z-index: 2;
+      margin-top: 1.75rem;
+    }
+
+    .inspiration-carousel__arrow {
+      border-color: rgba(245, 240, 235, 0.22);
+      background: rgba(10, 10, 10, 0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .inspiration-carousel__arrow:hover:not(:disabled) {
+      border-color: rgba(245, 240, 235, 0.42);
+      background: rgba(245, 240, 235, 0.08);
+    }
+
+    .inspiration-carousel__counter {
+      color: rgba(245, 240, 235, 0.55);
+    }
+
+    @media (max-width: 768px) {
+      .inspiration-carousel {
+        padding: 0 1rem 3.5rem;
+      }
+
+      .inspiration-carousel .series-showcase__stage {
+        min-height: min(78vh, 760px);
+      }
+
+      .inspiration-carousel .series-showcase__slides {
+        height: min(64vh, 580px);
+      }
+    }
+
+    /* ---------- About Me ---------- */
+    .about-section {
+      border-top: 1px solid rgba(245, 240, 235, 0.06);
+      background: #0a0a0a;
+      padding: 8rem 3rem 10rem;
+    }
+
+    .about-section__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-section__label {
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .about-section__title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: 5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s var(--ease);
+    }
+
+    .about-section__title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .about-section__grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.85fr) 1.15fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .about-section__visual {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+    }
+
+    .about-section__visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.25) brightness(0.92);
+    }
+
+    .about-section__body p {
+      font-family: var(--serif);
+      font-size: 1.125rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 235, 0.72);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-section__publications {
+      margin-top: 3rem;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(245, 240, 235, 0.08);
+    }
+
+    .about-section__pub-title {
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-section__pub-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(245, 240, 235, 0.05);
+    }
+
+    .about-section__pub-item a {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+
+    .about-section__pub-item a:hover { opacity: 0.6; }
+
+    .about-section__pub-item time {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      .about-section {
+        padding: 6rem 1.5rem 8rem;
+      }
+
+      .about-section__grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .about-section__visual {
+        max-width: 420px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .about-section__pub-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.375rem;
+      }
+    }
+
+    
+
+.series-showcase {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(220px, 22vw) 1fr;
+      border-top: 1px solid rgba(245, 240, 235, 0.06);
+      padding-top: 5rem;
+      --gallery-top-inset: 5rem;
+      --backdrop-opacity: 0.42;
+      background: linear-gradient(145deg, #121212 0%, #0e0e0e 50%, #0a0a0a 100%);
+    }
+
+    #art {
+      position: relative;
+      overflow: hidden;
+      --art-bg-glow: radial-gradient(ellipse at 42% 38%, rgba(40, 156, 176, 0.18) 0%, transparent 62%);
+      --art-bg-base: linear-gradient(145deg, #0e1a20 0%, #0c161c 45%, #0a1218 100%);
+      background: var(--art-bg-glow), var(--art-bg-base);
+      transition: background 0.55s var(--ease);
+    }
+
+    #art > .series-showcase__backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    #art #art-gallery.art-gallery-carousel.series-showcase {
+      position: relative;
+      z-index: 1;
+    }
+
+    #art > .series-intro {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: min(26vh, 280px);
+      padding: 5rem 3rem 2.25rem;
+      background: transparent;
+      border-top: 1px solid rgba(56, 168, 188, 0.16);
+      border-bottom: none;
+      justify-content: center;
+      transition: border-color 0.55s var(--ease);
+    }
+
+    #art[data-series="water"] {
+      --backdrop-opacity: 0.42;
+      --art-bg-glow: radial-gradient(ellipse at 42% 38%, rgba(40, 156, 176, 0.18) 0%, transparent 62%);
+      --art-bg-base: linear-gradient(145deg, #0e1a20 0%, #0c161c 45%, #0a1218 100%);
+    }
+
+    #art[data-series="water"] > .series-intro {
+      border-top-color: rgba(56, 168, 188, 0.16);
+    }
+
+    #art[data-series="eruptions"] {
+      --backdrop-opacity: 0.46;
+      --art-bg-glow: radial-gradient(ellipse at 55% 45%, rgba(112, 40, 34, 0.24) 0%, transparent 68%);
+      --art-bg-base: linear-gradient(120deg, #221010 0%, #1a0a0a 50%, #160808 100%);
+    }
+
+    #art[data-series="eruptions"] > .series-intro {
+      border-top-color: rgba(176, 72, 60, 0.18);
+    }
+
+    #art[data-series="corals"] {
+      --backdrop-opacity: 0.4;
+      --art-bg-glow: radial-gradient(ellipse at 48% 40%, rgba(190, 80, 130, 0.2) 0%, transparent 62%);
+      --art-bg-base: linear-gradient(145deg, #1a0f16 0%, #160e14 45%, #120c12 100%);
+    }
+
+    #art[data-series="corals"] > .series-intro {
+      border-top-color: rgba(210, 100, 150, 0.18);
+    }
+
+    #art[data-series="cracked"] {
+      --backdrop-opacity: 0.4;
+      --art-bg-glow: radial-gradient(ellipse at 48% 40%, rgba(80, 140, 90, 0.18) 0%, transparent 62%);
+      --art-bg-base: linear-gradient(145deg, #101814 0%, #0e1610 45%, #0c120e 100%);
+    }
+
+    #art[data-series="cracked"] > .series-intro {
+      border-top-color: rgba(100, 180, 120, 0.2);
+    }
+
+    #art > .series-intro__title,
+    #art > .series-intro__desc {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #art > .series-intro__title {
+      margin-bottom: 0;
+      line-height: 1.05;
+    }
+
+    #art > .series-intro__desc {
+      max-width: 36rem;
+      margin-top: 1.25rem;
+    }
+
+    #art #art-gallery.art-gallery-carousel.series-showcase {
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: unset;
+      padding-top: 0;
+      border-top: none;
+      min-height: auto;
+      background: transparent;
+    }
+
+    .art-gallery-carousel__nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem 1.25rem;
+      padding: 0 2rem 2rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .art-gallery-carousel__nav-item {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      color: rgba(245, 240, 235, 0.45);
+      background: transparent;
+      border: 1px solid rgba(245, 240, 235, 0.14);
+      border-radius: 999px;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      transition: color 0.55s var(--ease), border-color 0.55s var(--ease), background 0.55s var(--ease);
+    }
+
+    .art-gallery-carousel__nav-item:hover,
+    .art-gallery-carousel__nav-item:focus-visible {
+      color: var(--text);
+      border-color: rgba(245, 240, 235, 0.35);
+      outline: none;
+    }
+
+    .art-gallery-carousel__nav-item[data-collection="water"].is-active {
+      color: #e6f4f7;
+      border-color: rgba(88, 200, 220, 0.45);
+      background: rgba(10, 28, 36, 0.72);
+    }
+
+    .art-gallery-carousel__nav-item[data-collection="eruptions"].is-active {
+      color: #f5ebe9;
+      border-color: rgba(204, 96, 84, 0.45);
+      background: rgba(36, 14, 14, 0.72);
+    }
+
+    .art-gallery-carousel__nav-item[data-collection="corals"].is-active {
+      color: #fce4ef;
+      border-color: rgba(240, 120, 170, 0.45);
+      background: rgba(32, 14, 24, 0.72);
+    }
+
+    .art-gallery-carousel__nav-item[data-collection="cracked"].is-active {
+      color: #e4f5ea;
+      border-color: rgba(120, 200, 140, 0.45);
+      background: rgba(16, 32, 22, 0.72);
+    }
+
+    #art #art-gallery .art-gallery-carousel__stage,
+    #art #art-gallery .series-showcase__stage {
+      margin-top: 0;
+      padding: 1rem 0.5rem 0;
+      min-height: min(92vh, 980px);
+      background: transparent;
+    }
+
+    #art .series-showcase__sidebar {
+      border-right-color: rgba(245, 240, 235, 0.1);
+      background: rgba(18, 18, 18, 0.55);
+    }
+
+    #art .series-showcase__nav-item.is-active {
+      color: var(--text);
+      border-left-color: rgba(245, 240, 235, 0.45);
+    }
+
+    /* Collection hues (applied via data-series on #art-gallery) */
+    #art-gallery[data-series="water"] {
+      --backdrop-opacity: 0.42;
+    }
+
+    #art-gallery[data-series="water"] .series-showcase__sidebar {
+      border-right-color: rgba(56, 168, 188, 0.12);
+      background: rgba(10, 28, 36, 0.36);
+    }
+
+    #art-gallery[data-series="water"] .series-showcase__nav-item.is-active {
+      color: #e6f4f7;
+      border-left-color: rgba(88, 200, 220, 0.5);
+    }
+
+    #art-gallery[data-series="water"] .series-showcase__nav-toggle.is-active,
+    #art-gallery[data-series="water"] .series-showcase__nav-accordion.is-open .series-showcase__nav-toggle {
+      color: #e6f4f7;
+    }
+
+    #art-gallery[data-series="water"] .series-showcase__arrow {
+      border-color: rgba(56, 168, 188, 0.2);
+    }
+
+    #art-gallery[data-series="water"] .series-showcase__arrow:hover:not(:disabled) {
+      border-color: rgba(88, 200, 220, 0.38);
+      background: rgba(56, 168, 188, 0.07);
+    }
+
+    #art-gallery[data-series="eruptions"] {
+      --backdrop-opacity: 0.46;
+    }
+
+    #art-gallery[data-series="eruptions"] .series-showcase__sidebar {
+      border-right-color: rgba(176, 72, 60, 0.14);
+      background: rgba(36, 14, 14, 0.32);
+    }
+
+    #art-gallery[data-series="eruptions"] .series-showcase__nav-item.is-active {
+      color: #f5ebe9;
+      border-left-color: rgba(204, 96, 84, 0.55);
+    }
+
+    #art-gallery[data-series="eruptions"] .series-showcase__nav-toggle.is-active,
+    #art-gallery[data-series="eruptions"] .series-showcase__nav-accordion.is-open .series-showcase__nav-toggle {
+      color: #f5ebe9;
+    }
+
+    #art-gallery[data-series="eruptions"] .series-showcase__arrow {
+      border-color: rgba(176, 72, 60, 0.22);
+    }
+
+    #art-gallery[data-series="eruptions"] .series-showcase__arrow:hover:not(:disabled) {
+      border-color: rgba(204, 96, 84, 0.4);
+      background: rgba(176, 72, 60, 0.08);
+    }
+
+    #art-gallery[data-series="corals"] {
+      --backdrop-opacity: 0.4;
+    }
+
+    #art-gallery[data-series="corals"] .series-showcase__sidebar {
+      border-right-color: rgba(210, 100, 150, 0.14);
+      background: rgba(32, 14, 24, 0.38);
+    }
+
+    #art-gallery[data-series="corals"] .series-showcase__nav-item.is-active {
+      color: #fce4ef;
+      border-left-color: rgba(240, 120, 170, 0.52);
+    }
+
+    #art-gallery[data-series="corals"] .series-showcase__nav-toggle.is-active,
+    #art-gallery[data-series="corals"] .series-showcase__nav-accordion.is-open .series-showcase__nav-toggle {
+      color: #fce4ef;
+    }
+
+    #art-gallery[data-series="corals"] .series-showcase__arrow {
+      border-color: rgba(210, 100, 150, 0.22);
+    }
+
+    #art-gallery[data-series="corals"] .series-showcase__arrow:hover:not(:disabled) {
+      border-color: rgba(240, 130, 180, 0.4);
+      background: rgba(190, 80, 130, 0.08);
+    }
+
+    #art-gallery[data-series="cracked"] {
+      --backdrop-opacity: 0.4;
+    }
+
+    #art-gallery[data-series="cracked"] .series-showcase__sidebar {
+      border-right-color: rgba(100, 180, 120, 0.14);
+      background: rgba(16, 32, 22, 0.38);
+    }
+
+    #art-gallery[data-series="cracked"] .series-showcase__nav-item.is-active {
+      color: #e4f5ea;
+      border-left-color: rgba(120, 200, 140, 0.52);
+    }
+
+    #art-gallery[data-series="cracked"] .series-showcase__nav-toggle.is-active,
+    #art-gallery[data-series="cracked"] .series-showcase__nav-accordion.is-open .series-showcase__nav-toggle {
+      color: #e4f5ea;
+    }
+
+    #art-gallery[data-series="cracked"] .series-showcase__arrow {
+      border-color: rgba(100, 180, 120, 0.22);
+    }
+
+    #art-gallery[data-series="cracked"] .series-showcase__arrow:hover:not(:disabled) {
+      border-color: rgba(140, 210, 150, 0.4);
+      background: rgba(80, 140, 90, 0.08);
+    }
+
+    #art-gallery .series-showcase__sidebar,
+    #art-gallery .series-showcase__stage,
+    #art-gallery .series-showcase__arrow {
+      transition: background 0.55s var(--ease), border-color 0.55s var(--ease);
+    }
+
+    #art-gallery .series-showcase__stage {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    #art-gallery .series-showcase__slides {
+      flex: 1;
+      min-height: 0;
+      width: min(99vw, 1380px);
+      height: min(86vh, 960px);
+      margin: 0 auto;
+    }
+
+    .art-gallery-carousel__caption {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245, 240, 235, 0.88);
+      text-align: center;
+      margin: 1.25rem 0 0;
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .art-gallery-carousel .series-showcase__controls {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: min(98vw, 1160px);
+      margin: 1.75rem auto 0;
+      padding-bottom: 4rem;
+    }
+
+    .series-showcase__sidebar {
+      position: sticky;
+      top: 0;
+      margin-top: calc(-1 * var(--gallery-top-inset, 5rem));
+      height: calc(100dvh + var(--gallery-top-inset, 5rem));
+      max-height: calc(100dvh + var(--gallery-top-inset, 5rem));
+      padding: calc(3rem + var(--gallery-top-inset, 5rem)) 2rem 1.5rem 2.5rem;
+      border-right: 1px solid rgba(245, 240, 235, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow: hidden;
+    }
+
+    .series-showcase__nav-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding-right: 0.5rem;
+      margin-right: -0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(245, 240, 235, 0.18) transparent;
+    }
+
+    .series-showcase__nav-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .series-showcase__nav-scroll::-webkit-scrollbar-thumb {
+      background: rgba(245, 240, 235, 0.18);
+      border-radius: 999px;
+    }
+
+    .series-showcase__header { position: relative; flex-shrink: 0; }
+
+    .series-showcase__title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+
+    .series-showcase__desc {
+      font-family: var(--serif);
+      font-size: 0.9375rem;
+      font-style: italic;
+      color: var(--text-dim);
+      margin-top: 0.75rem;
+    }
+
+    .series-showcase__nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .series-showcase__nav-accordion {
+      list-style: none;
+      border-top: 1px solid rgba(245, 240, 235, 0.08);
+    }
+
+    .series-showcase__nav-accordion:first-child {
+      border-top: none;
+    }
+
+    .series-showcase__nav-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 1.125rem 0 0.625rem;
+      cursor: pointer;
+      transition: color 0.35s var(--ease);
+    }
+
+    .series-showcase__nav-toggle::after {
+      content: '+';
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--text-muted);
+      transition: transform 0.35s var(--ease), color 0.35s var(--ease);
+    }
+
+    .series-showcase__nav-accordion.is-open .series-showcase__nav-toggle::after {
+      content: '−';
+    }
+
+    .series-showcase__nav-toggle:hover {
+      color: var(--text-dim);
+    }
+
+    .series-showcase__nav-panel {
+      list-style: none;
+      display: none;
+      flex-direction: column;
+      gap: 0.125rem;
+      padding: 0 0 0.75rem;
+    }
+
+    .series-showcase__nav-accordion.is-open .series-showcase__nav-panel {
+      display: flex;
+    }
+
+    .series-showcase__nav-group {
+      font-family: var(--sans);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 1.25rem 0 0.5rem;
+      margin-top: 0.25rem;
+      border-top: 1px solid rgba(245, 240, 235, 0.08);
+      list-style: none;
+    }
+
+    .series-showcase__nav-group:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .series-showcase__nav-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      border-left: 2px solid transparent;
+      font-family: var(--serif);
+      font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
+      color: var(--text-dim);
+      padding: 0.45rem 0 0.45rem 0.875rem;
+      cursor: pointer;
+      transition: color 0.35s var(--ease), border-color 0.35s var(--ease);
+    }
+
+    .series-showcase__nav-item:hover { color: var(--text); }
+
+    .series-showcase__caption {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.6vw, 1.25rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245, 240, 235, 0.88);
+      text-align: center;
+      margin: 1.25rem 0 0;
+      letter-spacing: 0.02em;
+    }
+
+    .series-showcase__counter {
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      padding-top: 0.5rem;
+    }
+
+    .series-showcase__stage {
+      position: relative;
+      margin-top: calc(-1 * var(--gallery-top-inset, 5rem));
+      min-height: calc(100vh + var(--gallery-top-inset, 5rem));
+      min-height: calc(100dvh + var(--gallery-top-inset, 5rem));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: calc(1rem + var(--gallery-top-inset, 5rem)) 1rem 1.5rem;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .series-showcase__backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .series-showcase__backdrop-img {
+      max-width: min(68vw, 980px);
+      max-height: min(72vh, 820px);
+      object-fit: contain;
+      opacity: var(--backdrop-opacity, 0.42);
+      filter: brightness(0.62) blur(8px);
+      transition: opacity 0.55s var(--ease);
+    }
+
+    .series-showcase__slides {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: min(98vw, 1800px);
+      height: min(94vh, 1120px);
+      height: min(94dvh, 1120px);
+    }
+
+    .series-showcase__slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.65s var(--ease), visibility 0.65s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .series-showcase__slide.is-active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 1;
+    }
+
+    #art-gallery .series-showcase__slide {
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 3s var(--ease);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    #art-gallery .series-showcase__slide.is-active,
+    #art-gallery .series-showcase__slide.is-leaving {
+      visibility: visible;
+    }
+
+    #art-gallery .series-showcase__slide.is-active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    #art-gallery .series-showcase__slide.is-leaving:not(.is-active) {
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #art-gallery.is-crossfading .series-showcase__slide.is-active,
+    #art-gallery.is-crossfading .series-showcase__slide.is-leaving {
+      will-change: opacity;
+    }
+
+    #art-gallery .series-showcase__figure {
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    #art-gallery .series-showcase__figure img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: min(82vh, 900px);
+      max-height: min(82dvh, 900px);
+    }
+
+    #art > .series-showcase__backdrop .series-showcase__backdrop-img {
+      max-width: min(108vw, 1540px);
+      max-height: min(112vh, 1240px);
+      object-fit: contain;
+      opacity: var(--backdrop-opacity, 0.42);
+      filter: brightness(0.62) blur(14px);
+      transform: translateY(8%) scale(1.12);
+      -webkit-mask-image: radial-gradient(
+        ellipse 56% 72% at 50% 52%,
+        #000 0%,
+        #000 8%,
+        rgba(0, 0, 0, 0.9) 28%,
+        rgba(0, 0, 0, 0.58) 46%,
+        rgba(0, 0, 0, 0.28) 58%,
+        rgba(0, 0, 0, 0.1) 70%,
+        transparent 84%
+      );
+      mask-image: radial-gradient(
+        ellipse 56% 72% at 50% 52%,
+        #000 0%,
+        #000 8%,
+        rgba(0, 0, 0, 0.9) 28%,
+        rgba(0, 0, 0, 0.58) 46%,
+        rgba(0, 0, 0, 0.28) 58%,
+        rgba(0, 0, 0, 0.1) 70%,
+        transparent 84%
+      );
+      transition: opacity 3s var(--ease);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #art-gallery .series-showcase__slide {
+        transition: none;
+      }
+
+      .train-variants__scroll-track { height: auto; }
+      .train-variants__item {
+        will-change: auto;
+        transform:
+          translate(
+            calc((var(--depth) / 43) * (75vw - var(--frame) * var(--scale))),
+            -50%
+          )
+          scale(var(--scale));
+      }
+    }
+
+    .series-showcase__figure {
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    .series-showcase__figure img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .series-showcase__meta {
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 1rem;
+    }
+
+    .series-showcase__controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .series-showcase__arrow {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(245, 240, 235, 0.2);
+      background: transparent;
+      color: var(--text);
+      font-size: 1.125rem;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .series-showcase__arrow:hover:not(:disabled) {
+      border-color: rgba(245, 240, 235, 0.4);
+      background: rgba(245, 240, 235, 0.06);
+    }
+
+    .series-showcase__arrow:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: rgba(10, 10, 10, 0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .lightbox.open { opacity: 1; visibility: visible; }
+
+    .lightbox__image {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background: none;
+      border: 1px solid rgba(245, 240, 235, 0.2);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .lightbox__info {
+      position: absolute;
+      bottom: 3rem;
+      left: 3rem;
+    }
+
+    .lightbox__title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+    }
+
+    .lightbox__meta {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.375rem;
+      letter-spacing: 0.06em;
+    }
+
+    .footer {
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem 2rem;
+      border-top: 1px solid rgba(245, 240, 235, 0.05);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.3s var(--ease);
+    }
+
+    .footer a:hover {
+      color: var(--text);
+    }
+
+    /* ---------- Contact ---------- */
+    .contact-section {
+      position: relative;
+      border-top: 1px solid rgba(245, 240, 235, 0.06);
+      padding: 8rem 3rem 10rem;
+      background: #000;
+    }
+
+    .contact-section__inner {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-section__label {
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .contact-section__title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    .contact-section__desc {
+      max-width: 36rem;
+      margin: 0 auto 3rem;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 1.25rem;
+      text-align: left;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-section .contact-form__field input,
+    .contact-section .contact-form__field textarea {
+      background: rgba(0, 0, 0, 0.32);
+      border-color: rgba(245, 240, 235, 0.36);
+    }
+
+    .contact-section .contact-form__field input:focus,
+    .contact-section .contact-form__field textarea:focus {
+      background: rgba(0, 0, 0, 0.44);
+      border-color: rgba(245, 240, 235, 0.55);
+    }
+
+    .contact-section .contact-form__field label {
+      color: rgba(245, 240, 235, 0.78);
+    }
+
+    .contact-form__field label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-form__field input,
+    .contact-form__field textarea {
+      width: 100%;
+      font-family: var(--serif);
+      font-size: 1.0625rem;
+      font-weight: 300;
+      color: var(--text);
+      background: rgba(245, 240, 235, 0.04);
+      border: 1px solid rgba(245, 240, 235, 0.12);
+      padding: 0.875rem 1rem;
+      transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+    }
+
+    .contact-form__field input:focus,
+    .contact-form__field textarea:focus {
+      outline: none;
+      border-color: rgba(245, 240, 235, 0.35);
+      background: rgba(245, 240, 235, 0.06);
+    }
+
+    .contact-form__field textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .contact-form__submit {
+      justify-self: center;
+      margin-top: 0.5rem;
+      font-family: var(--sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: transparent;
+      border: 1px solid rgba(245, 240, 235, 0.28);
+      padding: 0.875rem 2.5rem;
+      cursor: pointer;
+      transition: background 0.35s var(--ease), border-color 0.35s var(--ease), transform 0.35s var(--ease);
+    }
+
+    .contact-form__submit:hover {
+      background: rgba(245, 240, 235, 0.08);
+      border-color: rgba(245, 240, 235, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .contact-form__submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .contact-form__feedback {
+      margin: 0;
+      padding: 0.875rem 1rem;
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      line-height: 1.55;
+      text-align: center;
+      border-radius: 2px;
+    }
+
+    .contact-form__feedback[hidden] {
+      display: none;
+    }
+
+    .contact-form__feedback--error {
+      color: rgba(255, 180, 190, 0.98);
+      background: rgba(120, 32, 48, 0.28);
+      border: 1px solid rgba(220, 100, 120, 0.35);
+    }
+
+    .contact-form__success {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1rem;
+      background: rgba(40, 72, 48, 0.22);
+      border: 1px solid rgba(120, 180, 130, 0.28);
+      border-radius: 2px;
+    }
+
+    .contact-form__success[hidden] {
+      display: none;
+    }
+
+    .contact-form__success[role="status"] {
+      animation: contactSuccessIn 0.6s var(--ease) both;
+    }
+
+    @keyframes contactSuccessIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-form__thanks {
+      font-family: var(--serif);
+      font-size: clamp(1.125rem, 2vw, 1.375rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.65;
+      color: rgba(210, 235, 215, 0.95);
+    }
+
+    .contact-form__honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .contact-section__links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.875rem;
+    }
+
+    .contact-section__link {
+      font-family: var(--serif);
+      font-size: 1.0625rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245, 240, 235, 0.72);
+      text-decoration: none;
+      transition: color 0.3s var(--ease);
+    }
+
+    .contact-section__link:hover { color: var(--text); }
+
+    @media (max-width: 1024px) {
+      .nav { padding: 1rem 1.5rem; }
+      .series-showcase {
+        display: flex;
+        flex-direction: column;
+        min-height: auto;
+      }
+      .series-showcase__sidebar {
+        position: relative;
+        margin-top: calc(-1 * var(--gallery-top-inset, 5rem));
+        height: auto;
+        max-height: none;
+        padding: calc(4rem + var(--gallery-top-inset, 5rem)) 1.5rem 1rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(245, 240, 235, 0.08);
+      }
+      .series-showcase__nav-scroll {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: min(44vh, 400px);
+        padding-right: 0;
+        margin-right: 0;
+        scrollbar-gutter: stable;
+      }
+
+      .art-gallery-carousel__nav {
+        padding: 0 1rem 1.5rem;
+      }
+
+      #art-gallery .series-showcase__slides {
+        height: min(72vh, 720px);
+      }
+
+      #art-gallery .series-showcase__figure img {
+        max-height: min(68vh, 640px);
+        max-height: min(68dvh, 640px);
+      }
+
+      #art > .series-showcase__backdrop .series-showcase__backdrop-img {
+        max-width: min(108vw, 1320px);
+        max-height: min(102vh, 900px);
+        transform: translateY(6%) scale(1.1);
+      }
+
+      #art #art-gallery .art-gallery-carousel__stage {
+        min-height: min(84vh, 820px);
+        padding: 0.75rem 0.25rem 0;
+      }
+
+      #art-gallery .series-showcase__controls {
+        padding-bottom: 3rem;
+      }
+
+      .series-showcase__nav {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 0;
+        padding-bottom: 0;
+      }
+      .series-showcase__nav-accordion {
+        flex-shrink: 0;
+        width: 100%;
+        border-top: 1px solid rgba(245, 240, 235, 0.08);
+      }
+      .series-showcase__nav-toggle {
+        padding: 0.875rem 0 0.5rem;
+      }
+      .series-showcase__nav-panel {
+        padding-bottom: 0.5rem;
+      }
+      .series-showcase__nav-group {
+        flex-shrink: 0;
+        border-top: none;
+        padding: 0.5rem 0.75rem 0.5rem 0;
+        margin: 0;
+        align-self: center;
+      }
+      .series-showcase__nav-item {
+        flex-shrink: 0;
+        white-space: normal;
+        border-left: 2px solid transparent;
+        border-bottom: none;
+        padding: 0.45rem 0 0.45rem 0.875rem;
+      }
+      .series-showcase__counter { margin-top: 0; }
+      .series-showcase__stage {
+        margin-top: 0;
+        min-height: auto;
+        padding: 1.25rem 1rem 2rem;
+      }
+      .series-showcase__slides {
+        height: min(72dvh, 760px);
+        min-height: min(72dvh, 760px);
+      }
+      .series-showcase__slide,
+      .series-showcase__slide.is-active {
+        position: absolute;
+        inset: 0;
+      }
+    }
+  
+
+
+    @media (max-width: 1024px) {
+      .statement-panel--split {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .statement-panel--split .statement-panel__visual {
+        min-height: min(58vh, 480px);
+        padding: 2rem 1.25rem 1rem;
+      }
+      .statement-panel--split .statement {
+        padding: 3rem 2rem 5rem;
+      }
+
+      .entropy-lab-section .statement-panel--poem,
+      .entropy-lab-section .statement-panel--entropy-prose {
+        gap: 0;
+      }
+      .entropy-lab-section .statement-panel--poem .statement-panel__visual,
+      .entropy-lab-section .statement-panel--entropy-prose .statement-panel__visual {
+        min-height: min(50vh, 420px);
+        padding: 1.5rem 1rem 0.25rem;
+      }
+      .entropy-lab-section .statement-panel--poem .statement,
+      .entropy-lab-section .statement-panel--entropy-prose .statement {
+        padding: 1.25rem 1.5rem 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav { padding: 1rem 1.5rem; }
+      .nav__links { gap: 1.25rem; }
+      .hero__content { padding: 0 1.5rem 4rem; }
+      .hero__title { font-size: clamp(2rem, 6.5vw, 3rem); }
+      .hero__scroll { right: 1.5rem; }
+      .statement { padding: 8rem 1.5rem; }
+      .statement-panel--split .statement-panel__visual > img {
+        max-height: min(54vh, 440px);
+      }
+      .statement-panel--split .statement {
+        padding: 3rem 1.5rem 5rem;
+      }
+      .series-intro { padding: 9rem 1.5rem 7rem; }
+      #art > .series-intro {
+        min-height: min(22vh, 220px);
+        padding: 4.5rem 1.5rem 2rem;
+      }
+      .inspiration-section .series-intro { padding-top: 10rem; }
+      .train-variants {
+        background-size: 465px 27px;
+      }
+
+      .train-variants__scroll-track {
+        height: 200vh;
+      }
+
+      .train-variants__scene {
+        width: 75vw;
+        max-width: 75vw;
+        min-height: min(52vh, 440px);
+      }
+
+      .train-variants__caption {
+        font-size: clamp(1.125rem, 4.5vw, 1.5rem);
+        padding-top: 0.5rem;
+      }
+
+      .train-variants__verse-line {
+        font-size: clamp(1.5rem, 6.5vw, 2.35rem);
+      }
+
+      .train-variants__track {
+        width: 75vw;
+        max-width: 75vw;
+        height: min(52vh, 440px);
+      }
+
+      .train-variants__item {
+        --frame: clamp(140px, 34vw, 260px);
+      }
+
+      .train-variants__item--snake-head {
+        --frame: clamp(168px, 44vw, 300px);
+      }
+
+      .train-variants__item img {
+        max-height: min(44vh, 360px);
+      }
+
+      .statement-panel--entropy-prose .statement {
+        max-height: none;
+        overflow: visible;
+      }
+
+      .entropy-lab-section .series-intro { padding: 6rem 1.5rem 2rem; }
+      .entropy-lab-carousel__nav { padding: 0 1.25rem 2rem; gap: 0.625rem; }
+      .entropy-lab-carousel__nav-item { font-size: 0.6875rem; padding: 0.55rem 1rem; }
+      .entropy-lab-carousel__controls { padding: 2rem 1.25rem 0; }
+      .contact-section {
+        padding: 6rem 1.5rem 8rem;
+      }
+
+      .nav__links { gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
+      .nav__links a.nav__link--contact { padding: 0.5rem 0.875rem; }
+    }
+
+    @media (max-width: 900px) {
+      .nav__toggle { display: flex; }
+      .nav__backdrop { display: block; }
+
+      .nav__links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 105;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        width: min(300px, 88vw);
+        height: 100dvh;
+        padding: 5.5rem 1.75rem 2rem;
+        background: rgba(10, 10, 10, 0.97);
+        border-left: 1px solid rgba(245, 240, 235, 0.08);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        transform: translateX(100%);
+        transition: transform 0.4s var(--ease);
+        box-shadow: -16px 0 48px rgba(0, 0, 0, 0.4);
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+      }
+
+      .nav__links.is-open { transform: translateX(0); }
+
+      .nav__links li { border-bottom: 1px solid rgba(245, 240, 235, 0.08); }
+      .nav__links li:last-child { border-bottom: none; margin-top: 0.5rem; }
+
+      .nav__links a {
+        display: block;
+        padding: 1rem 0;
+        font-size: 0.9375rem;
+        letter-spacing: 0.08em;
+        text-shadow: none;
+      }
+
+      .nav__links a.nav__link--contact {
+        display: inline-block;
+        margin-top: 0.25rem;
+        padding: 0.75rem 1.125rem;
+        text-align: center;
+      }
+
+      body.nav-open { overflow: hidden; }
+    }
+
+    @media (max-width: 480px) {
+      .nav__logo {
+        font-size: clamp(0.875rem, 4vw, 1.125rem);
+        gap: 0.5rem;
+      }
+
+      .nav__logo img {
+        width: 28px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="nav__inner">
+      <a class="nav__logo" href="#" aria-label="Giovanna Ferrari — Art">
+        <img src="assets/bird.svg" alt="" width="38" height="27">
+        <span class="nav__logo-text">Giovanna Ferrari</span>
+      </a>
+      <button type="button" class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+      <div class="nav__backdrop" aria-hidden="true"></div>
+      <ul class="nav__links" id="nav-menu">
+        <li><a href="#artist-statement-title">Statement</a></li>
+        <li><a href="#art-title">Art</a></li>
+        <li><a href="#entropy-lab-title">Entropy Lab</a></li>
+        <li><a href="#inspiration-title">Inspiration</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav__link--contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__image">
+        <img src="hero.png" alt="The Ocean in Love — mixed media painting with vivid turquoise, deep blues, and green ocean-like forms by Giovanna Ferrari">
+      </div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content">
+        <h1 id="hero-title" class="hero__title">
+          <span class="hero__title-line">
+            <span class="word"><span>Transformative</span></span>
+            <span class="word"><span>art</span></span>
+            <span class="word"><span>to</span></span>
+            <span class="word"><span>evoke</span></span>
+          </span>
+          <span class="hero__title-line">
+            <span class="word"><span>personal</span></span>
+            <span class="word"><span>evolution</span></span>
+          </span>
+        </h1>
+        <p class="hero__statement">
+          My art is the manifestation of the transformative power of art, where negative emotions are
+          liberated and transformed into new possibilities for healing, strength, and self-discovery.
+        </p>
+      </div>
+      <div class="hero__scroll" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- Artist Statement -->
+    <div class="statement-panel">
+      <div class="statement-panel__bg" aria-hidden="true">
+        <img src="assets/january13+-+me.webp" alt="" loading="lazy" decoding="async">
+      </div>
+      <section class="statement" aria-labelledby="artist-statement-title">
+        <h2 class="statement__title" id="artist-statement-title">Artist Statement</h2>
+        <div class="statement__body" data-statement>
+          <p class="statement__text">
+            My painting process starts with total entropy, a form of intelligent chaos. To me, entropy is not disorder but a purposeful, generative force. What we call chaos is simply a germinal state: the beginning of something that is evolving into a new form. In this sense, chaos does not truly exist as randomness, but as transformation in progress.
+          </p>
+          <p class="statement__text">
+            Most of my paintings begin with an image, emotion, or inner experience that I want to capture on canvas. I put on my headphones, immerse myself in a feeling, and allow it to guide the creative process. My work is an attempt to translate the intangible into something visible and tangible.
+          </p>
+          <p class="statement__text">
+            I combine oil and water-based paints, allowing them to interact in unpredictable ways. Colors merge, separate, and create unexpected patterns, textures, and forms that become integral to the composition. While I guide the movement of the paint, I can never fully control it. Sometimes colors blend harmoniously; other times they resist one another&mdash;much like human relationships.
+          </p>
+          <p class="statement__text">
+            The final result is rarely what I initially envisioned. Yet it is precisely within this surrender to uncertainty that the work finds its meaning. Through a process of transformation, what begins as chaos evolves into a new order, often revealing something more interesting, authentic, and hopeful than I could have planned.
+          </p>
+        </div>
+        <p class="statement__author">Giovanna Ferrari</p>
+      </section>
+    </div>
+
+    <div id="art" data-series="water">
+      <div class="series-intro" aria-labelledby="art-title">
+        <h2 class="series-intro__title" id="art-title">Art</h2>
+        <p class="series-intro__desc">Mixed media on canvas (basically everything that I find)</p>
+      </div>
+      <div class="art-gallery-carousel series-showcase" id="art-gallery" data-series="water" data-series-carousel tabindex="0" aria-label="Art collection">
+        <nav class="art-gallery-carousel__nav" aria-label="Art collections">
+          <button type="button" class="art-gallery-carousel__nav-item is-active" data-art-collection-nav data-collection="water" aria-selected="true">water</button>
+          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="eruptions" aria-selected="false">eruptions</button>
+          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="corals" aria-selected="false">corals</button>
+          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="cracked" aria-selected="false">cracked</button>
+        </nav>
+        <div class="art-gallery-carousel__stage series-showcase__stage">
+          <div class="series-showcase__slides" data-carousel-slides>
+            <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Solitary" data-meta="Water" data-group="Water" role="tabpanel">
+              <figure class="series-showcase__figure">
+                <img src="assets/water/solitary.jpg" alt="Solitary" loading="eager" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Solitary</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Ocean in Love" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/the-ocean-in-love.jpg" alt="The Ocean in Love" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">The Ocean in Love</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Storm Approaching" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/a%20storm%20approaching.jpg" alt="A Storm Approaching" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">A Storm Approaching</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Becoming an Ocean" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/Becoming-an-Ocean.jpg" alt="Becoming an Ocean" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Becoming an Ocean</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Embryos" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/embryos.webp" alt="Embryos" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Embryos</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Deep Breathe In" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/a-deep-breathe-in.jpg" alt="A Deep Breathe In" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">A Deep Breathe In</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Deep Breathe Out" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/a-deep-breathe-out.jpeg" alt="A Deep Breathe Out" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">A Deep Breathe Out</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Poised Perspective" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/poised%20perspective.webp" alt="Poised Perspective" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Poised Perspective</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Colossal" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/colossal.jpg" alt="Colossal — mixed media painting" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Colossal</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Lavelatla &mdash; The Smoking Mountain" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/Lavelatla---the-smoking-mountain.png" alt="Lavelatla — The Smoking Mountain" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Lavelatla &mdash; The Smoking Mountain</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Bouquet of Fire and Ashes" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/bouquet%20of%20fire%20and%20ashes.webp" alt="Bouquet of Fire and Ashes" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Bouquet of Fire and Ashes</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="As the Earth Burns" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/as-the-earth-burns.jpg" alt="As the Earth Burns" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">As the Earth Burns</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anemone II" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/anemone2x1500.jpg" alt="Anemone II" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Anemone II</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Celestial Reef" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Celestial%20Reef.jpg" alt="Celestial Reef" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Celestial Reef</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Fiddler Crab" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Giovanna_Ferrari_The-fiddler-crab_48x60.jpeg" alt="The Fiddler Crab" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">The Fiddler Crab</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="La F&eacute;e Vert" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Giovanna_ferrari_la-fee-vert48x30.jpeg" alt="La Fée Vert" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">La F&eacute;e Vert</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Murmur Reef" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Murmur-reef%20copy.jpg" alt="Murmur Reef" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Murmur Reef</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anemone" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/anemone-x-1500.jpg" alt="Anemone" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Anemone</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Garden of Currents" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/the%20garden%20of%20currents.jpg" alt="The Garden of Currents" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">The Garden of Currents</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Cycles" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/cycles.webp" alt="Cycles" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Cycles</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Cellular Awakening" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/cellular-awakening-small.jpg" alt="Cellular Awakening" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Cellular Awakening</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Energy" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/energy.jpeg" alt="Energy" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Energy</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="In Constant Battle" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/in-constant-battle2.jpg" alt="In Constant Battle" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">In Constant Battle</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Hang in There" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/hang-in-there.jpg" alt="Hang in There" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Hang in There</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Heart Explosion" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/heart%20explosion.webp" alt="Heart Explosion" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Heart Explosion</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Love" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/love.webp" alt="Love" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Love</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="When I Close My Eyes" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Cracked/when-I-close-my-eyes.webp" alt="When I Close My Eyes" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">When I Close My Eyes</p>
+            </article>
+          </div>
+          <div class="series-showcase__controls art-gallery-carousel__controls">
+            <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-prev aria-label="Previous artwork" disabled>&larr;</button>
+            <p class="series-showcase__counter art-gallery-carousel__counter" data-carousel-counter aria-live="polite">01 / 27</p>
+            <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-next aria-label="Next artwork">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entropy Lab -->
+    <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
+      <div class="series-intro">
+        <h2 class="series-intro__title" id="entropy-lab-title">Entropy Lab</h2>
+        <p class="series-intro__desc">random creative thoughts</p>
+      </div>
+
+      <div class="entropy-lab-carousel" data-entropy-carousel tabindex="0" aria-label="Entropy Lab experiments">
+        <nav class="entropy-lab-carousel__nav" aria-label="Entropy Lab sections">
+          <button type="button" class="entropy-lab-carousel__nav-item is-active" data-entropy-nav aria-selected="true">the tunnel</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">energy</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">As above, so below</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">the non suicidal man</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">The Umbrella</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">the lower world</button>
+        </nav>
+
+        <div class="entropy-lab-carousel__viewport">
+          <article class="entropy-lab-carousel__panel is-active" data-entropy-panel role="tabpanel" aria-label="The tunnel">
+            <div class="train-variants" id="the-tunnel" aria-label="The tunnel">
+<div class="train-variants__scroll-track">
+        <div class="train-variants__scene">
+          <p class="train-variants__caption">move your mouse and tickle me</p>
+          <div class="train-variants__track">
+            <figure class="train-variants__item train-variants__item--lead" data-depth="0">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="eager" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(0.0deg) saturate(5.2) contrast(1.28) brightness(0.98);">
+            </figure>
+            <figure class="train-variants__item" data-depth="1">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(8.4deg) saturate(5.55) contrast(1.34) brightness(0.97);">
+            </figure>
+            <figure class="train-variants__item" data-depth="2">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(16.7deg) saturate(5.9) contrast(1.4) brightness(0.96);">
+            </figure>
+            <figure class="train-variants__item" data-depth="3">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(25.1deg) saturate(6.25) contrast(1.46) brightness(0.95);">
+            </figure>
+            <figure class="train-variants__item" data-depth="4">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(33.5deg) saturate(6.6) contrast(1.52) brightness(0.94);">
+            </figure>
+            <figure class="train-variants__item" data-depth="5">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(41.9deg) saturate(6.95) contrast(1.28) brightness(0.93);">
+            </figure>
+            <figure class="train-variants__item" data-depth="6">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(50.2deg) saturate(7.3) contrast(1.34) brightness(0.93);">
+            </figure>
+            <figure class="train-variants__item" data-depth="7">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(58.6deg) saturate(5.2) contrast(1.4) brightness(0.92);">
+            </figure>
+            <figure class="train-variants__item" data-depth="8">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(67.0deg) saturate(5.55) contrast(1.46) brightness(0.91);">
+            </figure>
+            <figure class="train-variants__item" data-depth="9">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(75.3deg) saturate(5.9) contrast(1.52) brightness(0.9);">
+            </figure>
+            <figure class="train-variants__item" data-depth="10">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(83.7deg) saturate(6.25) contrast(1.28) brightness(0.89);">
+            </figure>
+            <figure class="train-variants__item" data-depth="11">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(92.1deg) saturate(6.6) contrast(1.34) brightness(0.88);">
+            </figure>
+            <figure class="train-variants__item" data-depth="12">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(100.5deg) saturate(6.95) contrast(1.4) brightness(0.87);">
+            </figure>
+            <figure class="train-variants__item" data-depth="13">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(108.8deg) saturate(7.3) contrast(1.46) brightness(0.86);">
+            </figure>
+            <figure class="train-variants__item" data-depth="14">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(117.2deg) saturate(5.2) contrast(1.52) brightness(0.85);">
+            </figure>
+            <figure class="train-variants__item" data-depth="15">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(125.6deg) saturate(5.55) contrast(1.28) brightness(0.84);">
+            </figure>
+            <figure class="train-variants__item" data-depth="16">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(134.0deg) saturate(5.9) contrast(1.34) brightness(0.84);">
+            </figure>
+            <figure class="train-variants__item" data-depth="17">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(142.3deg) saturate(6.25) contrast(1.4) brightness(0.83);">
+            </figure>
+            <figure class="train-variants__item" data-depth="18">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(150.7deg) saturate(6.6) contrast(1.46) brightness(0.82);">
+            </figure>
+            <figure class="train-variants__item" data-depth="19">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(159.1deg) saturate(6.95) contrast(1.52) brightness(0.81);">
+            </figure>
+            <figure class="train-variants__item" data-depth="20">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(167.4deg) saturate(7.3) contrast(1.28) brightness(0.8);">
+            </figure>
+            <figure class="train-variants__item" data-depth="21">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(175.8deg) saturate(5.2) contrast(1.34) brightness(0.79);">
+            </figure>
+            <figure class="train-variants__item" data-depth="22">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(184.2deg) saturate(5.55) contrast(1.4) brightness(0.78);">
+            </figure>
+            <figure class="train-variants__item" data-depth="23">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(192.6deg) saturate(5.9) contrast(1.46) brightness(0.77);">
+            </figure>
+            <figure class="train-variants__item" data-depth="24">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(200.9deg) saturate(6.25) contrast(1.52) brightness(0.76);">
+            </figure>
+            <figure class="train-variants__item" data-depth="25">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(209.3deg) saturate(6.6) contrast(1.28) brightness(0.76);">
+            </figure>
+            <figure class="train-variants__item" data-depth="26">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(217.7deg) saturate(6.95) contrast(1.34) brightness(0.75);">
+            </figure>
+            <figure class="train-variants__item" data-depth="27">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(226.0deg) saturate(7.3) contrast(1.4) brightness(0.74);">
+            </figure>
+            <figure class="train-variants__item" data-depth="28">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(234.4deg) saturate(5.2) contrast(1.46) brightness(0.73);">
+            </figure>
+            <figure class="train-variants__item" data-depth="29">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(242.8deg) saturate(5.55) contrast(1.52) brightness(0.72);">
+            </figure>
+            <figure class="train-variants__item" data-depth="30">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(251.2deg) saturate(5.9) contrast(1.28) brightness(0.71);">
+            </figure>
+            <figure class="train-variants__item" data-depth="31">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(259.5deg) saturate(6.25) contrast(1.34) brightness(0.7);">
+            </figure>
+            <figure class="train-variants__item" data-depth="32">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(267.9deg) saturate(6.6) contrast(1.4) brightness(0.69);">
+            </figure>
+            <figure class="train-variants__item" data-depth="33">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(276.3deg) saturate(6.95) contrast(1.46) brightness(0.68);">
+            </figure>
+            <figure class="train-variants__item" data-depth="34">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(284.7deg) saturate(7.3) contrast(1.52) brightness(0.67);">
+            </figure>
+            <figure class="train-variants__item" data-depth="35">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(293.0deg) saturate(5.2) contrast(1.28) brightness(0.67);">
+            </figure>
+            <figure class="train-variants__item" data-depth="36">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(301.4deg) saturate(5.55) contrast(1.34) brightness(0.66);">
+            </figure>
+            <figure class="train-variants__item" data-depth="37">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(309.8deg) saturate(5.9) contrast(1.4) brightness(0.65);">
+            </figure>
+            <figure class="train-variants__item" data-depth="38">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(318.1deg) saturate(6.25) contrast(1.46) brightness(0.64);">
+            </figure>
+            <figure class="train-variants__item" data-depth="39">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(326.5deg) saturate(6.6) contrast(1.52) brightness(0.63);">
+            </figure>
+            <figure class="train-variants__item" data-depth="40">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(334.9deg) saturate(6.95) contrast(1.28) brightness(0.62);">
+            </figure>
+            <figure class="train-variants__item" data-depth="41">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(343.3deg) saturate(7.3) contrast(1.34) brightness(0.61);">
+            </figure>
+            <figure class="train-variants__item" data-depth="42">
+              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(351.6deg) saturate(5.2) contrast(1.4) brightness(0.6);">
+            </figure>
+            <figure class="train-variants__item train-variants__item--snake-head" data-depth="43">
+              <img src="assets/me-snake.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
+            </figure>
+          </div>
+          <div class="train-variants__verse" data-tunnel-verse aria-live="polite">
+            <p class="train-variants__verse-line" data-verse-line>With every paint stroke</p>
+            <p class="train-variants__verse-line" data-verse-line>I enter the tunnel.</p>
+            <p class="train-variants__verse-line" data-verse-line>When I come out,</p>
+            <p class="train-variants__verse-line" data-verse-line>I am a little happier</p>
+            <p class="train-variants__verse-line" data-verse-line>than before.</p>
+          </div>
+        </div>
+      </div>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Energy" hidden>
+            <div class="entropy-panel entropy-panel--energy">
+              <p class="entropy-panel__desc">Intuitive energy mapping of situation, places, and people</p>
+              <div class="statement-panel statement-panel--energy-doodles" aria-label="Energy">
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy I" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2139.jpg" alt="Energy I — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy II" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2142.jpg" alt="Energy II — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy III" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2708.jpg" alt="Energy III — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy IV" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2751.jpg" alt="Energy IV — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy V" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2754.jpg" alt="Energy V — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy VI" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_3187-EDIT.jpg" alt="Energy VI — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy VII" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_3190.jpg" alt="Energy VII — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy VIII" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_3201.jpg" alt="Energy VIII — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Positano" data-meta="Entropy Lab">
+                  <img src="assets/doodles/positano.jpg" alt="Positano — energy doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+              </div>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="As above, so below" hidden>
+<div class="statement-panel statement-panel--split statement-panel--poem">
+        <div class="statement-panel__visual" aria-hidden="true">
+          <img src="assets/staricase.webp" alt="" loading="lazy" decoding="async">
+        </div>
+        <section class="statement" aria-label="As above, so below — poem by Giovanna Ferrari">
+          <div class="statement__body">
+          <p class="statement__text">
+            Anger rises like a volcano,<br>
+            yet peace is no smaller force.
+          </p>
+          <p class="statement__text">
+            The intensity of rage<br>
+            and the depth of serenity<br>
+            are equal in measure,<br>
+            different expressions<br>
+            of the same power.
+          </p>
+          <p class="statement__text">
+            Between them stands a ladder.
+          </p>
+          <p class="statement__text">
+            We climb through sorrow,<br>
+            discovering that every eruption<br>
+            contains the seed of stillness,<br>
+            and every return to peace<br>
+            reveals who we are.
+          </p>
+        </div>
+        <p class="statement__author">Giovanna Ferrari</p>
+      </section>
+      </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="The Non Suicidal Man" hidden>
+            <div class="statement-panel statement-panel--split statement-panel--entropy-prose">
+              <div class="statement-panel__visual" aria-hidden="true">
+                <img src="assets/Hugging%20the%20shore.jpeg" alt="" loading="lazy" decoding="async">
+              </div>
+              <section class="statement" aria-label="The Non Suicidal Man">
+                <h3 class="statement__heading">The Non Suicidal Man</h3>
+                <div class="statement__body">
+                  <p class="statement__text">
+                    This summer, I took a one-week vacation to Indiana Beach, NC. My friend forced me to buy a totally unnecessary $100 beach chair that weighed as much as my entire body and was impossible for me to carry because he was afraid I would steal his $200 beach chair.
+                  </p>
+                  <p class="statement__text">
+                    So now I was at the beach, and I had to carry this chair everywhere&hellip; but that is a different story. Let&rsquo;s get back to the real story.
+                  </p>
+                  <p class="statement__text">
+                    As I lay in my oversized American beach chair, a piece of furniture so unnecessarily large that it could comfortably accommodate a small village, I discovered my sense of compassion for all human life; it was sitting right next to me. After all, we had enough space in that oversized chair to coexist peacefully together.
+                  </p>
+                  <p class="statement__text">
+                    I started feeling the pain of all men, women, and especially crabs. I felt particularly bad for the crabs because they had no escape from the birds. They were just lying in the sand, minding their own business and being crabs, when these enormous birds, armed with beaks that qualified as weapons of mass destruction, would swoop down, pick them up, and swallow them alive.
+                  </p>
+                  <p class="statement__text">What a sad existence.</p>
+                  <p class="statement__text">
+                    I watched thousands of crabs being eaten without mercy until something in me snapped, and I started running after the birds to stop them from eating the crabs.
+                  </p>
+                  <p class="statement__text">
+                    I was able to save two out of approximately one hundred crabs.
+                  </p>
+                  <p class="statement__text">
+                    Now, I know what you&rsquo;re thinking. It is not the greatest record, but it is something. How many crabs have you saved?
+                  </p>
+                  <p class="statement__text">
+                    When I grew tired of single-handedly preserving the crab species, my attention was caught by a lonely man swimming in the ocean in the distance. He swam alone, just floating around for what seemed like a very long time. Then he came out of the water and sat on the beach, staring at the ocean, completely still except for the continuous motion of rubbing his face.
+                  </p>
+                  <p class="statement__text">
+                    I thought he was crying, wiping away a river of tears streaming down his cheeks, so I started imagining what he might be crying about. As I tuned into him, I felt the extreme pain of losing a loved one. It could have been a girlfriend or a parent. Maybe he was crying for the innocent crabs. It doesn&rsquo;t really matter what he was crying about. I just knew that I felt the urge to walk up to him and save him from his pain.
+                  </p>
+                  <p class="statement__text">So I did.</p>
+                  <p class="statement__text">
+                    &ldquo;Hello! Hi!&rdquo; I said. &ldquo;I just came over to see if you&rsquo;re okay.&rdquo;
+                  </p>
+                  <p class="statement__text">
+                    &ldquo;Oh, hi! Yes, yes, I am totally fine,&rdquo; he said with a surprised smile.
+                  </p>
+                  <p class="statement__text">
+                    &ldquo;My wife and kids are at the pool, so I&rsquo;m taking some time to myself to look at the ocean. And how are you?&rdquo;
+                  </p>
+                  <p class="statement__text">
+                    &ldquo;Oh, me? Oh, I&rsquo;m just fine,&rdquo; I replied. &ldquo;I was sitting on my very heavy oversized chair, also looking at the ocean, and I noticed you rubbing your eyes. I thought you were crying.&rdquo;
+                  </p>
+                  <p class="statement__text">He laughed.</p>
+                  <p class="statement__text">&ldquo;No, that was just salt water.&rdquo;</p>
+                  <p class="statement__text">He paused, then repeated,</p>
+                  <p class="statement__text">
+                    &ldquo;My wife and kids are at the pool, but thank you for checking on me.&rdquo;
+                  </p>
+                  <p class="statement__text"><em>My inner monologue: He thinks I&rsquo;m hitting on him. Well, he is cute after all.</em></p>
+                  <p class="statement__text">
+                    &ldquo;Okay then, I&rsquo;ll leave you to your thoughts. But next time, you might want to pick up a phone from time to time. Maybe take a selfie, just to let people know you&rsquo;re okay. It&rsquo;s strange to see someone sitting alone without interacting with a phone these days. You start thinking they may not be well.&rdquo;
+                  </p>
+                  <p class="statement__text">
+                    At this point, I could sense the fear creeping over him. He was scared.
+                  </p>
+                  <p class="statement__text">So we parted ways.</p>
+                  <p class="statement__text">
+                    He was not suicidal and was not planning to walk into the ocean and end his life. I was glad I could help reinforce his zeal for living.
+                  </p>
+                  <p class="statement__text">
+                    A few days went by, and I did end up running into the non-suicidal man again. He told me that after meeting me, he started having dark thoughts and, on several occasions, contemplated ending his life.
+                  </p>
+                  <p class="statement__text">This last part is not true. I&rsquo;m sorry.</p>
+                  <p class="statement__text">
+                    The truth is that I did run into him and his family again, but he completely ignored me while I continued struggling with my oversized chair.
+                  </p>
+                  <p class="statement__text">I long for the days when a beach towel was enough.</p>
+                </div>
+              </section>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="The Umbrella" hidden>
+            <div class="umbrella-warhol" aria-label="The Umbrella — Warhol variations">
+              <div class="umbrella-warhol__strip">
+                <figure class="umbrella-warhol__item umbrella-warhol__item--original" data-lightbox data-title="The Umbrella — original" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — original" loading="eager" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--pink" data-lightbox data-title="The Umbrella — pink" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — pink variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--cyan" data-lightbox data-title="The Umbrella — cyan" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — cyan variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--gold" data-lightbox data-title="The Umbrella — gold" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — gold variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--lime" data-lightbox data-title="The Umbrella — lime" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — lime variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--orange" data-lightbox data-title="The Umbrella — orange" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — orange variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--violet" data-lightbox data-title="The Umbrella — violet" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — violet variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--blue" data-lightbox data-title="The Umbrella — blue" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — blue variation" loading="lazy" decoding="async">
+                </figure>
+                <figure class="umbrella-warhol__item umbrella-warhol__item--coral" data-lightbox data-title="The Umbrella — coral" data-meta="Entropy Lab">
+                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — coral variation" loading="lazy" decoding="async">
+                </figure>
+              </div>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="The Lower World" hidden>
+            <div class="statement-panel statement-panel--split statement-panel--entropy-prose">
+              <div class="statement-panel__visual" aria-hidden="true">
+                <img src="assets/the-tower.webp" alt="" loading="lazy" decoding="async">
+              </div>
+              <section class="statement" aria-label="The Lower World">
+                <h3 class="statement__heading">The Lower World</h3>
+                <div class="statement__body">
+                  <p class="statement__text">
+                    I began at the top of a hill, looking down into a vast valley below. From there, I had a bird&rsquo;s-eye view of a winding road that led all the way to the bottom, where a river shimmered faintly in the distance.
+                  </p>
+                  <p class="statement__text">
+                    The valley opened first as a sun-worn desert. The earth was dry and pale, cracked by time. Juniper trees stood sparsely along the winding road, twisted, distorted, releasing a sharp, sacred scent into the air.
+                  </p>
+                  <p class="statement__text">
+                    As I descended, animals appeared along my path, deer, elk, bears. They moved through the landscape calmly, but none of them asked anything of me. None held my gaze.
+                  </p>
+                  <p class="statement__text">Then I saw him.</p>
+                  <p class="statement__text">
+                    A wolf with piercing blue eyes unnaturally bright, almost luminous. He stopped and looked directly at me, his gaze steady and knowing. Without words, he nudged me forward, signaling that I was meant to follow.
+                  </p>
+                  <p class="statement__text">
+                    He led me all the way down into the valley, to the river at its base. He bent his head and drank from the water. When I looked down, I saw our reflection rippling together on the surface.
+                  </p>
+                  <p class="statement__text">
+                    Across the river stood a dense, black forest. As I focused, I noticed eyes watching from within it. Millions of tiny red lights blinked back at me, like a dark Christmas tree alive with movement. I understood they were dangerous in nature, yet I felt no fear. They were far away. The river separated us. Instinctively, I knew they could not cross.
+                  </p>
+                  <p class="statement__text">The wolf turned to me and spoke.</p>
+                  <blockquote class="statement__quote">
+                    Those are your fears. Your demons, he said. This is the river of life and love. They cannot cross it. You are safe. Name your demons, said the wolf.
+                  </blockquote>
+                  <p class="statement__text">And I answered:</p>
+                  <ul class="statement__demons">
+                    <li>Fear of judgment.</li>
+                    <li>Self-doubt that coils inward.</li>
+                    <li>The voice that diminishes me before others can.</li>
+                    <li>I am not enough. I am too much.</li>
+                    <li>The belief that my brightness must be explained,</li>
+                    <li>that my presence needs justification,</li>
+                    <li>that I perform courage to conceal my shyness.</li>
+                  </ul>
+                  <p class="statement__text">Then the wolf said:</p>
+                  <blockquote class="statement__quote">
+                    Those creatures in the woods hiding their face, whisper comparison when you are most exposed and undermine your worth before anyone else can. They judge you, like the eyes of imagined others. You are deficient or excessive, not enough or too much, and with each accusatory glance they fracture you, split you into parts that perform, defend, and diminish themselves.<br><br>
+                    You do not need to fight your demons.<br><br>
+                    You need to stay in the river.
+                  </blockquote>
+                  <p class="statement__text">
+                    I lifted my eyes to the sky. High above, an eagle soared, her shadow cutting through the brightness of the sun.
+                  </p>
+                  <p class="statement__text">
+                    Then another figure appeared&mdash;a smaller white wolf, dark-eyed and quiet.
+                  </p>
+                  <p class="statement__text">
+                    The blue-eyed wolf looked at me once more.
+                  </p>
+                  <p class="statement__text">
+                    Follow her back home, he said. And go to sleep.
+                  </p>
+                </div>
+              </section>
+            </div>
+          </article>
+        </div>
+        <div class="entropy-lab-carousel__controls">
+          <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-prev aria-label="Previous experiment" disabled>&larr;</button>
+          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 06</p>
+          <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-next aria-label="Next experiment">&rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inspiration -->
+    <section class="inspiration-section" aria-labelledby="inspiration-title">
+      <div class="inspiration-section__video" aria-hidden="true">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="assets/landscape-loop.mp4" type="video/mp4">
+        </video>
+        <div class="inspiration-section__overlay"></div>
+      </div>
+      <div class="inspiration-section__content">
+        <div class="series-intro">
+          <h2 class="series-intro__title" id="inspiration-title">Inspiration</h2>
+          <p class="series-intro__desc">Selected photography</p>
+        </div>
+        <div class="inspiration-carousel" data-series-carousel tabindex="0" aria-label="Inspiration photographs">
+          <div class="inspiration-carousel__stage series-showcase__stage">
+            <div class="series-showcase__slides" data-carousel-slides>
+            <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Inspiration" role="tabpanel">
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/1.%20stream.webp" alt="Inspiration photograph — Stream" loading="eager" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Stream</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Railroad" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/2.railroad.webp" alt="Inspiration photograph — Railroad" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Railroad</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Against the Sky" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/3.against%20the%20sky.webp" alt="Inspiration photograph — Against the Sky" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Against the Sky</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Carrara" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/4.carrara.webp" alt="Inspiration photograph — Carrara" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Carrara</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="St. Michelle" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/st%20michelle.jpg" alt="Inspiration photograph — St. Michelle" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">St. Michelle</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anything Possible" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/5.%20anything%20possible.webp" alt="Inspiration photograph — Anything Possible" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Anything Possible</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Above the Clouds" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/6.%20above%20the%20clouds.webp" alt="Inspiration photograph — Above the Clouds" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Above the Clouds</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sisi" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/7%20sisi.webp" alt="Inspiration photograph — Sisi" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Sisi</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Melting" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/8%20melting.webp" alt="Inspiration photograph — Melting" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Melting</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Foam" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/9%20foam.webp" alt="Inspiration photograph — Foam" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Foam</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Red" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/10%20red.webp" alt="Inspiration photograph — Red" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Red</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Havasupai" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/11%20havasupai.webp" alt="Inspiration photograph — Havasupai" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Havasupai</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Sign" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/12%20a%20sign.webp" alt="Inspiration photograph — A Sign" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">A Sign</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Wheel of Life" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/wheel%20of%20life.jpg" alt="Inspiration photograph — Wheel of Life" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Wheel of Life</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Rainbow" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/13%20rainbow.webp" alt="Inspiration photograph — Rainbow" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Rainbow</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Eye on the Horizon" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/over-new-york.jpg" alt="Inspiration photograph — The Eye on the Horizon" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">The Eye on the Horizon</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sunset" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/14%20sunset.webp" alt="Inspiration photograph — Sunset" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">Sunset</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0488" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/15%20IMG_0488.webp" alt="Inspiration photograph — IMG 0488" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">IMG 0488</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0494" data-meta="Inspiration" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Inspiration/16%20IMG_0494.webp" alt="Inspiration photograph — IMG 0494" loading="lazy" decoding="async">
+              </figure>
+              <p class="inspiration-carousel__caption">IMG 0494</p>
+            </article>
+            </div>
+            <div class="series-showcase__controls">
+              <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-prev aria-label="Previous photograph" disabled>&larr;</button>
+              <p class="series-showcase__counter inspiration-carousel__counter" data-carousel-counter aria-live="polite">01 / 19</p>
+              <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-next aria-label="Next photograph">&rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Me -->
+    <section id="about" class="about-section" aria-labelledby="about-title">
+      <div class="about-section__inner">
+        <p class="about-section__label">About Me</p>
+        <h2 id="about-title" class="about-section__title">Giovanna Ferrari</h2>
+        <div class="about-section__grid">
+          <div class="about-section__visual">
+            <img src="assets/headshot2024.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
+          </div>
+          <div class="about-section__body">
+            <p>
+              Born and raised in a small town in northern Italy, Giovanna's artistic journey
+              began at a young age. She has always been drawn to creative expression through
+              drawing, painting, and acting. It was during the COVID-19 pandemic that her
+              relationship with art deepened and became more serious, when time and stillness
+              allowed her to fully transform and reconnect with her creative core.
+            </p>
+            <p>
+              Her painting style is a manifestation of her subconscious, where each brushstroke
+              emerges as an extension of her inner world. For her, art is akin to meditation,
+              flowing from the heart with an effortless grace that transcends conscious thought.
+              In this sacred process, there are no mistakes, only divine inspirations that guide
+              her hand.
+            </p>
+            <p>
+              Her works often depict scenes of natural phenomena &mdash; volcanic eruptions and
+              apocalyptic landscapes rendered with a striking intensity that captures both the
+              terror and the beauty of these events. Through her art, Giovanna seeks to highlight
+              the fragility of our planet and the importance of preserving the natural world for
+              future generations.
+            </p>
+            <div class="about-section__publications">
+              <h3 class="about-section__pub-title">Publications</h3>
+              <div class="about-section__pub-item">
+                <a href="https://giovannaferrariart.com/s/solaria_marzo-2025_a4.pdf" target="_blank" rel="noopener noreferrer">Solaria Art Magazine &mdash; March Issue</a>
+                <time datetime="2025-03">March 2025</time>
+              </div>
+              <div class="about-section__pub-item">
+                <a href="https://forgetmenotpress.net/wretched/a-bouquet-of-flowers-and-ash-and-as-the-earth-burns" target="_blank" rel="noopener noreferrer">Forget Me Not Press &mdash; Wretched, Issue 7</a>
+                <time datetime="2024-09">September 2024</time>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact-section" aria-labelledby="contact-title">
+      <div class="contact-section__inner">
+        <p class="contact-section__label">Contact</p>
+        <h2 id="contact-title" class="contact-section__title">Get in Touch</h2>
+        <p class="contact-section__desc">
+          Interested in a piece, a commission, or exhibiting together?
+          Send a message and I&rsquo;ll get back to you.
+        </p>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="contact-form__honeypot" aria-hidden="true">
+            <label for="contact-company">Company</label>
+            <input type="text" id="contact-company" name="_honey" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="contact-form__field">
+            <label for="contact-name">Name</label>
+            <input type="text" id="contact-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="contact-form__field">
+            <label for="contact-email">Email</label>
+            <input type="email" id="contact-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="contact-form__field">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" required></textarea>
+          </div>
+          <p id="contact-feedback" class="contact-form__feedback contact-form__feedback--error" role="alert" aria-live="assertive" hidden></p>
+          <button type="submit" class="contact-form__submit">Send message</button>
+        </form>
+        <div id="contact-success" class="contact-form__success" role="status" aria-live="polite" hidden>
+          <p class="contact-form__thanks">Thanks for getting in touch — I&rsquo;ll get back to you as soon as possible.</p>
+        </div>
+        <div class="contact-section__links">
+          <a class="contact-section__link" href="mailto:giovanna.ferrari.art@gmail.com">giovanna.ferrari.art@gmail.com</a>
+          <a class="contact-section__link" href="https://www.instagram.com/giovanna.ferrari.art/" target="_blank" rel="noopener noreferrer">@giovanna.ferrari.art</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox__close" aria-label="Close image viewer">&times;</button>
+    <img class="lightbox__image" src="" alt="">
+    <div class="lightbox__info">
+      <div class="lightbox__title"></div>
+      <div class="lightbox__meta"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>&copy; 2026 Giovanna Ferrari Art</span>
+    <a href="https://giovannaferraridesign.com/" target="_blank" rel="noopener noreferrer">Web design by Giovanna Ferrari Design</a>
+    <a href="#main">Back to top</a>
+  </footer>
+
+  <script>
+
+    const hero = document.querySelector('.hero');
+    window.addEventListener('load', () => {
+      hero?.classList.add('active');
+    });
+
+    const nav = document.querySelector('.nav');
+    const updateNavScroll = () => {
+      if (!nav) return;
+      nav.classList.toggle('is-scrolled', window.scrollY > 48);
+    };
+    window.addEventListener('scroll', updateNavScroll, { passive: true });
+    updateNavScroll();
+
+    const navToggle = document.querySelector('.nav__toggle');
+    const navMenu = document.querySelector('.nav__links');
+    const navBackdrop = document.querySelector('.nav__backdrop');
+
+    const setNavOpen = open => {
+      if (!navToggle || !navMenu || !navBackdrop) return;
+      navToggle.setAttribute('aria-expanded', open);
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      navMenu.classList.toggle('is-open', open);
+      navBackdrop.classList.toggle('is-visible', open);
+      navBackdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.classList.toggle('nav-open', open);
+    };
+
+    navToggle?.addEventListener('click', () => {
+      setNavOpen(navToggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    navBackdrop?.addEventListener('click', () => setNavOpen(false));
+
+    navMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setNavOpen(false));
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') setNavOpen(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) setNavOpen(false);
+    });
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.series-intro__title, .series-intro__line, .series-intro__desc, .about-section__title').forEach(el => revealObserver.observe(el));
+
+    document.querySelectorAll('[data-statement]').forEach(statementEl => {
+      const panel = statementEl.closest('.statement-panel');
+      const authorEl = panel?.querySelector('.statement__author');
+      const paragraphs = statementEl.querySelectorAll('.statement__text');
+
+      paragraphs.forEach(p => {
+        const html = p.innerHTML.trim();
+        if (/<br/i.test(html)) {
+          p.innerHTML = html
+            .split(/<br\s*\/?>/i)
+            .map(line => {
+              const words = line.replace(/<[^>]+>/g, '').trim().split(/\s+/).filter(Boolean);
+              return words.map(w => `<span class="s-word">${w}</span>`).join(' ');
+            })
+            .filter(Boolean)
+            .join('<br>');
+        } else {
+          const words = p.textContent.trim().split(/\s+/);
+          p.innerHTML = words.map(w => `<span class="s-word">${w}</span>`).join(' ');
+        }
+      });
+
+      const sWords = statementEl.querySelectorAll('.s-word');
+      const updateWords = () => {
+        const rect = statementEl.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+        const activeCount = Math.floor(progress * sWords.length * 1.4);
+        sWords.forEach((w, i) => w.classList.toggle('lit', i < activeCount));
+        if (activeCount >= sWords.length && authorEl) authorEl.classList.add('visible');
+      };
+      window.addEventListener('scroll', updateWords, { passive: true });
+      updateWords();
+    });
+
+
+    document.querySelectorAll('[data-series-carousel]').forEach(root => {
+      const navItems = root.querySelectorAll('[data-carousel-nav]');
+      const collectionNavItems = root.querySelectorAll('[data-art-collection-nav]');
+      const slides = root.querySelectorAll('[data-carousel-slide]');
+      const stage = root.querySelector('.series-showcase__stage');
+      const prevBtn = root.querySelector('[data-carousel-prev]');
+      const nextBtn = root.querySelector('[data-carousel-next]');
+      const counter = root.querySelector('[data-carousel-counter]');
+      const isArtGallery = root.id === 'art-gallery';
+      const backdropHost = isArtGallery ? root.closest('#art') : stage;
+      let backdrop = backdropHost?.querySelector('[data-carousel-backdrop]');
+      let backdropImg = backdrop?.querySelector('.series-showcase__backdrop-img');
+      let current = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      if (backdropHost && !backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'series-showcase__backdrop';
+        backdrop.setAttribute('data-carousel-backdrop', '');
+        backdrop.setAttribute('aria-hidden', 'true');
+        backdropImg = document.createElement('img');
+        backdropImg.className = 'series-showcase__backdrop-img';
+        backdropImg.alt = '';
+        backdropImg.decoding = 'async';
+        backdrop.appendChild(backdropImg);
+        backdropHost.insertBefore(backdrop, backdropHost.firstChild);
+      }
+
+      const isStackedLayout = () => window.matchMedia('(max-width: 1024px)').matches;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const scrollNavItemIntoView = (item, scrollEl) => {
+        if (!item || !scrollEl) return;
+        const itemRect = item.getBoundingClientRect();
+        const scrollRect = scrollEl.getBoundingClientRect();
+        const isHorizontal = scrollEl.scrollWidth > scrollEl.clientWidth + 2;
+
+        if (isHorizontal) {
+          if (itemRect.left < scrollRect.left) {
+            scrollEl.scrollLeft += itemRect.left - scrollRect.left;
+          } else if (itemRect.right > scrollRect.right) {
+            scrollEl.scrollLeft += itemRect.right - scrollRect.right;
+          }
+        } else if (itemRect.top < scrollRect.top) {
+          scrollEl.scrollTop += itemRect.top - scrollRect.top;
+        } else if (itemRect.bottom > scrollRect.bottom) {
+          scrollEl.scrollTop += itemRect.bottom - scrollRect.bottom;
+        }
+      };
+      const pad = n => String(n).padStart(2, '0');
+      const accordions = root.querySelectorAll('[data-nav-accordion]');
+      const navToggles = root.querySelectorAll('[data-nav-toggle]');
+      const hasAccordion = accordions.length > 0;
+
+      const applySeriesTheme = group => {
+        if (!group || root.id !== 'art-gallery') return;
+        const series = group.toLowerCase();
+        root.dataset.series = series;
+        root.closest('#art')?.setAttribute('data-series', series);
+      };
+
+      const openAccordion = groupName => {
+        if (!hasAccordion || !groupName) return;
+        accordions.forEach(acc => {
+          const isOpen = acc.dataset.navAccordion === groupName;
+          acc.classList.toggle('is-open', isOpen);
+          const toggle = acc.querySelector('[data-nav-toggle]');
+          if (toggle) toggle.setAttribute('aria-expanded', isOpen);
+        });
+        applySeriesTheme(groupName);
+      };
+
+      const firstSlideIndexForGroup = groupName =>
+        [...slides].findIndex(slide => slide.dataset.group === groupName);
+
+      const COLLECTION_LABELS = {
+        water: 'Water',
+        eruptions: 'Eruptions',
+        corals: 'Corals',
+        cracked: 'Cracked',
+      };
+
+      const getCollectionBounds = globalIndex => {
+        const group = slides[globalIndex]?.dataset.group;
+        if (!group) {
+          return { first: 0, last: slides.length - 1, local: globalIndex, count: slides.length };
+        }
+        const indices = [...slides]
+          .map((slide, i) => (slide.dataset.group === group ? i : -1))
+          .filter(i => i >= 0);
+        return {
+          first: indices[0],
+          last: indices[indices.length - 1],
+          local: indices.indexOf(globalIndex),
+          count: indices.length,
+          group,
+        };
+      };
+
+      const updateCollectionPills = groupName => {
+        if (!isArtGallery || !groupName) return;
+        const series = groupName.toLowerCase();
+        collectionNavItems.forEach(btn => {
+          const active = btn.dataset.collection === series;
+          btn.classList.toggle('is-active', active);
+          btn.setAttribute('aria-selected', active);
+        });
+      };
+
+      const AUTOPLAY_WITHIN_MS = 9000;
+      const AUTOPLAY_COLLECTION_MS = 10000;
+      const ART_CROSSFADE_MS = 3000;
+      let autoplayTimer = null;
+      let transitionTimer = null;
+      let isTransitioning = false;
+
+      const stopAutoplay = () => {
+        if (autoplayTimer) {
+          clearTimeout(autoplayTimer);
+          autoplayTimer = null;
+        }
+      };
+
+      const clearTransitionState = () => {
+        if (transitionTimer) {
+          clearTimeout(transitionTimer);
+          transitionTimer = null;
+        }
+        if (!isArtGallery) return;
+        slides.forEach(slide => {
+          slide.classList.remove('is-leaving', 'is-pre-enter');
+        });
+      };
+
+      const scheduleAutoplay = () => {
+        if (!isArtGallery || prefersReducedMotion) return;
+        stopAutoplay();
+        const next = current >= slides.length - 1 ? 0 : current + 1;
+        const isCollectionChange = slides[current]?.dataset.group !== slides[next]?.dataset.group;
+        const delay = isCollectionChange ? AUTOPLAY_COLLECTION_MS : AUTOPLAY_WITHIN_MS;
+        autoplayTimer = window.setTimeout(() => {
+          if (document.hidden || document.querySelector('.lightbox.open')) {
+            scheduleAutoplay();
+            return;
+          }
+          goTo(next);
+          scheduleAutoplay();
+        }, delay);
+      };
+
+      const startAutoplay = () => {
+        scheduleAutoplay();
+      };
+
+      const resetAutoplay = () => {
+        if (!isArtGallery || prefersReducedMotion) return;
+        scheduleAutoplay();
+      };
+
+      if (isArtGallery) {
+        slides.forEach(slide => slide.removeAttribute('hidden'));
+      }
+
+      const updateBackdrop = (index, { crossfade = false } = {}) => {
+        const img = slides[index]?.querySelector('img');
+        if (!backdropImg || !img) return;
+
+        const applyImage = () => {
+          const src = img.currentSrc || img.src;
+          if (!src || backdropImg.dataset.src === src) return;
+
+          if (crossfade && !prefersReducedMotion && backdropImg.dataset.src) {
+            backdropImg.style.opacity = '0';
+            void backdropImg.offsetWidth;
+            backdropImg.src = src;
+            backdropImg.dataset.src = src;
+            void backdropImg.offsetWidth;
+            backdropImg.style.opacity = '';
+            return;
+          }
+
+          backdropImg.src = src;
+          backdropImg.dataset.src = src;
+          backdropImg.style.opacity = '';
+        };
+
+        if (img.complete && img.naturalWidth > 0) {
+          applyImage();
+        } else {
+          img.addEventListener('load', applyImage, { once: true });
+        }
+      };
+
+      const applyGoToState = (nextIndex, { userInitiated = false } = {}) => {
+        const nextGroup = slides[nextIndex]?.dataset.group;
+
+        slides.forEach((slide, i) => {
+          slide.classList.remove('is-leaving', 'is-pre-enter');
+          slide.classList.toggle('is-active', i === nextIndex);
+          slide.setAttribute('aria-hidden', i !== nextIndex);
+        });
+
+        current = nextIndex;
+
+        navItems.forEach((item, i) => {
+          const active = i === current;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', active);
+        });
+
+        if (!isArtGallery) {
+          slides.forEach((slide, i) => {
+            slide.toggleAttribute('hidden', i !== current);
+          });
+        }
+
+        updateBackdrop(current);
+
+        if (nextGroup) {
+          if (isArtGallery) {
+            applySeriesTheme(nextGroup);
+            updateCollectionPills(nextGroup);
+          } else {
+            openAccordion(nextGroup);
+          }
+        }
+
+        if (prevBtn) prevBtn.disabled = current === 0;
+        if (nextBtn) nextBtn.disabled = current === slides.length - 1;
+        if (counter) counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+
+        const activeNav = navItems[current];
+        const navScroll = root.querySelector('.series-showcase__nav-scroll');
+        if (activeNav && navScroll) {
+          scrollNavItemIntoView(activeNav, navScroll);
+        }
+
+        if (userInitiated) resetAutoplay();
+      };
+
+      const updateGoToMetadata = (nextIndex, { userInitiated = false, crossfade = false } = {}) => {
+        const nextGroup = slides[nextIndex]?.dataset.group;
+
+        current = nextIndex;
+
+        navItems.forEach((item, i) => {
+          const active = i === current;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', active);
+        });
+
+        updateBackdrop(current, { crossfade });
+
+        if (nextGroup) {
+          applySeriesTheme(nextGroup);
+          updateCollectionPills(nextGroup);
+        }
+
+        if (prevBtn) prevBtn.disabled = current === 0;
+        if (nextBtn) nextBtn.disabled = current === slides.length - 1;
+        if (counter) counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+
+        const activeNav = navItems[current];
+        const navScroll = root.querySelector('.series-showcase__nav-scroll');
+        if (activeNav && navScroll) {
+          scrollNavItemIntoView(activeNav, navScroll);
+        }
+
+        if (userInitiated) resetAutoplay();
+      };
+
+      const finishCrossfade = outgoing => {
+        root.classList.remove('is-crossfading');
+        outgoing?.classList.remove('is-leaving');
+        slides.forEach((slide, i) => {
+          if (i !== current) slide.classList.remove('is-active');
+        });
+        slides.forEach(slide => {
+          slide.style.willChange = '';
+        });
+        isTransitioning = false;
+        if (transitionTimer) {
+          clearTimeout(transitionTimer);
+          transitionTimer = null;
+        }
+      };
+
+      const goTo = (index, { userInitiated = false } = {}) => {
+        const nextIndex = Math.max(0, Math.min(slides.length - 1, index));
+        if (nextIndex === current) return;
+
+        if (isArtGallery && !prefersReducedMotion) {
+          if (isTransitioning) return;
+          isTransitioning = true;
+          if (transitionTimer) {
+            clearTimeout(transitionTimer);
+            transitionTimer = null;
+          }
+
+          const outgoing = slides[current];
+          const incoming = slides[nextIndex];
+
+          incoming.classList.remove('is-leaving');
+          incoming.classList.add('is-active');
+          incoming.setAttribute('aria-hidden', 'false');
+          outgoing.classList.add('is-leaving');
+          outgoing.setAttribute('aria-hidden', 'true');
+          root.classList.add('is-crossfading');
+
+          updateGoToMetadata(nextIndex, { userInitiated, crossfade: true });
+
+          requestAnimationFrame(() => {
+            outgoing.classList.remove('is-active');
+          });
+
+          const onTransitionEnd = event => {
+            if (event.propertyName !== 'opacity') return;
+            if (event.target !== outgoing) return;
+            outgoing.removeEventListener('transitionend', onTransitionEnd);
+            finishCrossfade(outgoing);
+          };
+
+          outgoing.addEventListener('transitionend', onTransitionEnd);
+          transitionTimer = window.setTimeout(() => {
+            outgoing.removeEventListener('transitionend', onTransitionEnd);
+            if (isTransitioning && current === nextIndex) {
+              finishCrossfade(outgoing);
+            }
+          }, ART_CROSSFADE_MS + 120);
+
+          return;
+        }
+
+        clearTransitionState();
+        applyGoToState(nextIndex, { userInitiated });
+      };
+
+      navItems.forEach((btn, i) => btn.addEventListener('click', () => goTo(i, { userInitiated: true })));
+      navToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          const groupName = toggle.closest('[data-nav-accordion]')?.dataset.navAccordion;
+          if (!groupName) return;
+          const firstIdx = firstSlideIndexForGroup(groupName);
+          if (firstIdx >= 0) goTo(firstIdx, { userInitiated: true });
+          else openAccordion(groupName);
+        });
+      });
+      collectionNavItems.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const groupName = COLLECTION_LABELS[btn.dataset.collection];
+          if (!groupName) return;
+          const firstIdx = firstSlideIndexForGroup(groupName);
+          if (firstIdx >= 0) goTo(firstIdx, { userInitiated: true });
+        });
+      });
+      const stepCarousel = direction => {
+        goTo(current + direction, { userInitiated: true });
+      };
+      prevBtn?.addEventListener('click', () => stepCarousel(-1));
+      nextBtn?.addEventListener('click', () => stepCarousel(1));
+      root.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); stepCarousel(-1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); stepCarousel(1); }
+      });
+      if (stage) {
+        stage.addEventListener('touchstart', e => {
+          touchStartX = e.changedTouches[0].screenX;
+          touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        stage.addEventListener('touchend', e => {
+          const diffX = e.changedTouches[0].screenX - touchStartX;
+          const diffY = e.changedTouches[0].screenY - touchStartY;
+          if (Math.abs(diffX) < 48 || Math.abs(diffX) < Math.abs(diffY)) return;
+          if (diffX < 0) stepCarousel(1);
+          else stepCarousel(-1);
+        }, { passive: true });
+      }
+
+      if (isArtGallery && !prefersReducedMotion) {
+        root.addEventListener('mouseenter', stopAutoplay);
+        root.addEventListener('mouseleave', startAutoplay);
+        root.addEventListener('focusin', stopAutoplay);
+        root.addEventListener('focusout', e => {
+          if (!root.contains(e.relatedTarget)) startAutoplay();
+        });
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) stopAutoplay();
+          else startAutoplay();
+        });
+        const autoplayObserver = new IntersectionObserver(entries => {
+          if (entries[0]?.isIntersecting) startAutoplay();
+          else stopAutoplay();
+        }, { threshold: 0.2 });
+        autoplayObserver.observe(root);
+      }
+
+      if (isArtGallery && !prefersReducedMotion) {
+        slides.forEach((slide, i) => {
+          slide.classList.remove('is-active', 'is-leaving');
+          slide.setAttribute('aria-hidden', i !== 0);
+        });
+        current = 0;
+        updateBackdrop(0);
+        const firstGroup = slides[0]?.dataset.group;
+        if (firstGroup) {
+          applySeriesTheme(firstGroup);
+          updateCollectionPills(firstGroup);
+        }
+        if (prevBtn) prevBtn.disabled = true;
+        if (nextBtn) nextBtn.disabled = slides.length <= 1;
+        if (counter) counter.textContent = `${pad(1)} / ${pad(slides.length)}`;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            slides[0].classList.add('is-active');
+            slides[0].setAttribute('aria-hidden', 'false');
+          });
+        });
+      } else {
+        updateBackdrop(0);
+        goTo(0);
+      }
+
+      startAutoplay();
+    });
+
+
+    document.querySelectorAll('[data-entropy-carousel]').forEach(root => {
+      const navItems = root.querySelectorAll('[data-entropy-nav]');
+      const panels = root.querySelectorAll('[data-entropy-panel]');
+      const prevBtn = root.querySelector('[data-entropy-prev]');
+      const nextBtn = root.querySelector('[data-entropy-next]');
+      const counter = root.querySelector('[data-entropy-counter]');
+      let current = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      const pad = n => String(n).padStart(2, '0');
+
+      const goTo = index => {
+        current = Math.max(0, Math.min(panels.length - 1, index));
+
+        navItems.forEach((btn, i) => {
+          const active = i === current;
+          btn.classList.toggle('is-active', active);
+          btn.setAttribute('aria-selected', active);
+        });
+
+        panels.forEach((panel, i) => {
+          const active = i === current;
+          panel.classList.toggle('is-active', active);
+          panel.toggleAttribute('hidden', !active);
+        });
+
+        if (counter) counter.textContent = `${pad(current + 1)} / ${pad(panels.length)}`;
+        if (prevBtn) prevBtn.disabled = current === 0;
+        if (nextBtn) nextBtn.disabled = current === panels.length - 1;
+        if (panels[current]?.querySelector('.train-variants')) {
+          window.requestAnimationFrame(() => {
+            window.dispatchEvent(new Event('train-layout'));
+          });
+        }
+      };
+
+      navItems.forEach((btn, i) => btn.addEventListener('click', () => goTo(i)));
+      prevBtn?.addEventListener('click', () => goTo(current - 1));
+      nextBtn?.addEventListener('click', () => goTo(current + 1));
+
+      root.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+      });
+
+      root.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      root.addEventListener('touchend', e => {
+        const diffX = e.changedTouches[0].screenX - touchStartX;
+        const diffY = e.changedTouches[0].screenY - touchStartY;
+        if (Math.abs(diffX) < 48 || Math.abs(diffX) < Math.abs(diffY)) return;
+        if (diffX < 0) goTo(current + 1);
+        else goTo(current - 1);
+      }, { passive: true });
+
+      goTo(0);
+    });
+
+
+    const trainSection = document.querySelector('.train-variants');
+    const trainScrollTrack = document.querySelector('.train-variants__scroll-track');
+    const trainTrack = document.querySelector('.train-variants__track');
+    const trainItems = [...document.querySelectorAll('.train-variants__item[data-depth]')];
+    const trainMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const TRAIN_TAIL_DEPTH = 42;
+    const TRAIN_MAX_DEPTH = 43;
+    const TRAIN_HEAD_SCALE = (1 - TRAIN_TAIL_DEPTH * 0.0195) * 1.95;
+    let trainScrollIdleTimer = null;
+
+    document.querySelectorAll('.train-variants__item[data-depth]').forEach(item => {
+      item.style.setProperty('--depth', item.dataset.depth);
+    });
+
+    const getTrainItemScale = (item, depth) => {
+      if (item.classList.contains('train-variants__item--snake-head')) {
+        return TRAIN_HEAD_SCALE;
+      }
+      return 1 - depth * 0.0195;
+    };
+
+    const getTrainScrollProgress = () => {
+      if (!trainScrollTrack) return null;
+
+      const vh = window.innerHeight;
+      const rect = trainScrollTrack.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > vh) return null;
+
+      const range = Math.max(rect.height - vh * 0.35, 1);
+      return Math.max(0, Math.min(1, -rect.top / range));
+    };
+
+    const layoutTrainItems = () => {
+      if (!trainTrack || !trainItems.length) return;
+
+      const trackWidth = trainTrack.offsetWidth;
+      trainItems.forEach(item => {
+        const depth = Number(item.dataset.depth);
+        const scale = getTrainItemScale(item, depth);
+        const img = item.querySelector('img');
+        const frameWidth = img?.offsetWidth || img?.getBoundingClientRect().width || trackWidth * 0.28;
+
+        let x;
+        if (item.classList.contains('train-variants__item--snake-head')) {
+          x = Math.max(0, trackWidth - frameWidth * scale);
+        } else {
+          x = (depth / TRAIN_MAX_DEPTH) * Math.max(trackWidth - frameWidth * scale, 0);
+        }
+
+        item.dataset.baseX = String(x);
+        item.dataset.baseScale = String(scale);
+      });
+    };
+
+    const resetTrainStatic = () => {
+      trainItems.forEach(item => {
+        const depth = Number(item.dataset.depth);
+        const scale = Number(item.dataset.baseScale) || getTrainItemScale(item, depth);
+        const x = Number(item.dataset.baseX) || 0;
+        item.style.transform = `translate3d(${x}px, -50%, 0) scale(${scale})`;
+      });
+    };
+
+    const updateTrainSnake = () => {
+      if (trainMotionQuery.matches || !trainItems.length) return;
+
+      const progress = getTrainScrollProgress();
+      if (progress === null) {
+        resetTrainStatic();
+        return;
+      }
+
+      const phase = progress * Math.PI * 10;
+      const waveBoost = 0.55 + progress * 1.1;
+
+      trainItems.forEach(item => {
+        const depth = Number(item.dataset.depth);
+        const scale = Number(item.dataset.baseScale) || getTrainItemScale(item, depth);
+        const x = Number(item.dataset.baseX) || 0;
+        const wave = Math.sin(depth * 0.44 + phase);
+        const sway = Math.cos(depth * 0.33 + phase * 0.9);
+        const snakeY = wave * (36 + depth * 0.75) * waveBoost;
+        const snakeX = Math.sin(depth * 0.28 + phase * 1.05) * (10 + depth * 0.15) * waveBoost;
+        const snakeRot = sway * (5.5 + depth * 0.11) * waveBoost;
+
+        item.style.transform = `translate3d(${x + snakeX}px, calc(-50% + ${snakeY}px), 0) rotate(${snakeRot}deg) scale(${scale})`;
+      });
+    };
+
+    const onTrainScroll = () => {
+      if (trainMotionQuery.matches) return;
+
+      updateTrainSnake();
+
+      clearTimeout(trainScrollIdleTimer);
+      trainScrollIdleTimer = setTimeout(resetTrainStatic, 140);
+    };
+
+    if (trainSection && trainItems.length) {
+      layoutTrainItems();
+
+      trainTrack?.querySelectorAll('img').forEach(img => {
+        if (img.complete) return;
+        img.addEventListener('load', layoutTrainItems, { once: true });
+      });
+
+      window.addEventListener('scroll', onTrainScroll, { passive: true });
+      window.addEventListener('resize', () => {
+        layoutTrainItems();
+        resetTrainStatic();
+      }, { passive: true });
+      trainMotionQuery.addEventListener('change', () => {
+        clearTimeout(trainScrollIdleTimer);
+        if (trainMotionQuery.matches) {
+          resetTrainStatic();
+        } else {
+          layoutTrainItems();
+          resetTrainStatic();
+        }
+      });
+
+      window.addEventListener('load', layoutTrainItems, { once: true });
+      window.addEventListener('train-layout', () => {
+        layoutTrainItems();
+        resetTrainStatic();
+      });
+
+      const TRAIN_BODY_SRC = 'assets/train.webp';
+      const TRAIN_LAUGH_SRC = 'assets/laugh.JPG';
+      const trainScene = trainSection.querySelector('.train-variants__scene');
+      const trainVerseLines = [...trainSection.querySelectorAll('[data-verse-line]')];
+      const trainBodyImages = trainItems
+        .filter(item => !item.classList.contains('train-variants__item--snake-head'))
+        .map(item => item.querySelector('img'))
+        .filter(Boolean);
+
+      trainBodyImages.forEach(img => {
+        if (!img.dataset.trainFilter) {
+          const filterMatch = img.getAttribute('style')?.match(/filter:\s*([^;]+)/);
+          img.dataset.trainFilter = filterMatch ? filterMatch[1].trim() : '';
+        }
+      });
+
+      let trainLaughIdleTimer = null;
+      let trainLaughOn = false;
+      let verseRevealIndex = 0;
+      let verseProgressTimer = null;
+      const VERSE_REVEAL_GAP_MS = 900;
+
+      const resetTunnelVerse = () => {
+        clearInterval(verseProgressTimer);
+        verseProgressTimer = null;
+        verseRevealIndex = 0;
+        trainVerseLines.forEach(line => line.classList.remove('is-visible'));
+      };
+
+      const revealNextVerseLine = () => {
+        if (!trainVerseLines.length || verseRevealIndex >= trainVerseLines.length) {
+          clearInterval(verseProgressTimer);
+          verseProgressTimer = null;
+          return;
+        }
+        trainVerseLines[verseRevealIndex].classList.add('is-visible');
+        verseRevealIndex += 1;
+      };
+
+      const startVerseProgression = () => {
+        if (verseProgressTimer) return;
+        revealNextVerseLine();
+        verseProgressTimer = window.setInterval(revealNextVerseLine, VERSE_REVEAL_GAP_MS);
+      };
+
+      const setTrainLaughMode = on => {
+        if (trainLaughOn === on) return;
+        trainLaughOn = on;
+        trainSection.classList.toggle('is-tickling', on);
+        trainBodyImages.forEach(img => {
+          if (on) {
+            img.src = TRAIN_LAUGH_SRC;
+            img.style.filter = 'brightness(1.1) saturate(1.06) contrast(1.04)';
+          } else {
+            img.src = TRAIN_BODY_SRC;
+            img.style.filter = img.dataset.trainFilter;
+          }
+        });
+      };
+
+      const stopTickling = () => {
+        clearTimeout(trainLaughIdleTimer);
+        setTrainLaughMode(false);
+      };
+
+      const onTrainPointerMove = () => {
+        setTrainLaughMode(true);
+        startVerseProgression();
+        clearTimeout(trainLaughIdleTimer);
+        trainLaughIdleTimer = setTimeout(stopTickling, 400);
+      };
+
+      if (trainScene && trainBodyImages.length) {
+        trainScene.addEventListener('mousemove', onTrainPointerMove, { passive: true });
+        trainScene.addEventListener('touchmove', onTrainPointerMove, { passive: true });
+        trainScene.addEventListener('mouseleave', () => {
+          stopTickling();
+          resetTunnelVerse();
+        });
+        trainScene.addEventListener('touchend', () => {
+          stopTickling();
+          resetTunnelVerse();
+        }, { passive: true });
+      }
+    }
+
+    const lightbox = document.querySelector('.lightbox');
+    const lbImage = lightbox.querySelector('.lightbox__image');
+    const lbTitle = lightbox.querySelector('.lightbox__title');
+    const lbMeta = lightbox.querySelector('.lightbox__meta');
+    const lbClose = lightbox.querySelector('.lightbox__close');
+
+    document.querySelectorAll('[data-lightbox]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        const img = el.querySelector('img');
+        if (!img) return;
+        lbImage.src = img.src;
+        lbImage.alt = img.alt;
+        lbTitle.textContent = el.dataset.title || '';
+        lbMeta.textContent = el.dataset.meta || '';
+        lbMeta.hidden = !el.dataset.meta;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
+
+    const contactForm = document.getElementById('contact-form');
+    const contactFeedback = document.getElementById('contact-feedback');
+    const contactSuccess = document.getElementById('contact-success');
+    const contactSubmitBtn = contactForm?.querySelector('.contact-form__submit');
+    const CONTACT_FORM_ENDPOINT = 'https://formsubmit.co/ajax/giovanna.ferrari.art@gmail.com';
+    const CONTACT_ERROR_MESSAGE = 'Your message could not be sent. Please try again or email giovanna.ferrari.art@gmail.com directly.';
+
+    const resetSubmitButton = () => {
+      if (!contactSubmitBtn) return;
+      contactSubmitBtn.disabled = false;
+      contactSubmitBtn.textContent = 'Send message';
+    };
+
+    const clearFormFeedback = () => {
+      if (!contactFeedback) return;
+      contactFeedback.textContent = '';
+      contactFeedback.hidden = true;
+    };
+
+    const showFormError = message => {
+      if (!contactFeedback) return;
+      contactFeedback.textContent = message;
+      contactFeedback.hidden = false;
+      contactFeedback.focus?.();
+    };
+
+    const showFormSuccess = () => {
+      if (contactSuccess) {
+        contactSuccess.hidden = false;
+      }
+      if (contactForm) {
+        contactForm.hidden = true;
+      }
+      contactSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    contactForm?.addEventListener('submit', async e => {
+      e.preventDefault();
+      clearFormFeedback();
+
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(contactForm);
+      const name = formData.get('name')?.toString().trim() || 'Visitor';
+      const email = formData.get('email')?.toString().trim();
+
+      if (!email) {
+        showFormError('Please enter a valid email address.');
+        return;
+      }
+
+      formData.set('_subject', `Art inquiry from ${name}`);
+      formData.set('_replyto', email);
+      formData.set('_captcha', 'false');
+      formData.set('_template', 'table');
+
+      if (contactSubmitBtn) {
+        contactSubmitBtn.disabled = true;
+        contactSubmitBtn.textContent = 'Sending…';
+      }
+
+      try {
+        const response = await fetch(CONTACT_FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: formData,
+        });
+
+        let data = {};
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+
+        const message = String(data.message || '').toLowerCase();
+        const isSuccess = response.ok && data.success !== false && !message.includes('error');
+        if (!isSuccess) {
+          throw new Error(data.message || `Request failed (${response.status})`);
+        }
+
+        showFormSuccess();
+      } catch (err) {
+        const detail = err instanceof Error && err.message && !err.message.startsWith('Request failed')
+          ? ` ${err.message}`
+          : '';
+        showFormError(`${CONTACT_ERROR_MESSAGE}${detail}`);
+        resetSubmitButton();
+      }
+    });
+  
+  </script>
+</body>
+</html>
