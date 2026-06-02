@@ -637,12 +637,11 @@
 
     .train-variants__scroll-track {
       position: relative;
-      height: 240vh;
+      height: auto;
     }
 
     .train-variants__scene {
-      position: sticky;
-      top: clamp(5rem, 14vh, 9rem);
+      position: relative;
       width: 75vw;
       max-width: 75vw;
       margin: 0 auto;
@@ -680,26 +679,37 @@
     }
 
     .train-variants__caption {
+      --head-frame: clamp(220px, 40vw, 460px);
       position: absolute;
-      inset: 0;
-      z-index: 55;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: clamp(0.5rem, 2vh, 1.25rem) 1rem 0;
+      left: 50%;
+      top: calc(50% + (var(--head-frame) * 0.52));
+      z-index: 56;
+      width: auto;
+      max-width: 8.5rem;
+      display: block;
+      padding: 0.5rem 0 0;
       pointer-events: none;
       font-family: var(--serif);
-      font-size: clamp(1.25rem, 3.2vw, 1.75rem);
+      font-size: clamp(0.9375rem, 2vw, 1.0625rem);
       font-weight: 400;
       font-style: italic;
-      letter-spacing: 0.04em;
-      line-height: 1.25;
+      letter-spacing: 0.03em;
+      line-height: 1.4;
       text-transform: lowercase;
       text-align: center;
+      transform: translateX(-50%);
       color: var(--text);
       text-shadow:
         0 2px 20px rgba(10, 10, 10, 0.9),
         0 0 48px rgba(10, 10, 10, 0.65);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s var(--ease-smooth), visibility 0.4s var(--ease-smooth);
+    }
+
+    .train-variants.is-snake-moving .train-variants__caption {
+      opacity: 0;
+      visibility: hidden;
     }
 
     .train-variants__verse-line {
@@ -743,7 +753,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      z-index: 46;
+      z-index: 1;
       pointer-events: none;
       background:
         radial-gradient(
@@ -756,6 +766,7 @@
 
     .train-variants__item {
       --depth: 0;
+      --ring-hue: 0;
       --frame: clamp(180px, 30vw, 360px);
       --train-hue: 0deg;
       --train-bright: 1.08;
@@ -771,24 +782,33 @@
       aspect-ratio: 1;
       border-radius: 50%;
       overflow: hidden;
-      background: #050505;
+      background: transparent;
       box-shadow:
-        inset 0 0 calc(18px + var(--depth) * 0.4px) rgba(0, 0, 0, 0.72),
-        0 0 0 1px rgba(245, 240, 235, 0.14),
-        0 0 calc(20px - var(--depth) * 0.35px) rgba(0, 0, 0, 0.45);
+        0 0 0 clamp(3px, 0.38vw, 6px) hsl(calc(var(--ring-hue) * 1deg), 88%, 62%),
+        0 8px 22px rgba(0, 0, 0, 0.2);
+      transform: translate3d(0, -50%, 0) scale(var(--scale));
+      transform-origin: left center;
+      pointer-events: auto;
+      cursor: grab;
+      will-change: transform;
+    }
+
+    .train-variants:not(.is-layout-ready) .train-variants__item {
       transform:
         translate(
           calc((var(--depth) / 43) * (75vw - var(--frame) * var(--scale))),
           -50%
         )
         scale(var(--scale));
-      transform-origin: left center;
-      pointer-events: none;
-      will-change: transform;
     }
 
-    .train-variants__item[data-depth="0"] {
-      z-index: 45;
+    .train-variants__item:active {
+      cursor: grabbing;
+    }
+
+    .train-variants__item[data-depth="0"],
+    .train-variants__item--lead {
+      z-index: 48;
     }
 
     .train-variants__item img {
@@ -797,16 +817,32 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      object-position: center calc(16% + var(--depth) * 0.18%);
+      object-position: center 18%;
     }
 
-    .train-variants__item:not([data-depth="0"]):not(.train-variants__item--snake-head) img {
-      transform: scaleX(-1);
+    .train-variants__item:not(.train-variants__item--snake-head) img {
+      opacity: 0.42;
+      transform: scaleX(-1) scale(3.35);
       transform-origin: center center;
     }
 
     .train-variants__item[data-depth="0"] img {
-      transform: none;
+      opacity: 0.42;
+      transform: scale(3.35);
+      transform-origin: center center;
+    }
+
+    .train-variants.is-tickling .train-variants__item:not(.train-variants__item--snake-head) img {
+      opacity: 1;
+      object-position: center center;
+      transform: scaleX(-1) scale(1.08);
+      transform-origin: center center;
+    }
+
+    .train-variants.is-tickling .train-variants__item[data-depth="0"] img,
+    .train-variants.is-tickling .train-variants__item--lead img {
+      transform: scale(1.08);
+      transform-origin: center center;
     }
 
     .train-variants__item--snake-head {
@@ -855,12 +891,70 @@
 
     /* ---------- Entropy Lab ---------- */
     .entropy-lab-section {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
       border-top: 1px solid rgba(245, 240, 235, 0.06);
-      background: #0a0a0a;
+      background: #07070b;
     }
 
-    .entropy-lab-section .series-intro {
-      padding: 8rem 3rem 3rem;
+    .entropy-lab-section__backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .entropy-lab-section__lights {
+      position: absolute;
+      inset: -38% -28%;
+      background:
+        radial-gradient(circle at 16% 24%, rgba(255, 88, 168, 0.58) 0%, transparent 38%),
+        radial-gradient(circle at 74% 16%, rgba(72, 156, 255, 0.52) 0%, transparent 36%),
+        radial-gradient(circle at 84% 58%, rgba(255, 128, 56, 0.48) 0%, transparent 34%),
+        radial-gradient(circle at 44% 74%, rgba(108, 255, 188, 0.42) 0%, transparent 40%),
+        radial-gradient(circle at 10% 76%, rgba(186, 92, 255, 0.46) 0%, transparent 35%),
+        radial-gradient(circle at 56% 40%, rgba(255, 216, 88, 0.38) 0%, transparent 32%),
+        radial-gradient(circle at 32% 10%, rgba(56, 220, 255, 0.4) 0%, transparent 30%),
+        radial-gradient(circle at 62% 88%, rgba(255, 96, 128, 0.34) 0%, transparent 36%);
+      filter: blur(78px) saturate(1.4);
+      opacity: 0.72;
+      transform: translate3d(0, 0, 0);
+      animation: entropy-lab-lights-drift 28s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+
+    .entropy-lab-section__veil {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          ellipse 88% 78% at 50% 44%,
+          rgba(7, 7, 11, 0.08) 0%,
+          rgba(7, 7, 11, 0.58) 68%,
+          rgba(5, 5, 9, 0.9) 100%
+        ),
+        linear-gradient(
+          180deg,
+          rgba(7, 7, 11, 0.42) 0%,
+          rgba(7, 7, 11, 0.18) 42%,
+          rgba(7, 7, 11, 0.52) 100%
+        );
+    }
+
+    @keyframes entropy-lab-lights-drift {
+      0% {
+        transform: translate3d(-2%, 1%, 0) scale(1);
+      }
+      100% {
+        transform: translate3d(3%, -2%, 0) scale(1.08);
+      }
+    }
+
+    .entropy-lab-section > :not(.entropy-lab-section__backdrop) {
+      position: relative;
+      z-index: 1;
     }
 
     .entropy-lab-section .statement-panel--split {
@@ -1015,24 +1109,32 @@
       margin: 0 auto 1.25rem;
     }
 
-    .entropy-lab-section .statement-panel--energy-doodles {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-content: center;
+    .entropy-lab-section .statement-panel--energy-doodles,
+    .entropy-lab-section .statement-panel--digital-art {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      justify-items: center;
       align-items: center;
-      gap: clamp(1rem, 2.5vw, 1.75rem);
-      width: 100%;
+      gap: clamp(1rem, 2vw, 1.75rem);
+      width: min(1120px, 96vw);
+      max-width: min(1120px, 96vw);
       margin: 0 auto;
-      min-height: min(64vh, 680px);
+      min-height: auto;
       padding: 0 0 2rem;
       box-sizing: border-box;
     }
 
-    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual {
-      flex: 0 1 auto;
-      width: min(22vw, 200px);
-      height: min(24vh, 210px);
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual:nth-child(9):last-child {
+      grid-column: 2 / span 2;
+    }
+
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual,
+    .entropy-lab-section .statement-panel--digital-art .statement-panel__visual {
+      flex: none;
+      width: 100%;
+      max-width: none;
+      height: auto;
+      aspect-ratio: 1;
       padding: 0;
       margin: 0;
       background: rgba(245, 240, 235, 0.03);
@@ -1041,11 +1143,13 @@
       cursor: zoom-in;
     }
 
-    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual::after {
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual::after,
+    .entropy-lab-section .statement-panel--digital-art .statement-panel__visual::after {
       display: none;
     }
 
-    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual > img {
+    .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual > img,
+    .entropy-lab-section .statement-panel--digital-art .statement-panel__visual > img {
       display: block;
       width: 100%;
       height: 100%;
@@ -1055,6 +1159,23 @@
     }
 
     .entropy-lab-carousel__panel:has(.entropy-panel--energy).is-active {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .entropy-lab-section .entropy-panel--digital-art {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: min(1200px, 96vw);
+      margin: 0 auto;
+      padding: 1.25rem 1.5rem 0;
+      box-sizing: border-box;
+    }
+
+    .entropy-lab-carousel__panel:has(.entropy-panel--digital-art).is-active {
       display: flex;
       justify-content: center;
       width: 100%;
@@ -1070,7 +1191,6 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.75rem 1.25rem;
-      padding: 0 2rem 2.5rem;
     }
 
     .entropy-lab-carousel__nav-item {
@@ -1126,7 +1246,7 @@
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
-      padding: 2.5rem 2rem 0;
+      padding: 3.5rem 2rem 0;
     }
 
     .entropy-lab-carousel__arrow {
@@ -1148,8 +1268,46 @@
     }
 
     .entropy-lab-section .train-variants {
-      padding: 0 0 clamp(2rem, 6vh, 4rem);
+      padding: clamp(1.5rem, 4vh, 2.5rem) 0 clamp(2rem, 6vh, 4rem);
       background-color: transparent;
+      overflow: visible;
+    }
+
+    .entropy-lab-carousel__panel:has(.train-variants).is-active {
+      display: block;
+      width: 100%;
+      overflow: visible;
+    }
+
+    .entropy-lab-section .train-variants__scene {
+      background: transparent;
+      overflow: visible;
+      min-height: 0;
+      isolation: auto;
+    }
+
+    .entropy-lab-section .train-variants__scene::after,
+    .entropy-lab-section .train-variants__track::after {
+      display: none;
+    }
+
+    .entropy-lab-section .train-variants__track {
+      margin: 0 auto;
+      height: clamp(200px, 36vw, 380px);
+    }
+
+    .entropy-lab-section .train-variants__item:not(.train-variants__item--snake-head) {
+      background: transparent;
+      box-shadow:
+        0 0 0 clamp(3px, 0.38vw, 6px) hsl(calc(var(--ring-hue) * 1deg), 90%, 64%),
+        0 8px 22px rgba(0, 0, 0, 0.16);
+    }
+
+    .entropy-lab-section .train-variants__item--snake-head {
+      box-shadow:
+        0 0 0 2px rgba(245, 240, 235, 0.55),
+        0 0 48px rgba(245, 240, 235, 0.22),
+        0 0 80px rgba(245, 240, 235, 0.1);
     }
 
     /* ---------- Series Divider ---------- */
@@ -1225,11 +1383,32 @@
       transform: translateY(0);
     }
 
+    /* Shared title → subtitle → pills rhythm (Art + Entropy Lab) */
+    #art > .series-intro,
+    .entropy-lab-section .series-intro {
+      padding: 8rem 3rem 0;
+      gap: 0.875rem;
+      min-height: auto;
+      justify-content: flex-start;
+    }
+
+    #art > .series-intro .series-intro__desc,
+    .entropy-lab-section .series-intro__desc {
+      margin-top: 0;
+    }
+
+    .art-gallery-carousel__nav,
+    .entropy-lab-carousel__nav {
+      margin-top: 0;
+      padding: 1.25rem 2rem 3.5rem;
+    }
+
     /* ---------- Inspiration video section ---------- */
     .inspiration-section {
       position: relative;
       overflow: hidden;
       background: #0a0a0a;
+      border-top: 1px solid rgba(245, 240, 235, 0.06);
     }
 
     .inspiration-section .series-intro {
@@ -1491,6 +1670,10 @@
     #art {
       position: relative;
       overflow: hidden;
+      overflow-anchor: none;
+      --art-section-padding-y: 5rem;
+      --art-section-padding-bottom: calc(var(--art-section-padding-y) + 40px);
+      --art-gallery-footer: calc(1.75rem + 3.25rem + 0.25rem + var(--art-section-padding-bottom));
       --art-bg-glow: radial-gradient(ellipse at 42% 38%, rgba(40, 156, 176, 0.18) 0%, transparent 62%);
       --art-bg-base: linear-gradient(145deg, #0e1a20 0%, #0c161c 45%, #0a1218 100%);
       background: var(--art-bg-glow), var(--art-bg-base);
@@ -1518,12 +1701,9 @@
       flex-shrink: 0;
       width: 100%;
       box-sizing: border-box;
-      min-height: min(26vh, 280px);
-      padding: 5rem 3rem 2.25rem;
       background: transparent;
       border-top: 1px solid rgba(56, 168, 188, 0.16);
       border-bottom: none;
-      justify-content: center;
       transition: border-color 0.55s var(--ease);
     }
 
@@ -1580,7 +1760,6 @@
 
     #art > .series-intro__desc {
       max-width: 36rem;
-      margin-top: 1.25rem;
     }
 
     #art #art-gallery.art-gallery-carousel.series-showcase {
@@ -1598,7 +1777,6 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.75rem 1.25rem;
-      padding: 0 2rem 2rem;
       position: relative;
       z-index: 3;
     }
@@ -1650,9 +1828,15 @@
 
     #art #art-gallery .art-gallery-carousel__stage,
     #art #art-gallery .series-showcase__stage {
+      --art-slide-height: min(calc(100dvh - 17rem), 820px);
       margin-top: 0;
       padding: 1rem 0.5rem 0;
-      min-height: min(92vh, 980px);
+      min-height: calc(var(--art-slide-height) + var(--art-gallery-footer));
+      height: calc(var(--art-slide-height) + var(--art-gallery-footer));
+      justify-content: flex-start;
+      overflow: visible;
+      overflow-anchor: none;
+      contain: layout style;
       background: transparent;
     }
 
@@ -1793,11 +1977,14 @@
     }
 
     #art-gallery .series-showcase__slides {
-      flex: 1;
-      min-height: 0;
+      flex: 0 0 auto;
       width: min(99vw, 1380px);
-      height: min(86vh, 960px);
+      height: var(--art-slide-height, min(calc(100dvh - 17rem), 820px));
+      min-height: var(--art-slide-height, min(calc(100dvh - 17rem), 820px));
+      max-height: var(--art-slide-height, min(calc(100dvh - 17rem), 820px));
       margin: 0 auto;
+      overflow: hidden;
+      contain: strict;
     }
 
     .art-gallery-carousel__caption {
@@ -1813,17 +2000,51 @@
       z-index: 2;
     }
 
-    .art-gallery-carousel .series-showcase__controls {
-      position: relative;
-      z-index: 2;
+    #art-gallery .series-showcase__slide .art-gallery-carousel__caption {
+      display: none;
+    }
+
+    .art-gallery-carousel__caption--controls {
+      margin: 0;
+      grid-column: 2;
+      width: 100%;
+      min-width: 0;
+      min-height: 2.75em;
+      padding: 0;
+      line-height: 1.35;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1.5rem;
-      width: 100%;
-      max-width: min(98vw, 1160px);
+      text-align: center;
+    }
+
+    .art-gallery-carousel .series-showcase__controls {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) 52px;
+      align-items: center;
+      justify-items: center;
+      column-gap: 0.5rem;
+      width: min(92vw, 36rem);
+      min-height: 3.25rem;
       margin: 1.75rem auto 0;
-      padding-bottom: 4rem;
+      padding: 0.25rem 0 var(--art-section-padding-bottom);
+      flex-shrink: 0;
+      align-self: center;
+      overflow-anchor: none;
+    }
+
+    .art-gallery-carousel .series-showcase__arrow[data-carousel-prev] {
+      grid-column: 1;
+    }
+
+    .art-gallery-carousel .series-showcase__arrow[data-carousel-next] {
+      grid-column: 3;
+    }
+
+    #art-gallery {
+      overflow-anchor: none;
     }
 
     .series-showcase__sidebar {
@@ -2098,31 +2319,34 @@
     }
 
     #art-gallery .series-showcase__figure {
-      flex: 1;
+      position: relative;
+      flex: 1 1 auto;
       width: 100%;
+      height: 100%;
       min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin: 0;
     }
 
     #art-gallery .series-showcase__figure img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       display: block;
       width: auto;
       height: auto;
       max-width: 100%;
-      max-height: min(82vh, 900px);
-      max-height: min(82dvh, 900px);
+      max-height: 100%;
+      object-fit: contain;
     }
 
     #art > .series-showcase__backdrop .series-showcase__backdrop-img {
-      max-width: min(108vw, 1540px);
-      max-height: min(112vh, 1240px);
+      max-width: min(112vw, 1620px);
+      max-height: min(116vh, 1300px);
       object-fit: contain;
       opacity: var(--backdrop-opacity, 0.42);
       filter: brightness(0.62) blur(14px);
-      transform: translateY(8%) scale(1.12);
+      transform: translateY(8%) scale(1.18);
       -webkit-mask-image: radial-gradient(
         ellipse 56% 72% at 50% 52%,
         #000 0%,
@@ -2151,8 +2375,13 @@
         transition: none;
       }
 
+      .entropy-lab-section__lights {
+        animation: none;
+        will-change: auto;
+      }
+
       .train-variants__scroll-track { height: auto; }
-      .train-variants__item {
+      .train-variants:not(.is-layout-ready) .train-variants__item {
         will-change: auto;
         transform:
           translate(
@@ -2299,12 +2528,45 @@
     /* ---------- Contact ---------- */
     .contact-section {
       position: relative;
+      overflow: hidden;
       border-top: 1px solid rgba(245, 240, 235, 0.06);
       padding: 8rem 3rem 10rem;
       background: #000;
     }
 
+    .contact-section__backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .contact-section__backdrop img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      filter: blur(18px) brightness(0.58) saturate(1.12);
+      transform: scale(1.1);
+    }
+
+    .contact-section__backdrop::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.52) 0%,
+          rgba(0, 0, 0, 0.38) 45%,
+          rgba(0, 0, 0, 0.58) 100%
+        );
+    }
+
     .contact-section__inner {
+      position: relative;
+      z-index: 1;
       max-width: 640px;
       margin: 0 auto;
       text-align: center;
@@ -2523,32 +2785,48 @@
         scrollbar-gutter: stable;
       }
 
-      .art-gallery-carousel__nav {
-        padding: 0 1rem 1.5rem;
+      .art-gallery-carousel__nav,
+      .entropy-lab-carousel__nav {
+        padding: 1rem 1.25rem 2.75rem;
+      }
+
+      #art > .series-intro,
+      .entropy-lab-section .series-intro {
+        padding: 6rem 1.5rem 0;
+        gap: 0.75rem;
+        min-height: auto;
       }
 
       #art-gallery .series-showcase__slides {
-        height: min(72vh, 720px);
+        --art-slide-height: min(calc(100dvh - 15rem), 640px);
       }
 
-      #art-gallery .series-showcase__figure img {
-        max-height: min(68vh, 640px);
-        max-height: min(68dvh, 640px);
-      }
-
-      #art > .series-showcase__backdrop .series-showcase__backdrop-img {
-        max-width: min(108vw, 1320px);
-        max-height: min(102vh, 900px);
-        transform: translateY(6%) scale(1.1);
+      #art {
+        --art-section-padding-y: 4.5rem;
+        --art-section-padding-bottom: calc(var(--art-section-padding-y) + 40px);
+        --art-gallery-footer: calc(1.25rem + 3.25rem + 0.25rem + var(--art-section-padding-bottom));
       }
 
       #art #art-gallery .art-gallery-carousel__stage {
-        min-height: min(84vh, 820px);
+        --art-slide-height: min(calc(100dvh - 15rem), 640px);
+        min-height: calc(var(--art-slide-height) + var(--art-gallery-footer));
+        height: calc(var(--art-slide-height) + var(--art-gallery-footer));
         padding: 0.75rem 0.25rem 0;
       }
 
       #art-gallery .series-showcase__controls {
-        padding-bottom: 3rem;
+        margin-top: 1.25rem;
+        width: min(94vw, 22rem);
+      }
+
+      .art-gallery-carousel__caption--controls {
+        font-size: clamp(0.9375rem, 3.5vw, 1.125rem);
+      }
+
+      #art > .series-showcase__backdrop .series-showcase__backdrop-img {
+        max-width: min(112vw, 1380px);
+        max-height: min(106vh, 960px);
+        transform: translateY(6%) scale(1.14);
       }
 
       .series-showcase__nav {
@@ -2644,16 +2922,11 @@
       }
       .series-intro { padding: 9rem 1.5rem 7rem; }
       #art > .series-intro {
-        min-height: min(22vh, 220px);
-        padding: 4.5rem 1.5rem 2rem;
+        min-height: auto;
       }
       .inspiration-section .series-intro { padding-top: 10rem; }
       .train-variants {
-        background-size: 465px 27px;
-      }
-
-      .train-variants__scroll-track {
-        height: 200vh;
+        padding-top: 1.25rem;
       }
 
       .train-variants__scene {
@@ -2663,8 +2936,9 @@
       }
 
       .train-variants__caption {
-        font-size: clamp(1.125rem, 4.5vw, 1.5rem);
-        padding-top: 0.5rem;
+        font-size: clamp(0.875rem, 3.4vw, 1rem);
+        max-width: 7.75rem;
+        padding-top: 0.35rem;
       }
 
       .train-variants__verse-line {
@@ -2689,15 +2963,40 @@
         max-height: min(44vh, 360px);
       }
 
+      .entropy-lab-section .train-variants__scene {
+        min-height: 0;
+        overflow: visible;
+      }
+
+      .entropy-lab-section .train-variants__track {
+        height: clamp(180px, 44vw, 320px);
+      }
+
       .statement-panel--entropy-prose .statement {
         max-height: none;
         overflow: visible;
       }
 
-      .entropy-lab-section .series-intro { padding: 6rem 1.5rem 2rem; }
-      .entropy-lab-carousel__nav { padding: 0 1.25rem 2rem; gap: 0.625rem; }
+      .entropy-lab-section__lights {
+        filter: blur(56px) saturate(1.25);
+        opacity: 0.68;
+        animation: none;
+      }
+
       .entropy-lab-carousel__nav-item { font-size: 0.6875rem; padding: 0.55rem 1rem; }
-      .entropy-lab-carousel__controls { padding: 2rem 1.25rem 0; }
+      .entropy-lab-carousel__controls { padding: 2.75rem 1.25rem 0; }
+
+      .entropy-lab-section .statement-panel--energy-doodles,
+      .entropy-lab-section .statement-panel--digital-art {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(96vw, 640px);
+        max-width: min(96vw, 640px);
+      }
+
+      .entropy-lab-section .statement-panel--energy-doodles .statement-panel__visual:nth-child(9):last-child {
+        grid-column: auto;
+      }
+
       .contact-section {
         padding: 6rem 1.5rem 8rem;
       }
@@ -3029,7 +3328,7 @@
           </div>
           <div class="series-showcase__controls art-gallery-carousel__controls">
             <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-prev aria-label="Previous artwork" disabled>&larr;</button>
-            <p class="series-showcase__counter art-gallery-carousel__counter" data-carousel-counter aria-live="polite">01 / 27</p>
+            <p class="art-gallery-carousel__caption art-gallery-carousel__caption--controls" data-carousel-caption>Solitary</p>
             <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-next aria-label="Next artwork">&rarr;</button>
           </div>
         </div>
@@ -3038,6 +3337,10 @@
 
     <!-- Entropy Lab -->
     <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
+      <div class="entropy-lab-section__backdrop" aria-hidden="true">
+        <div class="entropy-lab-section__lights"></div>
+        <div class="entropy-lab-section__veil"></div>
+      </div>
       <div class="series-intro">
         <h2 class="series-intro__title" id="entropy-lab-title">Entropy Lab</h2>
         <p class="series-intro__desc">random creative thoughts</p>
@@ -3046,168 +3349,163 @@
       <div class="entropy-lab-carousel" data-entropy-carousel tabindex="0" aria-label="Entropy Lab experiments">
         <nav class="entropy-lab-carousel__nav" aria-label="Entropy Lab sections">
           <button type="button" class="entropy-lab-carousel__nav-item is-active" data-entropy-nav aria-selected="true">the tunnel</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">energy</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">As above, so below</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">the non suicidal man</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">The Umbrella</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">the lower world</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">energy doodles</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">digital art</button>
         </nav>
 
         <div class="entropy-lab-carousel__viewport">
           <article class="entropy-lab-carousel__panel is-active" data-entropy-panel role="tabpanel" aria-label="The tunnel">
             <div class="train-variants" id="the-tunnel" aria-label="The tunnel">
-<div class="train-variants__scroll-track">
-        <div class="train-variants__scene">
-          <p class="train-variants__caption">move your mouse and tickle me</p>
-          <div class="train-variants__track">
+              <div class="train-variants__scene">
+                <div class="train-variants__track">
+                <p class="train-variants__caption">move your<br>mouse and<br>tickle me</p>
             <figure class="train-variants__item train-variants__item--lead" data-depth="0">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="eager" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(0.0deg) saturate(5.2) contrast(1.28) brightness(0.98);">
+              <img src="assets/train.webp" alt="Abstract train" loading="eager" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="1">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(8.4deg) saturate(5.55) contrast(1.34) brightness(0.97);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="2">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(16.7deg) saturate(5.9) contrast(1.4) brightness(0.96);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="3">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(25.1deg) saturate(6.25) contrast(1.46) brightness(0.95);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="4">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(33.5deg) saturate(6.6) contrast(1.52) brightness(0.94);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="5">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(41.9deg) saturate(6.95) contrast(1.28) brightness(0.93);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="6">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(50.2deg) saturate(7.3) contrast(1.34) brightness(0.93);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="7">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(58.6deg) saturate(5.2) contrast(1.4) brightness(0.92);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="8">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(67.0deg) saturate(5.55) contrast(1.46) brightness(0.91);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="9">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(75.3deg) saturate(5.9) contrast(1.52) brightness(0.9);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="10">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(83.7deg) saturate(6.25) contrast(1.28) brightness(0.89);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="11">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(92.1deg) saturate(6.6) contrast(1.34) brightness(0.88);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="12">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(100.5deg) saturate(6.95) contrast(1.4) brightness(0.87);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="13">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(108.8deg) saturate(7.3) contrast(1.46) brightness(0.86);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="14">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(117.2deg) saturate(5.2) contrast(1.52) brightness(0.85);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="15">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(125.6deg) saturate(5.55) contrast(1.28) brightness(0.84);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="16">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(134.0deg) saturate(5.9) contrast(1.34) brightness(0.84);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="17">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(142.3deg) saturate(6.25) contrast(1.4) brightness(0.83);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="18">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(150.7deg) saturate(6.6) contrast(1.46) brightness(0.82);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="19">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(159.1deg) saturate(6.95) contrast(1.52) brightness(0.81);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="20">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(167.4deg) saturate(7.3) contrast(1.28) brightness(0.8);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="21">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(175.8deg) saturate(5.2) contrast(1.34) brightness(0.79);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="22">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(184.2deg) saturate(5.55) contrast(1.4) brightness(0.78);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="23">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(192.6deg) saturate(5.9) contrast(1.46) brightness(0.77);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="24">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(200.9deg) saturate(6.25) contrast(1.52) brightness(0.76);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="25">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(209.3deg) saturate(6.6) contrast(1.28) brightness(0.76);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="26">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(217.7deg) saturate(6.95) contrast(1.34) brightness(0.75);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="27">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(226.0deg) saturate(7.3) contrast(1.4) brightness(0.74);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="28">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(234.4deg) saturate(5.2) contrast(1.46) brightness(0.73);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="29">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(242.8deg) saturate(5.55) contrast(1.52) brightness(0.72);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="30">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(251.2deg) saturate(5.9) contrast(1.28) brightness(0.71);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="31">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(259.5deg) saturate(6.25) contrast(1.34) brightness(0.7);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="32">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(267.9deg) saturate(6.6) contrast(1.4) brightness(0.69);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="33">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(276.3deg) saturate(6.95) contrast(1.46) brightness(0.68);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="34">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(284.7deg) saturate(7.3) contrast(1.52) brightness(0.67);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="35">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(293.0deg) saturate(5.2) contrast(1.28) brightness(0.67);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="36">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(301.4deg) saturate(5.55) contrast(1.34) brightness(0.66);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="37">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(309.8deg) saturate(5.9) contrast(1.4) brightness(0.65);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="38">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(318.1deg) saturate(6.25) contrast(1.46) brightness(0.64);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="39">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(326.5deg) saturate(6.6) contrast(1.52) brightness(0.63);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="40">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(334.9deg) saturate(6.95) contrast(1.28) brightness(0.62);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="41">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(343.3deg) saturate(7.3) contrast(1.34) brightness(0.61);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="42">
-              <img src="assets/train.webp" alt="Abstract train painting" loading="lazy" decoding="async" style="filter: grayscale(1) sepia(1) hue-rotate(351.6deg) saturate(5.2) contrast(1.4) brightness(0.6);">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item train-variants__item--snake-head" data-depth="43">
               <img src="assets/me-snake.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
             </figure>
-          </div>
-          <div class="train-variants__verse" data-tunnel-verse aria-live="polite">
-            <p class="train-variants__verse-line" data-verse-line>With every paint stroke</p>
-            <p class="train-variants__verse-line" data-verse-line>I enter the tunnel.</p>
-            <p class="train-variants__verse-line" data-verse-line>When I come out,</p>
-            <p class="train-variants__verse-line" data-verse-line>I am a little happier</p>
-            <p class="train-variants__verse-line" data-verse-line>than before.</p>
-          </div>
-        </div>
-      </div>
+                </div>
+                <div class="train-variants__verse" data-tunnel-verse aria-live="polite">
+                  <p class="train-variants__verse-line" data-verse-line>With every paint stroke</p>
+                  <p class="train-variants__verse-line" data-verse-line>I enter the tunnel.</p>
+                  <p class="train-variants__verse-line" data-verse-line>When I come out,</p>
+                  <p class="train-variants__verse-line" data-verse-line>I am a little happier</p>
+                  <p class="train-variants__verse-line" data-verse-line>than before.</p>
+                </div>
+              </div>
             </div>
           </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Energy" hidden>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Energy doodles" hidden>
             <div class="entropy-panel entropy-panel--energy">
               <p class="entropy-panel__desc">Intuitive energy mapping of situation, places, and people</p>
-              <div class="statement-panel statement-panel--energy-doodles" aria-label="Energy">
+              <div class="statement-panel statement-panel--energy-doodles" aria-label="Energy doodles">
                 <figure class="statement-panel__visual" data-lightbox data-title="Energy I" data-meta="Entropy Lab">
                   <img src="assets/doodles/IMG_2139.jpg" alt="Energy I — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
@@ -3238,217 +3536,41 @@
               </div>
             </div>
           </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="As above, so below" hidden>
-<div class="statement-panel statement-panel--split statement-panel--poem">
-        <div class="statement-panel__visual" aria-hidden="true">
-          <img src="assets/staricase.webp" alt="" loading="lazy" decoding="async">
-        </div>
-        <section class="statement" aria-label="As above, so below — poem by Giovanna Ferrari">
-          <div class="statement__body">
-          <p class="statement__text">
-            Anger rises like a volcano,<br>
-            yet peace is no smaller force.
-          </p>
-          <p class="statement__text">
-            The intensity of rage<br>
-            and the depth of serenity<br>
-            are equal in measure,<br>
-            different expressions<br>
-            of the same power.
-          </p>
-          <p class="statement__text">
-            Between them stands a ladder.
-          </p>
-          <p class="statement__text">
-            We climb through sorrow,<br>
-            discovering that every eruption<br>
-            contains the seed of stillness,<br>
-            and every return to peace<br>
-            reveals who we are.
-          </p>
-        </div>
-        <p class="statement__author">Giovanna Ferrari</p>
-      </section>
-      </div>
-          </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="The Non Suicidal Man" hidden>
-            <div class="statement-panel statement-panel--split statement-panel--entropy-prose">
-              <div class="statement-panel__visual" aria-hidden="true">
-                <img src="assets/Hugging%20the%20shore.jpeg" alt="" loading="lazy" decoding="async">
-              </div>
-              <section class="statement" aria-label="The Non Suicidal Man">
-                <h3 class="statement__heading">The Non Suicidal Man</h3>
-                <div class="statement__body">
-                  <p class="statement__text">
-                    This summer, I took a one-week vacation to Indiana Beach, NC. My friend forced me to buy a totally unnecessary $100 beach chair that weighed as much as my entire body and was impossible for me to carry because he was afraid I would steal his $200 beach chair.
-                  </p>
-                  <p class="statement__text">
-                    So now I was at the beach, and I had to carry this chair everywhere&hellip; but that is a different story. Let&rsquo;s get back to the real story.
-                  </p>
-                  <p class="statement__text">
-                    As I lay in my oversized American beach chair, a piece of furniture so unnecessarily large that it could comfortably accommodate a small village, I discovered my sense of compassion for all human life; it was sitting right next to me. After all, we had enough space in that oversized chair to coexist peacefully together.
-                  </p>
-                  <p class="statement__text">
-                    I started feeling the pain of all men, women, and especially crabs. I felt particularly bad for the crabs because they had no escape from the birds. They were just lying in the sand, minding their own business and being crabs, when these enormous birds, armed with beaks that qualified as weapons of mass destruction, would swoop down, pick them up, and swallow them alive.
-                  </p>
-                  <p class="statement__text">What a sad existence.</p>
-                  <p class="statement__text">
-                    I watched thousands of crabs being eaten without mercy until something in me snapped, and I started running after the birds to stop them from eating the crabs.
-                  </p>
-                  <p class="statement__text">
-                    I was able to save two out of approximately one hundred crabs.
-                  </p>
-                  <p class="statement__text">
-                    Now, I know what you&rsquo;re thinking. It is not the greatest record, but it is something. How many crabs have you saved?
-                  </p>
-                  <p class="statement__text">
-                    When I grew tired of single-handedly preserving the crab species, my attention was caught by a lonely man swimming in the ocean in the distance. He swam alone, just floating around for what seemed like a very long time. Then he came out of the water and sat on the beach, staring at the ocean, completely still except for the continuous motion of rubbing his face.
-                  </p>
-                  <p class="statement__text">
-                    I thought he was crying, wiping away a river of tears streaming down his cheeks, so I started imagining what he might be crying about. As I tuned into him, I felt the extreme pain of losing a loved one. It could have been a girlfriend or a parent. Maybe he was crying for the innocent crabs. It doesn&rsquo;t really matter what he was crying about. I just knew that I felt the urge to walk up to him and save him from his pain.
-                  </p>
-                  <p class="statement__text">So I did.</p>
-                  <p class="statement__text">
-                    &ldquo;Hello! Hi!&rdquo; I said. &ldquo;I just came over to see if you&rsquo;re okay.&rdquo;
-                  </p>
-                  <p class="statement__text">
-                    &ldquo;Oh, hi! Yes, yes, I am totally fine,&rdquo; he said with a surprised smile.
-                  </p>
-                  <p class="statement__text">
-                    &ldquo;My wife and kids are at the pool, so I&rsquo;m taking some time to myself to look at the ocean. And how are you?&rdquo;
-                  </p>
-                  <p class="statement__text">
-                    &ldquo;Oh, me? Oh, I&rsquo;m just fine,&rdquo; I replied. &ldquo;I was sitting on my very heavy oversized chair, also looking at the ocean, and I noticed you rubbing your eyes. I thought you were crying.&rdquo;
-                  </p>
-                  <p class="statement__text">He laughed.</p>
-                  <p class="statement__text">&ldquo;No, that was just salt water.&rdquo;</p>
-                  <p class="statement__text">He paused, then repeated,</p>
-                  <p class="statement__text">
-                    &ldquo;My wife and kids are at the pool, but thank you for checking on me.&rdquo;
-                  </p>
-                  <p class="statement__text"><em>My inner monologue: He thinks I&rsquo;m hitting on him. Well, he is cute after all.</em></p>
-                  <p class="statement__text">
-                    &ldquo;Okay then, I&rsquo;ll leave you to your thoughts. But next time, you might want to pick up a phone from time to time. Maybe take a selfie, just to let people know you&rsquo;re okay. It&rsquo;s strange to see someone sitting alone without interacting with a phone these days. You start thinking they may not be well.&rdquo;
-                  </p>
-                  <p class="statement__text">
-                    At this point, I could sense the fear creeping over him. He was scared.
-                  </p>
-                  <p class="statement__text">So we parted ways.</p>
-                  <p class="statement__text">
-                    He was not suicidal and was not planning to walk into the ocean and end his life. I was glad I could help reinforce his zeal for living.
-                  </p>
-                  <p class="statement__text">
-                    A few days went by, and I did end up running into the non-suicidal man again. He told me that after meeting me, he started having dark thoughts and, on several occasions, contemplated ending his life.
-                  </p>
-                  <p class="statement__text">This last part is not true. I&rsquo;m sorry.</p>
-                  <p class="statement__text">
-                    The truth is that I did run into him and his family again, but he completely ignored me while I continued struggling with my oversized chair.
-                  </p>
-                  <p class="statement__text">I long for the days when a beach towel was enough.</p>
-                </div>
-              </section>
-            </div>
-          </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="The Umbrella" hidden>
-            <div class="umbrella-warhol" aria-label="The Umbrella — Warhol variations">
-              <div class="umbrella-warhol__strip">
-                <figure class="umbrella-warhol__item umbrella-warhol__item--original" data-lightbox data-title="The Umbrella — original" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — original" loading="eager" decoding="async">
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Digital art" hidden>
+            <div class="entropy-panel entropy-panel--digital-art">
+              <p class="entropy-panel__desc">Selected digital works</p>
+              <div class="statement-panel statement-panel--digital-art" aria-label="Digital art">
+                <figure class="statement-panel__visual" data-lightbox data-title="Intro" data-meta="Digital art">
+                  <img src="assets/digital%20art/intro.jpg" alt="Intro — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--pink" data-lightbox data-title="The Umbrella — pink" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — pink variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="Train" data-meta="Digital art">
+                  <img src="assets/digital%20art/train.webp" alt="Train — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--cyan" data-lightbox data-title="The Umbrella — cyan" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — cyan variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="As Above So Below" data-meta="Digital art">
+                  <img src="assets/digital%20art/as%20above%20so%20below.webp" alt="As Above So Below — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--gold" data-lightbox data-title="The Umbrella — gold" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — gold variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="The Tower" data-meta="Digital art">
+                  <img src="assets/digital%20art/the-tower.webp" alt="The Tower — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--lime" data-lightbox data-title="The Umbrella — lime" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — lime variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="UFO" data-meta="Digital art">
+                  <img src="assets/digital%20art/UFO.jpg" alt="UFO — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--orange" data-lightbox data-title="The Umbrella — orange" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — orange variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="Univers" data-meta="Digital art">
+                  <img src="assets/digital%20art/univers.jpg" alt="Univers — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--violet" data-lightbox data-title="The Umbrella — violet" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — violet variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="L'Attesa" data-meta="Digital art">
+                  <img src="assets/digital%20art/L%27ATTESA.jpg" alt="L'Attesa — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--blue" data-lightbox data-title="The Umbrella — blue" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — blue variation" loading="lazy" decoding="async">
-                </figure>
-                <figure class="umbrella-warhol__item umbrella-warhol__item--coral" data-lightbox data-title="The Umbrella — coral" data-meta="Entropy Lab">
-                  <img src="assets/sisi%20and%20me.jpg" alt="The Umbrella — coral variation" loading="lazy" decoding="async">
+                <figure class="statement-panel__visual" data-lightbox data-title="I Just Wanna Be With You Right Now" data-meta="Digital art">
+                  <img src="assets/digital%20art/I-just-wanna-be-with-you-right-now.webp" alt="I Just Wanna Be With You Right Now — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
               </div>
-            </div>
-          </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="The Lower World" hidden>
-            <div class="statement-panel statement-panel--split statement-panel--entropy-prose">
-              <div class="statement-panel__visual" aria-hidden="true">
-                <img src="assets/the-tower.webp" alt="" loading="lazy" decoding="async">
-              </div>
-              <section class="statement" aria-label="The Lower World">
-                <h3 class="statement__heading">The Lower World</h3>
-                <div class="statement__body">
-                  <p class="statement__text">
-                    I began at the top of a hill, looking down into a vast valley below. From there, I had a bird&rsquo;s-eye view of a winding road that led all the way to the bottom, where a river shimmered faintly in the distance.
-                  </p>
-                  <p class="statement__text">
-                    The valley opened first as a sun-worn desert. The earth was dry and pale, cracked by time. Juniper trees stood sparsely along the winding road, twisted, distorted, releasing a sharp, sacred scent into the air.
-                  </p>
-                  <p class="statement__text">
-                    As I descended, animals appeared along my path, deer, elk, bears. They moved through the landscape calmly, but none of them asked anything of me. None held my gaze.
-                  </p>
-                  <p class="statement__text">Then I saw him.</p>
-                  <p class="statement__text">
-                    A wolf with piercing blue eyes unnaturally bright, almost luminous. He stopped and looked directly at me, his gaze steady and knowing. Without words, he nudged me forward, signaling that I was meant to follow.
-                  </p>
-                  <p class="statement__text">
-                    He led me all the way down into the valley, to the river at its base. He bent his head and drank from the water. When I looked down, I saw our reflection rippling together on the surface.
-                  </p>
-                  <p class="statement__text">
-                    Across the river stood a dense, black forest. As I focused, I noticed eyes watching from within it. Millions of tiny red lights blinked back at me, like a dark Christmas tree alive with movement. I understood they were dangerous in nature, yet I felt no fear. They were far away. The river separated us. Instinctively, I knew they could not cross.
-                  </p>
-                  <p class="statement__text">The wolf turned to me and spoke.</p>
-                  <blockquote class="statement__quote">
-                    Those are your fears. Your demons, he said. This is the river of life and love. They cannot cross it. You are safe. Name your demons, said the wolf.
-                  </blockquote>
-                  <p class="statement__text">And I answered:</p>
-                  <ul class="statement__demons">
-                    <li>Fear of judgment.</li>
-                    <li>Self-doubt that coils inward.</li>
-                    <li>The voice that diminishes me before others can.</li>
-                    <li>I am not enough. I am too much.</li>
-                    <li>The belief that my brightness must be explained,</li>
-                    <li>that my presence needs justification,</li>
-                    <li>that I perform courage to conceal my shyness.</li>
-                  </ul>
-                  <p class="statement__text">Then the wolf said:</p>
-                  <blockquote class="statement__quote">
-                    Those creatures in the woods hiding their face, whisper comparison when you are most exposed and undermine your worth before anyone else can. They judge you, like the eyes of imagined others. You are deficient or excessive, not enough or too much, and with each accusatory glance they fracture you, split you into parts that perform, defend, and diminish themselves.<br><br>
-                    You do not need to fight your demons.<br><br>
-                    You need to stay in the river.
-                  </blockquote>
-                  <p class="statement__text">
-                    I lifted my eyes to the sky. High above, an eagle soared, her shadow cutting through the brightness of the sun.
-                  </p>
-                  <p class="statement__text">
-                    Then another figure appeared&mdash;a smaller white wolf, dark-eyed and quiet.
-                  </p>
-                  <p class="statement__text">
-                    The blue-eyed wolf looked at me once more.
-                  </p>
-                  <p class="statement__text">
-                    Follow her back home, he said. And go to sleep.
-                  </p>
-                </div>
-              </section>
             </div>
           </article>
         </div>
         <div class="entropy-lab-carousel__controls">
           <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-prev aria-label="Previous experiment" disabled>&larr;</button>
-          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 06</p>
+          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 03</p>
           <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-next aria-label="Next experiment">&rarr;</button>
         </div>
       </div>
@@ -3644,6 +3766,9 @@
 
     <!-- Contact -->
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
+      <div class="contact-section__backdrop" aria-hidden="true">
+        <img src="assets/only-art-helps.webp" alt="" loading="lazy" decoding="async">
+      </div>
       <div class="contact-section__inner">
         <p class="contact-section__label">Contact</p>
         <h2 id="contact-title" class="contact-section__title">Get in Touch</h2>
@@ -3799,6 +3924,7 @@
       const prevBtn = root.querySelector('[data-carousel-prev]');
       const nextBtn = root.querySelector('[data-carousel-next]');
       const counter = root.querySelector('[data-carousel-counter]');
+      const captionEl = root.querySelector('[data-carousel-caption]');
       const isArtGallery = root.id === 'art-gallery';
       const backdropHost = isArtGallery ? root.closest('#art') : stage;
       let backdrop = backdropHost?.querySelector('[data-carousel-backdrop]');
@@ -3842,6 +3968,58 @@
         }
       };
       const pad = n => String(n).padStart(2, '0');
+
+      const updateCarouselCaption = index => {
+        if (!captionEl || !isArtGallery) return;
+        const slide = slides[index];
+        if (!slide) return;
+        captionEl.textContent = slide.dataset.title
+          || slide.querySelector('.art-gallery-carousel__caption')?.textContent?.trim()
+          || '';
+      };
+
+      const preserveArtGalleryScroll = () => {
+        if (!isArtGallery) return;
+        const scrollY = window.scrollY;
+        const restore = () => {
+          if (Math.abs(window.scrollY - scrollY) > 1) {
+            window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
+          }
+        };
+        restore();
+        requestAnimationFrame(restore);
+        requestAnimationFrame(() => requestAnimationFrame(restore));
+        window.setTimeout(restore, 0);
+        window.setTimeout(restore, 50);
+        window.setTimeout(restore, 150);
+      };
+
+      const updateNavButtons = () => {
+        const atStart = current === 0;
+        const atEnd = current === slides.length - 1;
+        if (prevBtn) {
+          if (atStart && document.activeElement === prevBtn) prevBtn.blur();
+          prevBtn.disabled = atStart;
+        }
+        if (nextBtn) {
+          if (atEnd && document.activeElement === nextBtn) nextBtn.blur();
+          nextBtn.disabled = atEnd;
+        }
+      };
+
+      const preloadSlideImages = (...indices) => {
+        if (!isArtGallery) return;
+        indices.forEach(index => {
+          const img = slides[index]?.querySelector('img');
+          if (!img) return;
+          img.loading = 'eager';
+          if (img.complete && img.naturalWidth > 0) return;
+          const loader = new Image();
+          loader.decoding = 'async';
+          loader.src = img.currentSrc || img.src;
+        });
+      };
+
       const accordions = root.querySelectorAll('[data-nav-accordion]');
       const navToggles = root.querySelectorAll('[data-nav-toggle]');
       const hasAccordion = accordions.length > 0;
@@ -3952,7 +4130,12 @@
       };
 
       if (isArtGallery) {
-        slides.forEach(slide => slide.removeAttribute('hidden'));
+        slides.forEach(slide => {
+          slide.removeAttribute('hidden');
+          const img = slide.querySelector('img');
+          if (img) img.loading = 'eager';
+        });
+        preloadSlideImages(0, 1, 2);
       }
 
       const updateBackdrop = (index, { crossfade = false } = {}) => {
@@ -4019,9 +4202,10 @@
           }
         }
 
-        if (prevBtn) prevBtn.disabled = current === 0;
-        if (nextBtn) nextBtn.disabled = current === slides.length - 1;
+        updateNavButtons();
         if (counter) counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+        updateCarouselCaption(current);
+        preloadSlideImages(current - 1, current, current + 1);
 
         const activeNav = navItems[current];
         const navScroll = root.querySelector('.series-showcase__nav-scroll');
@@ -4030,6 +4214,7 @@
         }
 
         if (userInitiated) resetAutoplay();
+        preserveArtGalleryScroll();
       };
 
       const updateGoToMetadata = (nextIndex, { userInitiated = false, crossfade = false } = {}) => {
@@ -4050,9 +4235,10 @@
           updateCollectionPills(nextGroup);
         }
 
-        if (prevBtn) prevBtn.disabled = current === 0;
-        if (nextBtn) nextBtn.disabled = current === slides.length - 1;
+        updateNavButtons();
         if (counter) counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+        updateCarouselCaption(current);
+        preloadSlideImages(current - 1, current, current + 1);
 
         const activeNav = navItems[current];
         const navScroll = root.querySelector('.series-showcase__nav-scroll');
@@ -4061,6 +4247,7 @@
         }
 
         if (userInitiated) resetAutoplay();
+        preserveArtGalleryScroll();
       };
 
       const finishCrossfade = outgoing => {
@@ -4077,6 +4264,7 @@
           clearTimeout(transitionTimer);
           transitionTimer = null;
         }
+        preserveArtGalleryScroll();
       };
 
       const goTo = (index, { userInitiated = false } = {}) => {
@@ -4148,7 +4336,13 @@
         });
       });
       const stepCarousel = direction => {
+        const scrollY = window.scrollY;
+        if (document.activeElement === prevBtn || document.activeElement === nextBtn) {
+          document.activeElement.blur();
+        }
         goTo(current + direction, { userInitiated: true });
+        preserveArtGalleryScroll();
+        window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' });
       };
       prevBtn?.addEventListener('click', () => stepCarousel(-1));
       nextBtn?.addEventListener('click', () => stepCarousel(1));
@@ -4200,9 +4394,10 @@
           applySeriesTheme(firstGroup);
           updateCollectionPills(firstGroup);
         }
-        if (prevBtn) prevBtn.disabled = true;
-        if (nextBtn) nextBtn.disabled = slides.length <= 1;
+        updateNavButtons();
         if (counter) counter.textContent = `${pad(1)} / ${pad(slides.length)}`;
+        updateCarouselCaption(0);
+        preloadSlideImages(0, 1, 2);
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             slides[0].classList.add('is-active');
@@ -4249,8 +4444,10 @@
         if (prevBtn) prevBtn.disabled = current === 0;
         if (nextBtn) nextBtn.disabled = current === panels.length - 1;
         if (panels[current]?.querySelector('.train-variants')) {
-          window.requestAnimationFrame(() => {
-            window.dispatchEvent(new Event('train-layout'));
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              window.dispatchEvent(new Event('train-layout'));
+            });
           });
         }
       };
@@ -4282,17 +4479,27 @@
 
 
     const trainSection = document.querySelector('.train-variants');
-    const trainScrollTrack = document.querySelector('.train-variants__scroll-track');
     const trainTrack = document.querySelector('.train-variants__track');
+    const trainCaption = document.querySelector('.train-variants__caption');
     const trainItems = [...document.querySelectorAll('.train-variants__item[data-depth]')];
     const trainMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const TRAIN_TAIL_DEPTH = 42;
     const TRAIN_MAX_DEPTH = 43;
     const TRAIN_HEAD_SCALE = (1 - TRAIN_TAIL_DEPTH * 0.0195) * 1.95;
-    let trainScrollIdleTimer = null;
+    let trainLaughIdleTimer = null;
+    let trainPhase = 0;
+    let trainWaveBoost = 0.55;
+    let trainLastPointerX = null;
+    let trainLastPointerY = null;
+    let trainSnakeDecayFrame = null;
+    let trainPointerOnSnake = false;
 
     document.querySelectorAll('.train-variants__item[data-depth]').forEach(item => {
+      const depth = Number(item.dataset.depth);
       item.style.setProperty('--depth', item.dataset.depth);
+      if (!item.classList.contains('train-variants__item--snake-head')) {
+        item.style.setProperty('--ring-hue', String(Math.round(depth * (360 / 43))));
+      }
     });
 
     const getTrainItemScale = (item, depth) => {
@@ -4302,26 +4509,33 @@
       return 1 - depth * 0.0195;
     };
 
-    const getTrainScrollProgress = () => {
-      if (!trainScrollTrack) return null;
+    const getTrainFrameWidth = item => {
+      const measured = item.offsetWidth || item.getBoundingClientRect().width;
+      if (measured > 0) return measured;
 
-      const vh = window.innerHeight;
-      const rect = trainScrollTrack.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > vh) return null;
+      const img = item.querySelector('img');
+      const imgWidth = img?.offsetWidth || img?.getBoundingClientRect().width;
+      if (imgWidth > 0) return imgWidth;
 
-      const range = Math.max(rect.height - vh * 0.35, 1);
-      return Math.max(0, Math.min(1, -rect.top / range));
+      const frameVar = getComputedStyle(item).getPropertyValue('--frame').trim();
+      if (frameVar.endsWith('px')) {
+        const parsed = parseFloat(frameVar);
+        if (parsed > 0) return parsed;
+      }
+
+      return 0;
     };
 
     const layoutTrainItems = () => {
-      if (!trainTrack || !trainItems.length) return;
+      if (!trainTrack || !trainItems.length) return false;
 
       const trackWidth = trainTrack.offsetWidth;
+      if (trackWidth < 1) return false;
+
       trainItems.forEach(item => {
         const depth = Number(item.dataset.depth);
         const scale = getTrainItemScale(item, depth);
-        const img = item.querySelector('img');
-        const frameWidth = img?.offsetWidth || img?.getBoundingClientRect().width || trackWidth * 0.28;
+        const frameWidth = getTrainFrameWidth(item) || trackWidth * 0.28;
 
         let x;
         if (item.classList.contains('train-variants__item--snake-head')) {
@@ -4333,28 +4547,28 @@
         item.dataset.baseX = String(x);
         item.dataset.baseScale = String(scale);
       });
-    };
 
-    const resetTrainStatic = () => {
-      trainItems.forEach(item => {
-        const depth = Number(item.dataset.depth);
-        const scale = Number(item.dataset.baseScale) || getTrainItemScale(item, depth);
-        const x = Number(item.dataset.baseX) || 0;
-        item.style.transform = `translate3d(${x}px, -50%, 0) scale(${scale})`;
-      });
-    };
-
-    const updateTrainSnake = () => {
-      if (trainMotionQuery.matches || !trainItems.length) return;
-
-      const progress = getTrainScrollProgress();
-      if (progress === null) {
-        resetTrainStatic();
-        return;
+      const headItem = trainItems.find(item => item.classList.contains('train-variants__item--snake-head'));
+      if (trainCaption && headItem) {
+        const headScale = Number(headItem.dataset.baseScale) || getTrainItemScale(headItem, TRAIN_MAX_DEPTH);
+        const headFrame = getTrainFrameWidth(headItem) || trainTrack.offsetWidth * 0.4;
+        const headRadius = (headFrame * headScale) / 2;
+        const headLeft = Number(headItem.dataset.baseX) || 0;
+        const headWidth = headFrame * headScale;
+        const headCenter = headLeft + headWidth / 2;
+        trainCaption.style.left = `${headCenter}px`;
+        trainCaption.style.maxWidth = '8.5rem';
+        trainCaption.style.transform = 'translateX(-50%)';
+        trainCaption.style.textAlign = 'center';
+        trainCaption.style.top = `calc(50% + ${headRadius}px + 0.65rem)`;
       }
 
-      const phase = progress * Math.PI * 10;
-      const waveBoost = 0.55 + progress * 1.1;
+      trainSection?.classList.add('is-layout-ready');
+      return true;
+    };
+
+    const applyTrainSnakeMotion = (phase, waveBoost) => {
+      if (trainMotionQuery.matches || !trainItems.length || !trainItems[0]?.dataset.baseX) return;
 
       trainItems.forEach(item => {
         const depth = Number(item.dataset.depth);
@@ -4370,47 +4584,114 @@
       });
     };
 
-    const onTrainScroll = () => {
+    const resetTrainStatic = () => {
+      if (trainSnakeDecayFrame) {
+        cancelAnimationFrame(trainSnakeDecayFrame);
+        trainSnakeDecayFrame = null;
+      }
+      trainPhase = 0;
+      trainWaveBoost = 0.55;
+      trainLastPointerX = null;
+      trainLastPointerY = null;
+      if (!trainItems[0]?.dataset.baseX) return;
+
+      trainItems.forEach(item => {
+        const depth = Number(item.dataset.depth);
+        const scale = Number(item.dataset.baseScale) || getTrainItemScale(item, depth);
+        const x = Number(item.dataset.baseX) || 0;
+        item.style.transform = `translate3d(${x}px, -50%, 0) scale(${scale})`;
+      });
+    };
+
+    const decayTrainSnakeWave = () => {
+      if (trainMotionQuery.matches) {
+        trainSnakeDecayFrame = null;
+        resetTrainStatic();
+        return;
+      }
+
+      trainWaveBoost = Math.max(0.55, trainWaveBoost * 0.94);
+      applyTrainSnakeMotion(trainPhase, trainWaveBoost);
+
+      if (trainWaveBoost > 0.56) {
+        trainSnakeDecayFrame = requestAnimationFrame(decayTrainSnakeWave);
+      } else {
+        resetTrainStatic();
+        trainSnakeDecayFrame = null;
+      }
+    };
+
+    const onTrainSnakePointerMove = event => {
       if (trainMotionQuery.matches) return;
 
-      updateTrainSnake();
+      trainPointerOnSnake = true;
+      const dx = trainLastPointerX === null ? 0 : event.clientX - trainLastPointerX;
+      const dy = trainLastPointerY === null ? 0 : event.clientY - trainLastPointerY;
+      trainLastPointerX = event.clientX;
+      trainLastPointerY = event.clientY;
 
-      clearTimeout(trainScrollIdleTimer);
-      trainScrollIdleTimer = setTimeout(resetTrainStatic, 140);
+      const move = Math.hypot(dx, dy);
+      if (move > 0.5) {
+        trainSection?.classList.add('is-snake-moving');
+        trainPhase += move * 0.07 + dx * 0.04 + dy * 0.03;
+        trainWaveBoost = Math.min(1.8, Math.max(0.55, trainWaveBoost + move * 0.014));
+        applyTrainSnakeMotion(trainPhase, trainWaveBoost);
+
+        if (trainSnakeDecayFrame) {
+          cancelAnimationFrame(trainSnakeDecayFrame);
+          trainSnakeDecayFrame = null;
+        }
+      }
+    };
+
+    const layoutAndResetTrain = () => {
+      if (!layoutTrainItems()) return;
+      resetTrainStatic();
     };
 
     if (trainSection && trainItems.length) {
-      layoutTrainItems();
+      layoutAndResetTrain();
+      requestAnimationFrame(layoutAndResetTrain);
 
       trainTrack?.querySelectorAll('img').forEach(img => {
         if (img.complete) return;
-        img.addEventListener('load', layoutTrainItems, { once: true });
+        img.addEventListener('load', layoutAndResetTrain, { once: true });
       });
 
-      window.addEventListener('scroll', onTrainScroll, { passive: true });
-      window.addEventListener('resize', () => {
-        layoutTrainItems();
-        resetTrainStatic();
-      }, { passive: true });
+      window.addEventListener('resize', layoutAndResetTrain, { passive: true });
       trainMotionQuery.addEventListener('change', () => {
-        clearTimeout(trainScrollIdleTimer);
+        clearTimeout(trainLaughIdleTimer);
+        trainPointerOnSnake = false;
         if (trainMotionQuery.matches) {
           resetTrainStatic();
         } else {
-          layoutTrainItems();
-          resetTrainStatic();
+          layoutAndResetTrain();
         }
       });
 
-      window.addEventListener('load', layoutTrainItems, { once: true });
-      window.addEventListener('train-layout', () => {
-        layoutTrainItems();
-        resetTrainStatic();
-      });
+      window.addEventListener('load', layoutAndResetTrain, { once: true });
+      window.addEventListener('train-layout', layoutAndResetTrain);
+
+      if (trainTrack && typeof ResizeObserver !== 'undefined') {
+        const trainResizeObserver = new ResizeObserver(entries => {
+          const { width, height } = entries[0]?.contentRect || {};
+          if (width > 0 && height > 0) layoutAndResetTrain();
+        });
+        trainResizeObserver.observe(trainTrack);
+      }
+
+      const trainPanel = trainSection.closest('[data-entropy-panel]');
+      if (trainPanel && typeof IntersectionObserver !== 'undefined') {
+        const trainVisibilityObserver = new IntersectionObserver(entries => {
+          if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio > 0)) {
+            requestAnimationFrame(layoutAndResetTrain);
+          }
+        }, { threshold: [0, 0.01, 0.1] });
+        trainVisibilityObserver.observe(trainPanel);
+      }
 
       const TRAIN_BODY_SRC = 'assets/train.webp';
       const TRAIN_LAUGH_SRC = 'assets/laugh.JPG';
-      const trainScene = trainSection.querySelector('.train-variants__scene');
       const trainVerseLines = [...trainSection.querySelectorAll('[data-verse-line]')];
       const trainBodyImages = trainItems
         .filter(item => !item.classList.contains('train-variants__item--snake-head'))
@@ -4424,11 +4705,21 @@
         }
       });
 
-      let trainLaughIdleTimer = null;
       let trainLaughOn = false;
       let verseRevealIndex = 0;
       let verseProgressTimer = null;
+      let trainCaptionIdleTimer = null;
       const VERSE_REVEAL_GAP_MS = 900;
+      const TRAIN_CAPTION_IDLE_MS = 420;
+
+      const showTrainCaption = () => {
+        trainSection?.classList.remove('is-snake-moving');
+      };
+
+      const scheduleShowTrainCaption = () => {
+        clearTimeout(trainCaptionIdleTimer);
+        trainCaptionIdleTimer = window.setTimeout(showTrainCaption, TRAIN_CAPTION_IDLE_MS);
+      };
 
       const resetTunnelVerse = () => {
         clearInterval(verseProgressTimer);
@@ -4468,29 +4759,40 @@
         });
       };
 
+      const stopSnakeMotion = () => {
+        trainLastPointerX = null;
+        trainLastPointerY = null;
+        if (!trainSnakeDecayFrame) {
+          trainSnakeDecayFrame = requestAnimationFrame(decayTrainSnakeWave);
+        }
+      };
+
       const stopTickling = () => {
         clearTimeout(trainLaughIdleTimer);
         setTrainLaughMode(false);
+        stopSnakeMotion();
       };
 
-      const onTrainPointerMove = () => {
+      const onTrainPointerMove = event => {
+        onTrainSnakePointerMove(event);
+        scheduleShowTrainCaption();
         setTrainLaughMode(true);
         startVerseProgression();
         clearTimeout(trainLaughIdleTimer);
         trainLaughIdleTimer = setTimeout(stopTickling, 400);
       };
 
-      if (trainScene && trainBodyImages.length) {
-        trainScene.addEventListener('mousemove', onTrainPointerMove, { passive: true });
-        trainScene.addEventListener('touchmove', onTrainPointerMove, { passive: true });
-        trainScene.addEventListener('mouseleave', () => {
-          stopTickling();
+      if (trainTrack && trainBodyImages.length) {
+        trainTrack.addEventListener('pointermove', onTrainPointerMove, { passive: true });
+        trainTrack.addEventListener('pointerleave', () => {
+          trainPointerOnSnake = false;
+          clearTimeout(trainLaughIdleTimer);
+          clearTimeout(trainCaptionIdleTimer);
+          showTrainCaption();
+          setTrainLaughMode(false);
           resetTunnelVerse();
+          resetTrainStatic();
         });
-        trainScene.addEventListener('touchend', () => {
-          stopTickling();
-          resetTunnelVerse();
-        }, { passive: true });
       }
     }
 
