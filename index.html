@@ -3324,7 +3324,7 @@
             </article>
             <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Becoming an Ocean" data-meta="Water" data-group="Water" role="tabpanel" hidden>
               <figure class="series-showcase__figure">
-                <img src="assets/water/Becoming-an-Ocean.jpg" alt="Becoming an Ocean" loading="lazy" decoding="async">
+                <img src="assets/water/Becoming-an-Ocean.png" alt="Becoming an Ocean" loading="lazy" decoding="async">
               </figure>
               <p class="art-gallery-carousel__caption">Becoming an Ocean</p>
             </article>
@@ -3489,7 +3489,7 @@
       </div>
       <div class="series-intro">
         <h2 class="series-intro__title" id="entropy-lab-title">Entropy Lab</h2>
-        <p class="series-intro__desc">random creative thoughts</p>
+        <p class="series-intro__desc">random creative work</p>
       </div>
 
       <div class="entropy-lab-carousel" data-entropy-carousel tabindex="0" aria-label="Entropy Lab experiments">
@@ -4255,28 +4255,24 @@
         const viewportWidth = filmstripViewport.clientWidth;
         if (viewportWidth < 1) return;
 
-        filmstripTrack.style.transition = 'none';
-        filmstripTrack.style.transform = 'none';
-
         const slide = slides[index];
-        const trackRect = filmstripTrack.getBoundingClientRect();
-        const slideRect = slide.getBoundingClientRect();
-        const slideWidth = slideRect.width;
-        const slideOffset = slideRect.left - trackRect.left;
+        const slideWidth = slide.offsetWidth;
+        if (slideWidth < 1) return;
 
+        const slideOffset = slide.offsetLeft;
         let offset = slideOffset + slideWidth / 2 - viewportWidth / 2;
         const maxOffset = Math.max(0, filmstripTrack.scrollWidth - viewportWidth);
         offset = Math.max(0, Math.min(offset, maxOffset));
 
-        if (!animate || prefersReducedMotion) {
+        const shouldAnimate = animate && !prefersReducedMotion;
+
+        if (!shouldAnimate) {
           filmstripTrack.style.transition = 'none';
-        } else {
-          filmstripTrack.style.transition = '';
         }
 
         filmstripTrack.style.transform = `translate3d(${-offset}px, 0, 0)`;
 
-        if (!animate || prefersReducedMotion) {
+        if (!shouldAnimate) {
           requestAnimationFrame(() => {
             filmstripTrack.style.transition = '';
           });
@@ -4342,10 +4338,13 @@
         window.addEventListener('resize', () => updateFilmstripTrack(current, { animate: false }));
         window.addEventListener('filmstrip-layout', () => updateFilmstripTrack(current, { animate: false }));
         if (filmstripViewport && typeof ResizeObserver !== 'undefined') {
+          let filmstripResizeTimer = null;
           const filmstripResizeObserver = new ResizeObserver(() => {
-            if (filmstripViewport.clientWidth > 0) {
+            if (filmstripViewport.clientWidth < 1) return;
+            clearTimeout(filmstripResizeTimer);
+            filmstripResizeTimer = window.setTimeout(() => {
               updateFilmstripTrack(current, { animate: false });
-            }
+            }, 80);
           });
           filmstripResizeObserver.observe(filmstripViewport);
         }
@@ -4363,7 +4362,8 @@
             if (i === current) return;
             e.preventDefault();
             e.stopImmediatePropagation();
-            goTo(i, { userInitiated: true });
+            const step = i > current ? 1 : -1;
+            goTo(current + step, { userInitiated: true });
           });
         });
       }
