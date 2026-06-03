@@ -2286,7 +2286,7 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0;
-      transition: opacity 3s var(--ease);
+      transition: opacity 0.65s var(--ease);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -2367,7 +2367,7 @@
         rgba(0, 0, 0, 0.1) 70%,
         transparent 84%
       );
-      transition: opacity 3s var(--ease);
+      transition: opacity 0.65s var(--ease);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -4091,10 +4091,12 @@
 
       const AUTOPLAY_WITHIN_MS = 9000;
       const AUTOPLAY_COLLECTION_MS = 10000;
-      const ART_CROSSFADE_MS = 3000;
+      const ART_CROSSFADE_MS = 650;
       let autoplayTimer = null;
       let transitionTimer = null;
       let isTransitioning = false;
+      let outgoingSlide = null;
+      let onCrossfadeEnd = null;
 
       const stopAutoplay = () => {
         if (autoplayTimer) {
@@ -4260,37 +4262,44 @@
         preserveArtGalleryScroll();
       };
 
-      const finishCrossfade = outgoing => {
+      const finishCrossfade = () => {
+        const outgoing = outgoingSlide;
         root.classList.remove('is-crossfading');
-        outgoing?.classList.remove('is-leaving');
+        outgoing?.classList.remove('is-leaving', 'is-active');
         slides.forEach((slide, i) => {
           if (i !== current) slide.classList.remove('is-active');
         });
         slides.forEach(slide => {
           slide.style.willChange = '';
         });
-        isTransitioning = false;
+        if (onCrossfadeEnd && outgoing) {
+          outgoing.removeEventListener('transitionend', onCrossfadeEnd);
+        }
+        onCrossfadeEnd = null;
+        outgoingSlide = null;
         if (transitionTimer) {
           clearTimeout(transitionTimer);
           transitionTimer = null;
         }
+        isTransitioning = false;
         preserveArtGalleryScroll();
       };
 
       const goTo = (index, { userInitiated = false } = {}) => {
         const nextIndex = Math.max(0, Math.min(slides.length - 1, index));
-        if (nextIndex === current) return;
+        if (nextIndex === current && !isTransitioning) return;
 
         if (isArtGallery && !prefersReducedMotion) {
-          if (isTransitioning) return;
-          isTransitioning = true;
-          if (transitionTimer) {
-            clearTimeout(transitionTimer);
-            transitionTimer = null;
+          if (isTransitioning) {
+            finishCrossfade();
           }
+          if (nextIndex === current) return;
+
+          isTransitioning = true;
 
           const outgoing = slides[current];
           const incoming = slides[nextIndex];
+          outgoingSlide = outgoing;
 
           incoming.classList.remove('is-leaving');
           incoming.classList.add('is-active');
@@ -4305,20 +4314,20 @@
             outgoing.classList.remove('is-active');
           });
 
-          const onTransitionEnd = event => {
+          onCrossfadeEnd = event => {
             if (event.propertyName !== 'opacity') return;
             if (event.target !== outgoing) return;
-            outgoing.removeEventListener('transitionend', onTransitionEnd);
-            finishCrossfade(outgoing);
+            if (isTransitioning && current === nextIndex) {
+              finishCrossfade();
+            }
           };
 
-          outgoing.addEventListener('transitionend', onTransitionEnd);
+          outgoing.addEventListener('transitionend', onCrossfadeEnd);
           transitionTimer = window.setTimeout(() => {
-            outgoing.removeEventListener('transitionend', onTransitionEnd);
             if (isTransitioning && current === nextIndex) {
-              finishCrossfade(outgoing);
+              finishCrossfade();
             }
-          }, ART_CROSSFADE_MS + 120);
+          }, ART_CROSSFADE_MS + 80);
 
           return;
         }
