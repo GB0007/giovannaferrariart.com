@@ -653,15 +653,88 @@
 
     .train-variants__verse {
       position: absolute;
-      left: 50%;
+      left: 0;
+      right: 0;
       bottom: clamp(0.75rem, 3vh, 2rem);
       z-index: 60;
-      width: min(96%, 48rem);
+      width: 100%;
       margin: 0;
-      padding: 0 0.5rem;
-      text-align: center;
-      transform: translateX(-50%);
+      padding: 0;
+      overflow: hidden;
       pointer-events: none;
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000 6%,
+        #000 94%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000 6%,
+        #000 94%,
+        transparent 100%
+      );
+    }
+
+    .train-variants__ticker {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .train-variants__ticker-track {
+      display: flex;
+      flex-wrap: nowrap;
+      width: max-content;
+      gap: 3.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 0.45s var(--ease-smooth), visibility 0.45s var(--ease-smooth);
+    }
+
+    .train-variants.is-tickling .train-variants__ticker-track {
+      opacity: 1;
+      visibility: visible;
+      animation: train-verse-ticker 36s linear infinite;
+    }
+
+    @keyframes train-verse-ticker {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(calc(-50% - 1.75rem), 0, 0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .train-variants.is-tickling .train-variants__ticker-track {
+        animation: none;
+        transform: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 0.35rem;
+      }
+
+      .train-variants__ticker-text[aria-hidden="true"] {
+        display: none;
+      }
+
+      .train-variants__ticker-text {
+        white-space: normal;
+        text-align: center;
+      }
+    }
+
+    .train-variants__ticker-text {
+      flex: 0 0 auto;
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4.25vw, 2.75rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.45;
+      color: rgba(245, 240, 235, 0.9);
+      white-space: nowrap;
+      text-shadow: 0 2px 16px rgba(10, 10, 10, 0.85);
     }
 
     .train-variants__scene::after {
@@ -712,30 +785,33 @@
       visibility: hidden;
     }
 
-    .train-variants__verse-line {
-      font-family: var(--serif);
-      font-size: clamp(1.75rem, 4.25vw, 2.75rem);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.55;
-      color: rgba(245, 240, 235, 0.9);
-      margin: 0;
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.65s var(--ease-smooth), transform 0.65s var(--ease-smooth);
+    .train-variants__caption-desktop {
+      display: block;
     }
 
-    .train-variants__verse-line.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    .train-variants__caption-mobile {
+      display: none;
     }
 
-    .train-variants.is-tickling .train-variants__verse-line.is-visible {
-      text-shadow: 0 2px 16px rgba(10, 10, 10, 0.85);
+    .train-variants.is-touch-ui .train-variants__caption-desktop {
+      display: none;
     }
 
-    .train-variants__verse-line + .train-variants__verse-line {
-      margin-top: 0.65rem;
+    .train-variants.is-touch-ui .train-variants__caption-mobile {
+      display: block;
+    }
+
+    .train-variants.is-touch-ui .train-variants__caption {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .train-variants.is-touch-ui .train-variants__item--snake-head {
+      cursor: pointer;
+    }
+
+    .train-variants.is-tickling .train-variants__verse {
+      z-index: 70;
     }
 
     .train-variants__track {
@@ -906,28 +982,23 @@
       overflow: hidden;
     }
 
-    .entropy-lab-section__lights {
+    .entropy-lab-section__video {
       position: absolute;
-      inset: -38% -28%;
-      background:
-        radial-gradient(circle at 16% 24%, rgba(255, 88, 168, 0.58) 0%, transparent 38%),
-        radial-gradient(circle at 74% 16%, rgba(72, 156, 255, 0.52) 0%, transparent 36%),
-        radial-gradient(circle at 84% 58%, rgba(255, 128, 56, 0.48) 0%, transparent 34%),
-        radial-gradient(circle at 44% 74%, rgba(108, 255, 188, 0.42) 0%, transparent 40%),
-        radial-gradient(circle at 10% 76%, rgba(186, 92, 255, 0.46) 0%, transparent 35%),
-        radial-gradient(circle at 56% 40%, rgba(255, 216, 88, 0.38) 0%, transparent 32%),
-        radial-gradient(circle at 32% 10%, rgba(56, 220, 255, 0.4) 0%, transparent 30%),
-        radial-gradient(circle at 62% 88%, rgba(255, 96, 128, 0.34) 0%, transparent 36%);
-      filter: blur(78px) saturate(1.4);
-      opacity: 0.72;
-      transform: translate3d(0, 0, 0);
-      animation: entropy-lab-lights-drift 28s ease-in-out infinite alternate;
-      will-change: transform;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .entropy-lab-section__video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.42) saturate(1.08);
     }
 
     .entropy-lab-section__veil {
       position: absolute;
       inset: 0;
+      z-index: 2;
       background:
         radial-gradient(
           ellipse 88% 78% at 50% 44%,
@@ -1137,6 +1208,7 @@
       aspect-ratio: 1;
       padding: 0;
       margin: 0;
+      overflow: hidden;
       background: rgba(245, 240, 235, 0.03);
       border-radius: 2px;
       box-shadow: 0 0 0 1px rgba(245, 240, 235, 0.08);
@@ -1153,7 +1225,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center center;
       filter: brightness(1.08) saturate(1.06);
     }
@@ -1178,6 +1250,29 @@
     .entropy-lab-carousel__panel:has(.entropy-panel--digital-art).is-active {
       display: flex;
       justify-content: center;
+      width: 100%;
+    }
+
+    .entropy-lab-section .entropy-panel--photography {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: min(1200px, 96vw);
+      margin: 0 auto;
+      padding: 0.5rem 0 0;
+      box-sizing: border-box;
+    }
+
+    .entropy-lab-carousel__panel:has(.entropy-panel--photography).is-active {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .entropy-lab-section .inspiration-carousel {
+      margin-top: 0;
+      padding: 0 1rem 1.5rem;
       width: 100%;
     }
 
@@ -1284,6 +1379,7 @@
       overflow: visible;
       min-height: 0;
       isolation: auto;
+      padding-bottom: clamp(3.5rem, 8vh, 5rem);
     }
 
     .entropy-lab-section .train-variants__scene::after,
@@ -1403,76 +1499,67 @@
       padding: 1.25rem 2rem 3.5rem;
     }
 
-    /* ---------- Inspiration video section ---------- */
-    .inspiration-section {
-      position: relative;
-      overflow: hidden;
-      background: #0a0a0a;
-      border-top: 1px solid rgba(245, 240, 235, 0.06);
-    }
-
-    .inspiration-section .series-intro {
-      padding-top: 10rem;
-    }
-
-    .inspiration-section__video {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .inspiration-section__video video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.55) saturate(1.1);
-    }
-
-    .inspiration-section__overlay {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to bottom,
-          rgba(10, 10, 10, 0.72) 0%,
-          rgba(10, 10, 10, 0.45) 35%,
-          rgba(10, 10, 10, 0.55) 70%,
-          rgba(10, 10, 10, 0.82) 100%);
-    }
-
-    .inspiration-section__content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .inspiration-section .series-intro__number {
-      color: rgba(245, 240, 235, 0.06);
-    }
-
+    /* ---------- Photography carousel (Entropy Lab) — filmstrip ---------- */
     .inspiration-carousel {
+      --filmstrip-slide-height: min(74vh, 760px);
       padding: 0 1.5rem 5rem;
-      margin-top: -100px;
+      overflow-anchor: none;
     }
 
     .inspiration-carousel .series-showcase__stage {
-      min-height: min(88vh, 920px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(var(--filmstrip-slide-height) + 5rem);
       background: transparent;
       padding: 1.5rem 1rem 2rem;
+      overflow-x: hidden;
     }
 
     .inspiration-carousel .series-showcase__backdrop {
       display: none;
     }
 
-    .inspiration-carousel .series-showcase__slides {
+    .inspiration-carousel .art-gallery-carousel__viewport {
+      flex: 0 0 auto;
       width: min(96vw, 1080px);
-      height: min(74vh, 760px);
+      max-width: 100%;
+      height: var(--filmstrip-slide-height);
+      min-height: var(--filmstrip-slide-height);
       margin: 0 auto;
+      overflow: hidden;
+      position: relative;
+      align-self: center;
     }
 
-    .inspiration-carousel .series-showcase__figure img {
-      border-radius: 2px;
-      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5);
+    .inspiration-carousel .series-showcase__controls {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) 52px;
+      align-items: center;
+      justify-items: center;
+      column-gap: 0.5rem;
+      width: min(92vw, 36rem);
+      margin: 1.75rem auto 0;
+    }
+
+    .inspiration-carousel .series-showcase__arrow[data-carousel-prev] {
+      grid-column: 1;
+    }
+
+    .inspiration-carousel .series-showcase__arrow[data-carousel-next] {
+      grid-column: 3;
+    }
+
+    .inspiration-carousel__caption--controls {
+      grid-column: 2;
+      margin: 0;
+      min-height: 2.75em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
 
     .inspiration-carousel__caption {
@@ -1482,14 +1569,11 @@
       font-style: italic;
       color: rgba(245, 240, 235, 0.88);
       text-align: center;
-      margin: 1.25rem 0 0;
       letter-spacing: 0.02em;
     }
 
-    .inspiration-carousel .series-showcase__controls {
-      position: relative;
-      z-index: 2;
-      margin-top: 1.75rem;
+    [data-carousel-filmstrip] .series-showcase__slide .inspiration-carousel__caption {
+      display: none;
     }
 
     .inspiration-carousel__arrow {
@@ -1503,21 +1587,14 @@
       background: rgba(245, 240, 235, 0.08);
     }
 
-    .inspiration-carousel__counter {
-      color: rgba(245, 240, 235, 0.55);
-    }
-
     @media (max-width: 768px) {
       .inspiration-carousel {
+        --filmstrip-slide-height: min(64vh, 580px);
         padding: 0 1rem 3.5rem;
       }
 
       .inspiration-carousel .series-showcase__stage {
-        min-height: min(78vh, 760px);
-      }
-
-      .inspiration-carousel .series-showcase__slides {
-        height: min(64vh, 580px);
+        min-height: calc(var(--filmstrip-slide-height) + 4.5rem);
       }
     }
 
@@ -1829,12 +1906,13 @@
     #art #art-gallery .art-gallery-carousel__stage,
     #art #art-gallery .series-showcase__stage {
       --art-slide-height: min(calc(100dvh - 17rem), 820px);
+      --filmstrip-slide-height: var(--art-slide-height);
       margin-top: 0;
       padding: 1rem 0.5rem 0;
       min-height: calc(var(--art-slide-height) + var(--art-gallery-footer));
       height: calc(var(--art-slide-height) + var(--art-gallery-footer));
       justify-content: flex-start;
-      overflow: visible;
+      overflow-x: hidden;
       overflow-anchor: none;
       contain: layout style;
       background: transparent;
@@ -1976,15 +2054,35 @@
       align-items: center;
     }
 
-    #art-gallery .series-showcase__slides {
+    [data-carousel-filmstrip] .art-gallery-carousel__viewport {
       flex: 0 0 auto;
       width: min(99vw, 1380px);
-      height: var(--art-slide-height, min(calc(100dvh - 17rem), 820px));
-      min-height: var(--art-slide-height, min(calc(100dvh - 17rem), 820px));
-      max-height: var(--art-slide-height, min(calc(100dvh - 17rem), 820px));
+      height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
+      min-height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
       margin: 0 auto;
       overflow: hidden;
-      contain: strict;
+      position: relative;
+    }
+
+    [data-carousel-filmstrip] .series-showcase__slides {
+      --art-track-gap: clamp(1rem, 2vw, 1.75rem);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: var(--art-track-gap);
+      width: max-content;
+      min-width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: visible;
+      position: relative;
+      transition: transform 0.65s var(--ease);
+      will-change: transform;
+    }
+
+    [data-carousel-filmstrip] .series-showcase__slide[hidden] {
+      display: flex !important;
     }
 
     .art-gallery-carousel__caption {
@@ -2281,63 +2379,52 @@
       z-index: 1;
     }
 
-    #art-gallery .series-showcase__slide {
-      visibility: hidden;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 0.65s var(--ease);
+    [data-carousel-filmstrip] .series-showcase__slide {
+      position: relative;
+      inset: auto;
+      flex: 0 0 auto;
+      height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
+      min-height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
+      width: auto;
+      opacity: 0.38;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.45s var(--ease);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      transform: translateZ(0);
+      cursor: zoom-in;
     }
 
-    #art-gallery .series-showcase__slide.is-active,
-    #art-gallery .series-showcase__slide.is-leaving {
-      visibility: visible;
-    }
-
-    #art-gallery .series-showcase__slide.is-active {
+    [data-carousel-filmstrip] .series-showcase__slide.is-active {
       opacity: 1;
-      pointer-events: auto;
-      z-index: 2;
-    }
-
-    #art-gallery .series-showcase__slide.is-leaving:not(.is-active) {
-      opacity: 0;
       z-index: 1;
-      pointer-events: none;
     }
 
-    #art-gallery.is-crossfading .series-showcase__slide.is-active,
-    #art-gallery.is-crossfading .series-showcase__slide.is-leaving {
-      will-change: opacity;
-    }
-
-    #art-gallery .series-showcase__figure {
+    [data-carousel-filmstrip] .series-showcase__figure {
       position: relative;
-      flex: 1 1 auto;
-      width: 100%;
-      height: 100%;
-      min-height: 0;
+      flex: 0 0 auto;
+      height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
+      width: auto;
       margin: 0;
+      display: block;
     }
 
-    #art-gallery .series-showcase__figure img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    [data-carousel-filmstrip] .series-showcase__figure img {
+      position: static;
       display: block;
       width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
+      height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
+      max-height: var(--filmstrip-slide-height, min(calc(100dvh - 17rem), 820px));
       object-fit: contain;
+      transform: none;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .inspiration-carousel[data-carousel-filmstrip] .series-showcase__figure img {
+      border-radius: 2px;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5);
     }
 
     #art > .series-showcase__backdrop .series-showcase__backdrop-img {
@@ -2371,11 +2458,19 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      #art-gallery .series-showcase__slide {
+      [data-carousel-filmstrip] .series-showcase__slides {
         transition: none;
       }
 
-      .entropy-lab-section__lights {
+      [data-carousel-filmstrip] .series-showcase__slide {
+        transition: none;
+      }
+
+      .entropy-lab-section__video {
+        display: none;
+      }
+
+      .contact-section__lights {
         animation: none;
         will-change: auto;
       }
@@ -2529,9 +2624,10 @@
     .contact-section {
       position: relative;
       overflow: hidden;
+      isolation: isolate;
       border-top: 1px solid rgba(245, 240, 235, 0.06);
       padding: 8rem 3rem 10rem;
-      background: #000;
+      background: #07070b;
     }
 
     .contact-section__backdrop {
@@ -2542,26 +2638,48 @@
       overflow: hidden;
     }
 
-    .contact-section__backdrop img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      filter: blur(18px) brightness(0.58) saturate(1.12);
-      transform: scale(1.1);
+    .contact-section__lights {
+      position: absolute;
+      inset: -38% -28%;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 16% 24%, rgba(255, 88, 168, 0.58) 0%, transparent 38%),
+        radial-gradient(circle at 74% 16%, rgba(72, 156, 255, 0.52) 0%, transparent 36%),
+        radial-gradient(circle at 84% 58%, rgba(255, 128, 56, 0.48) 0%, transparent 34%),
+        radial-gradient(circle at 44% 74%, rgba(108, 255, 188, 0.42) 0%, transparent 40%),
+        radial-gradient(circle at 10% 76%, rgba(186, 92, 255, 0.46) 0%, transparent 35%),
+        radial-gradient(circle at 56% 40%, rgba(255, 216, 88, 0.38) 0%, transparent 32%),
+        radial-gradient(circle at 32% 10%, rgba(56, 220, 255, 0.4) 0%, transparent 30%),
+        radial-gradient(circle at 62% 88%, rgba(255, 96, 128, 0.34) 0%, transparent 36%);
+      filter: blur(78px) saturate(1.4);
+      opacity: 0.72;
+      transform: translate3d(0, 0, 0);
+      animation: entropy-lab-lights-drift 28s ease-in-out infinite alternate;
+      will-change: transform;
     }
 
-    .contact-section__backdrop::after {
-      content: '';
+    .contact-section__veil {
       position: absolute;
       inset: 0;
+      z-index: 2;
       background:
+        radial-gradient(
+          ellipse 88% 78% at 50% 44%,
+          rgba(7, 7, 11, 0.08) 0%,
+          rgba(7, 7, 11, 0.58) 68%,
+          rgba(5, 5, 9, 0.9) 100%
+        ),
         linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.52) 0%,
-          rgba(0, 0, 0, 0.38) 45%,
-          rgba(0, 0, 0, 0.58) 100%
+          180deg,
+          rgba(7, 7, 11, 0.42) 0%,
+          rgba(7, 7, 11, 0.18) 42%,
+          rgba(7, 7, 11, 0.52) 100%
         );
+    }
+
+    .contact-section > :not(.contact-section__backdrop) {
+      position: relative;
+      z-index: 1;
     }
 
     .contact-section__inner {
@@ -2805,6 +2923,10 @@
         min-height: auto;
       }
 
+      #art-gallery[data-carousel-filmstrip] {
+        --filmstrip-slide-height: min(calc(100dvh - 15rem), 640px);
+      }
+
       #art-gallery .series-showcase__slides {
         --art-slide-height: min(calc(100dvh - 15rem), 640px);
       }
@@ -2817,6 +2939,7 @@
 
       #art #art-gallery .art-gallery-carousel__stage {
         --art-slide-height: min(calc(100dvh - 15rem), 640px);
+        --filmstrip-slide-height: var(--art-slide-height);
         min-height: calc(var(--art-slide-height) + var(--art-gallery-footer));
         height: calc(var(--art-slide-height) + var(--art-gallery-footer));
         padding: 0.75rem 0.25rem 0;
@@ -2883,6 +3006,17 @@
         position: absolute;
         inset: 0;
       }
+
+      [data-carousel-filmstrip] .series-showcase__slide,
+      [data-carousel-filmstrip] .series-showcase__slide.is-active {
+        position: relative;
+        inset: auto;
+        visibility: visible;
+      }
+
+      [data-carousel-filmstrip] .art-gallery-carousel__viewport {
+        width: min(94vw, 1380px);
+      }
     }
   
 
@@ -2932,7 +3066,6 @@
       #art > .series-intro {
         min-height: auto;
       }
-      .inspiration-section .series-intro { padding-top: 10rem; }
       .train-variants {
         padding-top: 1.25rem;
       }
@@ -2949,7 +3082,7 @@
         padding-top: 0.35rem;
       }
 
-      .train-variants__verse-line {
+      .train-variants__ticker-text {
         font-size: clamp(1.5rem, 6.5vw, 2.35rem);
       }
 
@@ -2985,7 +3118,7 @@
         overflow: visible;
       }
 
-      .entropy-lab-section__lights {
+      .contact-section__lights {
         filter: blur(56px) saturate(1.25);
         opacity: 0.68;
         animation: none;
@@ -3094,7 +3227,6 @@
         <li><a href="#artist-statement-title">Statement</a></li>
         <li><a href="#art-title">Art</a></li>
         <li><a href="#entropy-lab-title">Entropy Lab</a></li>
-        <li><a href="#inspiration-title">Inspiration</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact" class="nav__link--contact">Contact</a></li>
       </ul>
@@ -3162,7 +3294,7 @@
         <h2 class="series-intro__title" id="art-title">Art</h2>
         <p class="series-intro__desc">Mixed media on canvas (basically everything that I find)</p>
       </div>
-      <div class="art-gallery-carousel series-showcase" id="art-gallery" data-series="water" data-series-carousel tabindex="0" aria-label="Art collection">
+      <div class="art-gallery-carousel series-showcase" id="art-gallery" data-series="water" data-series-carousel data-carousel-filmstrip tabindex="0" aria-label="Art collection">
         <nav class="art-gallery-carousel__nav" aria-label="Art collections">
           <button type="button" class="art-gallery-carousel__nav-item is-active" data-art-collection-nav data-collection="water" aria-selected="true">water</button>
           <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="eruptions" aria-selected="false">eruptions</button>
@@ -3170,6 +3302,7 @@
           <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="cracked" aria-selected="false">cracked</button>
         </nav>
         <div class="art-gallery-carousel__stage series-showcase__stage">
+          <div class="art-gallery-carousel__viewport">
           <div class="series-showcase__slides" data-carousel-slides>
             <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Solitary" data-meta="Water" data-group="Water" role="tabpanel">
               <figure class="series-showcase__figure">
@@ -3334,6 +3467,7 @@
               <p class="art-gallery-carousel__caption">When I Close My Eyes</p>
             </article>
           </div>
+          </div>
           <div class="series-showcase__controls art-gallery-carousel__controls">
             <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-prev aria-label="Previous artwork" disabled>&larr;</button>
             <p class="art-gallery-carousel__caption art-gallery-carousel__caption--controls" data-carousel-caption>Solitary</p>
@@ -3346,7 +3480,11 @@
     <!-- Entropy Lab -->
     <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
       <div class="entropy-lab-section__backdrop" aria-hidden="true">
-        <div class="entropy-lab-section__lights"></div>
+        <div class="entropy-lab-section__video">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/landscape-loop.mp4" type="video/mp4">
+          </video>
+        </div>
         <div class="entropy-lab-section__veil"></div>
       </div>
       <div class="series-intro">
@@ -3359,6 +3497,7 @@
           <button type="button" class="entropy-lab-carousel__nav-item is-active" data-entropy-nav aria-selected="true">the tunnel</button>
           <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">energy doodles</button>
           <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">digital art</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">photography</button>
         </nav>
 
         <div class="entropy-lab-carousel__viewport">
@@ -3366,7 +3505,10 @@
             <div class="train-variants" id="the-tunnel" aria-label="The tunnel">
               <div class="train-variants__scene">
                 <div class="train-variants__track">
-                <p class="train-variants__caption">move your<br>mouse and<br>tickle me</p>
+                <p class="train-variants__caption">
+                  <span class="train-variants__caption-desktop">move your<br>mouse and<br>tickle me</span>
+                  <span class="train-variants__caption-mobile">click me</span>
+                </p>
             <figure class="train-variants__item train-variants__item--lead" data-depth="0">
               <img src="assets/train.webp" alt="Abstract train" loading="eager" decoding="async">
             </figure>
@@ -3496,16 +3638,17 @@
             <figure class="train-variants__item" data-depth="42">
               <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
-            <figure class="train-variants__item train-variants__item--snake-head" data-depth="43">
+            <figure class="train-variants__item train-variants__item--snake-head" data-depth="43" data-tunnel-snake-head tabindex="0" role="button" aria-label="Tickle me">
               <img src="assets/me-snake.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
             </figure>
                 </div>
                 <div class="train-variants__verse" data-tunnel-verse aria-live="polite">
-                  <p class="train-variants__verse-line" data-verse-line>With every paint stroke</p>
-                  <p class="train-variants__verse-line" data-verse-line>I enter the tunnel.</p>
-                  <p class="train-variants__verse-line" data-verse-line>When I come out,</p>
-                  <p class="train-variants__verse-line" data-verse-line>I am a little happier</p>
-                  <p class="train-variants__verse-line" data-verse-line>than before.</p>
+                  <div class="train-variants__ticker">
+                    <div class="train-variants__ticker-track">
+                      <span class="train-variants__ticker-text">With every paint stroke  I enter the tunnel.  When I come out,  I am a little happier  than before.</span>
+                      <span class="train-variants__ticker-text" aria-hidden="true">With every paint stroke  I enter the tunnel.  When I come out,  I am a little happier  than before.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3534,9 +3677,6 @@
                 </figure>
                 <figure class="statement-panel__visual" data-lightbox data-title="Energy VII" data-meta="Entropy Lab">
                   <img src="assets/doodles/IMG_3190.jpg" alt="Energy VII — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy VIII" data-meta="Entropy Lab">
-                  <img src="assets/doodles/IMG_3201.jpg" alt="Energy VIII — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
                 </figure>
                 <figure class="statement-panel__visual" data-lightbox data-title="Positano" data-meta="Entropy Lab">
                   <img src="assets/doodles/positano.jpg" alt="Positano — energy doodle by Giovanna Ferrari" loading="lazy" decoding="async">
@@ -3575,152 +3715,143 @@
               </div>
             </div>
           </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Photography" hidden>
+            <div class="entropy-panel entropy-panel--photography">
+              <p class="entropy-panel__desc">Selected photography</p>
+              <div class="inspiration-carousel" data-series-carousel data-carousel-filmstrip tabindex="0" aria-label="Photography">
+                <div class="inspiration-carousel__stage series-showcase__stage">
+                  <div class="art-gallery-carousel__viewport">
+                  <div class="series-showcase__slides" data-carousel-slides>
+                    <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Photography" role="tabpanel">
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="eager" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Stream</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Railroad" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/2.railroad.webp" alt="Photograph — Railroad" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Railroad</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Against the Sky" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/3.against%20the%20sky.webp" alt="Photograph — Against the Sky" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Against the Sky</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Carrara" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/4.carrara.webp" alt="Photograph — Carrara" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Carrara</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="St. Michelle" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/st%20michelle.jpg" alt="Photograph — St. Michelle" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">St. Michelle</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anything Possible" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/5.%20anything%20possible.webp" alt="Photograph — Anything Possible" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Anything Possible</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Above the Clouds" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/6.%20above%20the%20clouds.webp" alt="Photograph — Above the Clouds" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Above the Clouds</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sisi" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/7%20sisi.webp" alt="Photograph — Sisi" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Sisi</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Melting" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/8%20melting.webp" alt="Photograph — Melting" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Melting</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Foam" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/9%20foam.webp" alt="Photograph — Foam" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Foam</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Red" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/10%20red.webp" alt="Photograph — Red" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Red</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Havasupai" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/11%20havasupai.webp" alt="Photograph — Havasupai" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Havasupai</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Sign" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/12%20a%20sign.webp" alt="Photograph — A Sign" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">A Sign</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Wheel of Life" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/wheel%20of%20life.jpg" alt="Photograph — Wheel of Life" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Wheel of Life</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Rainbow" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/13%20rainbow.webp" alt="Photograph — Rainbow" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Rainbow</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Eye on the Horizon" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/over-new-york.jpg" alt="Photograph — The Eye on the Horizon" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">The Eye on the Horizon</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sunset" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/14%20sunset.webp" alt="Photograph — Sunset" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Sunset</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0488" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/15%20IMG_0488.webp" alt="Photograph — IMG 0488" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">IMG 0488</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0494" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/16%20IMG_0494.webp" alt="Photograph — IMG 0494" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">IMG 0494</p>
+                    </article>
+                  </div>
+                  </div>
+                  <div class="series-showcase__controls">
+                    <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-prev aria-label="Previous photograph" disabled>&larr;</button>
+                    <p class="inspiration-carousel__caption inspiration-carousel__caption--controls" data-carousel-caption aria-live="polite">Stream</p>
+                    <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-next aria-label="Next photograph">&rarr;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
         <div class="entropy-lab-carousel__controls">
           <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-prev aria-label="Previous experiment" disabled>&larr;</button>
-          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 03</p>
+          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 04</p>
           <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-next aria-label="Next experiment">&rarr;</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Inspiration -->
-    <section class="inspiration-section" aria-labelledby="inspiration-title">
-      <div class="inspiration-section__video" aria-hidden="true">
-        <video autoplay muted loop playsinline preload="auto">
-          <source src="assets/landscape-loop.mp4" type="video/mp4">
-        </video>
-        <div class="inspiration-section__overlay"></div>
-      </div>
-      <div class="inspiration-section__content">
-        <div class="series-intro">
-          <h2 class="series-intro__title" id="inspiration-title">Inspiration</h2>
-          <p class="series-intro__desc">Selected photography</p>
-        </div>
-        <div class="inspiration-carousel" data-series-carousel tabindex="0" aria-label="Inspiration photographs">
-          <div class="inspiration-carousel__stage series-showcase__stage">
-            <div class="series-showcase__slides" data-carousel-slides>
-            <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Inspiration" role="tabpanel">
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/1.%20stream.webp" alt="Inspiration photograph — Stream" loading="eager" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Stream</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Railroad" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/2.railroad.webp" alt="Inspiration photograph — Railroad" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Railroad</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Against the Sky" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/3.against%20the%20sky.webp" alt="Inspiration photograph — Against the Sky" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Against the Sky</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Carrara" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/4.carrara.webp" alt="Inspiration photograph — Carrara" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Carrara</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="St. Michelle" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/st%20michelle.jpg" alt="Inspiration photograph — St. Michelle" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">St. Michelle</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anything Possible" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/5.%20anything%20possible.webp" alt="Inspiration photograph — Anything Possible" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Anything Possible</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Above the Clouds" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/6.%20above%20the%20clouds.webp" alt="Inspiration photograph — Above the Clouds" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Above the Clouds</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sisi" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/7%20sisi.webp" alt="Inspiration photograph — Sisi" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Sisi</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Melting" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/8%20melting.webp" alt="Inspiration photograph — Melting" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Melting</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Foam" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/9%20foam.webp" alt="Inspiration photograph — Foam" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Foam</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Red" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/10%20red.webp" alt="Inspiration photograph — Red" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Red</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Havasupai" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/11%20havasupai.webp" alt="Inspiration photograph — Havasupai" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Havasupai</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Sign" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/12%20a%20sign.webp" alt="Inspiration photograph — A Sign" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">A Sign</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Wheel of Life" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/wheel%20of%20life.jpg" alt="Inspiration photograph — Wheel of Life" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Wheel of Life</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Rainbow" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/13%20rainbow.webp" alt="Inspiration photograph — Rainbow" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Rainbow</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Eye on the Horizon" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/over-new-york.jpg" alt="Inspiration photograph — The Eye on the Horizon" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">The Eye on the Horizon</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sunset" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/14%20sunset.webp" alt="Inspiration photograph — Sunset" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">Sunset</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0488" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/15%20IMG_0488.webp" alt="Inspiration photograph — IMG 0488" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">IMG 0488</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0494" data-meta="Inspiration" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Inspiration/16%20IMG_0494.webp" alt="Inspiration photograph — IMG 0494" loading="lazy" decoding="async">
-              </figure>
-              <p class="inspiration-carousel__caption">IMG 0494</p>
-            </article>
-            </div>
-            <div class="series-showcase__controls">
-              <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-prev aria-label="Previous photograph" disabled>&larr;</button>
-              <p class="series-showcase__counter inspiration-carousel__counter" data-carousel-counter aria-live="polite">01 / 19</p>
-              <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-next aria-label="Next photograph">&rarr;</button>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -3775,7 +3906,8 @@
     <!-- Contact -->
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
       <div class="contact-section__backdrop" aria-hidden="true">
-        <img src="assets/only-art-helps.webp" alt="" loading="lazy" decoding="async">
+        <div class="contact-section__lights"></div>
+        <div class="contact-section__veil"></div>
       </div>
       <div class="contact-section__inner">
         <p class="contact-section__label">Contact</p>
@@ -3952,6 +4084,9 @@
       const counter = root.querySelector('[data-carousel-counter]');
       const captionEl = root.querySelector('[data-carousel-caption]');
       const isArtGallery = root.id === 'art-gallery';
+      const isFilmstrip = root.hasAttribute('data-carousel-filmstrip');
+      const filmstripViewport = isFilmstrip ? root.querySelector('.art-gallery-carousel__viewport') : null;
+      const filmstripTrack = isFilmstrip ? root.querySelector('[data-carousel-slides]') : null;
       const backdropHost = isArtGallery ? root.closest('#art') : stage;
       let backdrop = backdropHost?.querySelector('[data-carousel-backdrop]');
       let backdropImg = backdrop?.querySelector('.series-showcase__backdrop-img');
@@ -3996,11 +4131,11 @@
       const pad = n => String(n).padStart(2, '0');
 
       const updateCarouselCaption = index => {
-        if (!captionEl || !isArtGallery) return;
+        if (!captionEl || !isFilmstrip) return;
         const slide = slides[index];
         if (!slide) return;
         captionEl.textContent = slide.dataset.title
-          || slide.querySelector('.art-gallery-carousel__caption')?.textContent?.trim()
+          || slide.querySelector('.art-gallery-carousel__caption, .inspiration-carousel__caption')?.textContent?.trim()
           || '';
       };
 
@@ -4034,7 +4169,7 @@
       };
 
       const preloadSlideImages = (...indices) => {
-        if (!isArtGallery) return;
+        if (!isFilmstrip) return;
         indices.forEach(index => {
           const img = slides[index]?.querySelector('img');
           if (!img) return;
@@ -4107,12 +4242,46 @@
 
       const AUTOPLAY_WITHIN_MS = 9000;
       const AUTOPLAY_COLLECTION_MS = 10000;
-      const ART_CROSSFADE_MS = 650;
+      const ART_TRACK_MS = 650;
       let autoplayTimer = null;
       let transitionTimer = null;
       let isTransitioning = false;
       let outgoingSlide = null;
       let onCrossfadeEnd = null;
+
+      const updateFilmstripTrack = (index = current, { animate = true } = {}) => {
+        if (!filmstripTrack || !filmstripViewport || !slides[index]) return;
+
+        const viewportWidth = filmstripViewport.clientWidth;
+        if (viewportWidth < 1) return;
+
+        filmstripTrack.style.transition = 'none';
+        filmstripTrack.style.transform = 'none';
+
+        const slide = slides[index];
+        const trackRect = filmstripTrack.getBoundingClientRect();
+        const slideRect = slide.getBoundingClientRect();
+        const slideWidth = slideRect.width;
+        const slideOffset = slideRect.left - trackRect.left;
+
+        let offset = slideOffset + slideWidth / 2 - viewportWidth / 2;
+        const maxOffset = Math.max(0, filmstripTrack.scrollWidth - viewportWidth);
+        offset = Math.max(0, Math.min(offset, maxOffset));
+
+        if (!animate || prefersReducedMotion) {
+          filmstripTrack.style.transition = 'none';
+        } else {
+          filmstripTrack.style.transition = '';
+        }
+
+        filmstripTrack.style.transform = `translate3d(${-offset}px, 0, 0)`;
+
+        if (!animate || prefersReducedMotion) {
+          requestAnimationFrame(() => {
+            filmstripTrack.style.transition = '';
+          });
+        }
+      };
 
       const stopAutoplay = () => {
         if (autoplayTimer) {
@@ -4126,7 +4295,7 @@
           clearTimeout(transitionTimer);
           transitionTimer = null;
         }
-        if (!isArtGallery) return;
+        if (!isFilmstrip) return;
         slides.forEach(slide => {
           slide.classList.remove('is-leaving', 'is-pre-enter');
         });
@@ -4157,13 +4326,46 @@
         scheduleAutoplay();
       };
 
-      if (isArtGallery) {
+      if (isFilmstrip) {
         slides.forEach(slide => {
           slide.removeAttribute('hidden');
           const img = slide.querySelector('img');
           if (img) img.loading = 'eager';
         });
         preloadSlideImages(0, 1, 2);
+        slides.forEach(slide => {
+          const img = slide.querySelector('img');
+          if (img && !img.complete) {
+            img.addEventListener('load', () => updateFilmstripTrack(current, { animate: false }), { once: true });
+          }
+        });
+        window.addEventListener('resize', () => updateFilmstripTrack(current, { animate: false }));
+        window.addEventListener('filmstrip-layout', () => updateFilmstripTrack(current, { animate: false }));
+        if (filmstripViewport && typeof ResizeObserver !== 'undefined') {
+          const filmstripResizeObserver = new ResizeObserver(() => {
+            if (filmstripViewport.clientWidth > 0) {
+              updateFilmstripTrack(current, { animate: false });
+            }
+          });
+          filmstripResizeObserver.observe(filmstripViewport);
+        }
+        const filmstripPanel = root.closest('[data-entropy-panel]');
+        if (filmstripPanel && typeof IntersectionObserver !== 'undefined') {
+          const filmstripVisibilityObserver = new IntersectionObserver(entries => {
+            if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio > 0)) {
+              requestAnimationFrame(() => updateFilmstripTrack(current, { animate: false }));
+            }
+          }, { threshold: [0, 0.01, 0.1] });
+          filmstripVisibilityObserver.observe(filmstripPanel);
+        }
+        slides.forEach((slide, i) => {
+          slide.addEventListener('click', e => {
+            if (i === current) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            goTo(i, { userInitiated: true });
+          });
+        });
       }
 
       const updateBackdrop = (index, { crossfade = false } = {}) => {
@@ -4213,7 +4415,7 @@
           item.setAttribute('aria-selected', active);
         });
 
-        if (!isArtGallery) {
+        if (!isFilmstrip) {
           slides.forEach((slide, i) => {
             slide.toggleAttribute('hidden', i !== current);
           });
@@ -4239,6 +4441,10 @@
         const navScroll = root.querySelector('.series-showcase__nav-scroll');
         if (activeNav && navScroll) {
           scrollNavItemIntoView(activeNav, navScroll);
+        }
+
+        if (isFilmstrip) {
+          updateFilmstripTrack(current, { animate: true });
         }
 
         if (userInitiated) resetAutoplay();
@@ -4303,48 +4509,14 @@
 
       const goTo = (index, { userInitiated = false } = {}) => {
         const nextIndex = Math.max(0, Math.min(slides.length - 1, index));
-        if (nextIndex === current && !isTransitioning) return;
+        if (nextIndex === current) return;
 
-        if (isArtGallery && !prefersReducedMotion) {
+        if (isFilmstrip) {
           if (isTransitioning) {
             finishCrossfade();
           }
-          if (nextIndex === current) return;
-
-          isTransitioning = true;
-
-          const outgoing = slides[current];
-          const incoming = slides[nextIndex];
-          outgoingSlide = outgoing;
-
-          incoming.classList.remove('is-leaving');
-          incoming.classList.add('is-active');
-          incoming.setAttribute('aria-hidden', 'false');
-          outgoing.classList.add('is-leaving');
-          outgoing.setAttribute('aria-hidden', 'true');
-          root.classList.add('is-crossfading');
-
-          updateGoToMetadata(nextIndex, { userInitiated, crossfade: true });
-
-          requestAnimationFrame(() => {
-            outgoing.classList.remove('is-active');
-          });
-
-          onCrossfadeEnd = event => {
-            if (event.propertyName !== 'opacity') return;
-            if (event.target !== outgoing) return;
-            if (isTransitioning && current === nextIndex) {
-              finishCrossfade();
-            }
-          };
-
-          outgoing.addEventListener('transitionend', onCrossfadeEnd);
-          transitionTimer = window.setTimeout(() => {
-            if (isTransitioning && current === nextIndex) {
-              finishCrossfade();
-            }
-          }, ART_CROSSFADE_MS + 80);
-
+          clearTransitionState();
+          applyGoToState(nextIndex, { userInitiated });
           return;
         }
 
@@ -4417,34 +4589,17 @@
         autoplayObserver.observe(root);
       }
 
-      if (isArtGallery && !prefersReducedMotion) {
-        slides.forEach((slide, i) => {
-          slide.classList.remove('is-active', 'is-leaving');
-          slide.setAttribute('aria-hidden', i !== 0);
-        });
-        current = 0;
-        updateBackdrop(0);
-        const firstGroup = slides[0]?.dataset.group;
-        if (firstGroup) {
-          applySeriesTheme(firstGroup);
-          updateCollectionPills(firstGroup);
-        }
-        updateNavButtons();
-        if (counter) counter.textContent = `${pad(1)} / ${pad(slides.length)}`;
-        updateCarouselCaption(0);
-        preloadSlideImages(0, 1, 2);
+      if (isFilmstrip) {
+        applyGoToState(0);
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            slides[0].classList.add('is-active');
-            slides[0].setAttribute('aria-hidden', 'false');
-          });
+          requestAnimationFrame(() => updateFilmstripTrack(0, { animate: false }));
         });
       } else {
         updateBackdrop(0);
         goTo(0);
       }
 
-      startAutoplay();
+      if (isArtGallery) startAutoplay();
     });
 
 
@@ -4485,6 +4640,13 @@
             });
           });
         }
+        if (panels[current]?.querySelector('[data-carousel-filmstrip]')) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              window.dispatchEvent(new Event('filmstrip-layout'));
+            });
+          });
+        }
       };
 
       navItems.forEach((btn, i) => btn.addEventListener('click', () => goTo(i)));
@@ -4518,6 +4680,7 @@
     const trainCaption = document.querySelector('.train-variants__caption');
     const trainItems = [...document.querySelectorAll('.train-variants__item[data-depth]')];
     const trainMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const trainMobileQuery = window.matchMedia('(max-width: 1024px), (pointer: coarse), (hover: none)');
     const TRAIN_TAIL_DEPTH = 42;
     const TRAIN_MAX_DEPTH = 43;
     const TRAIN_HEAD_SCALE = (1 - TRAIN_TAIL_DEPTH * 0.0195) * 1.95;
@@ -4645,7 +4808,7 @@
         return;
       }
 
-      trainWaveBoost = Math.max(0.55, trainWaveBoost * 0.94);
+      trainWaveBoost = Math.max(0.55, trainWaveBoost * 0.97);
       applyTrainSnakeMotion(trainPhase, trainWaveBoost);
 
       if (trainWaveBoost > 0.56) {
@@ -4668,8 +4831,8 @@
       const move = Math.hypot(dx, dy);
       if (move > 0.5) {
         trainSection?.classList.add('is-snake-moving');
-        trainPhase += move * 0.07 + dx * 0.04 + dy * 0.03;
-        trainWaveBoost = Math.min(1.8, Math.max(0.55, trainWaveBoost + move * 0.014));
+        trainPhase += move * 0.03 + dx * 0.016 + dy * 0.012;
+        trainWaveBoost = Math.min(1.5, Math.max(0.55, trainWaveBoost + move * 0.007));
         applyTrainSnakeMotion(trainPhase, trainWaveBoost);
 
         if (trainSnakeDecayFrame) {
@@ -4727,7 +4890,7 @@
 
       const TRAIN_BODY_SRC = 'assets/train.webp';
       const TRAIN_LAUGH_SRC = 'assets/laugh.JPG';
-      const trainVerseLines = [...trainSection.querySelectorAll('[data-verse-line]')];
+      const trainSnakeHead = trainSection.querySelector('[data-tunnel-snake-head]');
       const trainBodyImages = trainItems
         .filter(item => !item.classList.contains('train-variants__item--snake-head'))
         .map(item => item.querySelector('img'))
@@ -4741,11 +4904,11 @@
       });
 
       let trainLaughOn = false;
-      let verseRevealIndex = 0;
-      let verseProgressTimer = null;
       let trainCaptionIdleTimer = null;
-      const VERSE_REVEAL_GAP_MS = 900;
+      let trainMobileMotionFrame = null;
       const TRAIN_CAPTION_IDLE_MS = 420;
+      const TRAIN_MOBILE_TICKLE_MS = 5200;
+      const TRAIN_MOBILE_PHASE_STEP = 0.012;
 
       const showTrainCaption = () => {
         trainSection?.classList.remove('is-snake-moving');
@@ -4756,31 +4919,29 @@
         trainCaptionIdleTimer = window.setTimeout(showTrainCaption, TRAIN_CAPTION_IDLE_MS);
       };
 
-      const resetTunnelVerse = () => {
-        clearInterval(verseProgressTimer);
-        verseProgressTimer = null;
-        verseRevealIndex = 0;
-        trainVerseLines.forEach(line => line.classList.remove('is-visible'));
-      };
-
-      const revealNextVerseLine = () => {
-        if (!trainVerseLines.length || verseRevealIndex >= trainVerseLines.length) {
-          clearInterval(verseProgressTimer);
-          verseProgressTimer = null;
-          return;
+      const stopTrainMobileMotion = () => {
+        if (trainMobileMotionFrame) {
+          cancelAnimationFrame(trainMobileMotionFrame);
+          trainMobileMotionFrame = null;
         }
-        trainVerseLines[verseRevealIndex].classList.add('is-visible');
-        verseRevealIndex += 1;
       };
 
-      const startVerseProgression = () => {
-        if (verseProgressTimer) return;
-        revealNextVerseLine();
-        verseProgressTimer = window.setInterval(revealNextVerseLine, VERSE_REVEAL_GAP_MS);
+      const runTrainMobileMotion = () => {
+        if (trainMotionQuery.matches) return;
+        trainPhase += TRAIN_MOBILE_PHASE_STEP;
+        trainWaveBoost = Math.min(1.25, Math.max(0.7, trainWaveBoost + 0.004));
+        applyTrainSnakeMotion(trainPhase, trainWaveBoost);
+        trainMobileMotionFrame = requestAnimationFrame(runTrainMobileMotion);
       };
+
+      const syncTrainTouchUi = () => {
+        trainSection?.classList.toggle('is-touch-ui', trainMobileQuery.matches);
+      };
+
+      syncTrainTouchUi();
+      trainMobileQuery.addEventListener('change', syncTrainTouchUi);
 
       const setTrainLaughMode = on => {
-        if (trainLaughOn === on) return;
         trainLaughOn = on;
         trainSection.classList.toggle('is-tickling', on);
         trainBodyImages.forEach(img => {
@@ -4804,28 +4965,72 @@
 
       const stopTickling = () => {
         clearTimeout(trainLaughIdleTimer);
+        stopTrainMobileMotion();
         setTrainLaughMode(false);
         stopSnakeMotion();
+        showTrainCaption();
+      };
+
+      const stopTicklingDesktop = () => {
+        if (isTrainTouchUi()) return;
+        clearTimeout(trainLaughIdleTimer);
+        setTrainLaughMode(false);
+        stopSnakeMotion();
+        showTrainCaption();
+      };
+
+      const isTrainTouchUi = () => trainSection?.classList.contains('is-touch-ui');
+
+      const startTunnelTickle = ({ mobile = false } = {}) => {
+        setTrainLaughMode(true);
+        clearTimeout(trainLaughIdleTimer);
+
+        if (mobile && !trainMotionQuery.matches) {
+          trainSection?.classList.add('is-snake-moving');
+          stopTrainMobileMotion();
+          if (trainSnakeDecayFrame) {
+            cancelAnimationFrame(trainSnakeDecayFrame);
+            trainSnakeDecayFrame = null;
+          }
+          runTrainMobileMotion();
+          trainLaughIdleTimer = window.setTimeout(stopTickling, TRAIN_MOBILE_TICKLE_MS);
+        }
       };
 
       const onTrainPointerMove = event => {
+        if (isTrainTouchUi()) return;
         onTrainSnakePointerMove(event);
         scheduleShowTrainCaption();
-        setTrainLaughMode(true);
-        startVerseProgression();
-        clearTimeout(trainLaughIdleTimer);
-        trainLaughIdleTimer = setTimeout(stopTickling, 400);
+        startTunnelTickle();
       };
+
+      const activateTunnelTouch = event => {
+        if (!isTrainTouchUi()) return;
+        event.preventDefault();
+        event.stopPropagation();
+        startTunnelTickle({ mobile: true });
+      };
+
+      trainCaption?.addEventListener('click', activateTunnelTouch);
+
+      if (trainSnakeHead) {
+        trainSnakeHead.addEventListener('click', activateTunnelTouch);
+        trainSnakeHead.addEventListener('keydown', event => {
+          if (!isTrainTouchUi()) return;
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          startTunnelTickle({ mobile: true });
+        });
+      }
 
       if (trainTrack && trainBodyImages.length) {
         trainTrack.addEventListener('pointermove', onTrainPointerMove, { passive: true });
         trainTrack.addEventListener('pointerleave', () => {
+          if (isTrainTouchUi()) return;
           trainPointerOnSnake = false;
           clearTimeout(trainLaughIdleTimer);
           clearTimeout(trainCaptionIdleTimer);
-          showTrainCaption();
-          setTrainLaughMode(false);
-          resetTunnelVerse();
+          stopTicklingDesktop();
           resetTrainStatic();
         });
       }
