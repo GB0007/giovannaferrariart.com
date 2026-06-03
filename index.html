@@ -3776,7 +3776,17 @@
           Interested in a piece, a commission, or exhibiting together?
           Send a message and I&rsquo;ll get back to you.
         </p>
-        <form class="contact-form" id="contact-form" novalidate>
+        <form
+          class="contact-form"
+          id="contact-form"
+          action="https://formsubmit.co/giovanna.ferrari.art@gmail.com"
+          method="POST"
+        >
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_subject" value="Art inquiry">
+          <input type="hidden" name="_replyto" value="">
+          <input type="hidden" name="_next" id="contact-next" value="">
           <div class="contact-form__honeypot" aria-hidden="true">
             <label for="contact-company">Company</label>
             <input type="text" id="contact-company" name="_honey" tabindex="-1" autocomplete="off">
@@ -4831,8 +4841,9 @@
     const contactFeedback = document.getElementById('contact-feedback');
     const contactSuccess = document.getElementById('contact-success');
     const contactSubmitBtn = contactForm?.querySelector('.contact-form__submit');
-    const CONTACT_FORM_ENDPOINT = 'https://formsubmit.co/ajax/giovanna.ferrari.art@gmail.com';
-    const CONTACT_ERROR_MESSAGE = 'Your message could not be sent. Please try again or email giovanna.ferrari.art@gmail.com directly.';
+    const contactNextField = document.getElementById('contact-next');
+    const contactSubjectField = contactForm?.querySelector('[name="_subject"]');
+    const contactReplyField = contactForm?.querySelector('[name="_replyto"]');
 
     const resetSubmitButton = () => {
       if (!contactSubmitBtn) return;
@@ -4863,60 +4874,62 @@
       contactSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
 
-    contactForm?.addEventListener('submit', async e => {
-      e.preventDefault();
+    const buildContactReturnUrl = () => {
+      const returnUrl = new URL(window.location.href);
+      returnUrl.searchParams.set('contact', 'sent');
+      returnUrl.hash = 'contact';
+      return returnUrl.toString();
+    };
+
+    if (new URLSearchParams(window.location.search).get('contact') === 'sent') {
+      showFormSuccess();
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('contact');
+      history.replaceState({}, '', `${cleanUrl.pathname}${cleanUrl.hash || '#contact'}`);
+    }
+
+    contactForm?.addEventListener('submit', e => {
       clearFormFeedback();
 
       if (!contactForm.checkValidity()) {
+        e.preventDefault();
         contactForm.reportValidity();
         return;
       }
 
-      const formData = new FormData(contactForm);
-      const name = formData.get('name')?.toString().trim() || 'Visitor';
-      const email = formData.get('email')?.toString().trim();
+      const name = contactForm.querySelector('[name="name"]')?.value.trim() || 'Visitor';
+      const email = contactForm.querySelector('[name="email"]')?.value.trim();
 
       if (!email) {
+        e.preventDefault();
         showFormError('Please enter a valid email address.');
         return;
       }
 
-      formData.set('_subject', `Art inquiry from ${name}`);
-      formData.set('_replyto', email);
-      formData.set('_captcha', 'false');
-      formData.set('_template', 'table');
+      if (window.location.protocol === 'file:') {
+        e.preventDefault();
+        showFormError('The contact form needs to run on a web server. Open this site at http://localhost:8787 instead of from a local file.');
+        return;
+      }
+
+      if (contactSubjectField) {
+        contactSubjectField.value = `Art inquiry from ${name}`;
+      }
+      if (contactReplyField) {
+        contactReplyField.value = email;
+      }
+      if (contactNextField) {
+        contactNextField.value = buildContactReturnUrl();
+      }
 
       if (contactSubmitBtn) {
         contactSubmitBtn.disabled = true;
         contactSubmitBtn.textContent = 'Sending…';
       }
+    });
 
-      try {
-        const response = await fetch(CONTACT_FORM_ENDPOINT, {
-          method: 'POST',
-          headers: { Accept: 'application/json' },
-          body: formData,
-        });
-
-        let data = {};
-        try {
-          data = await response.json();
-        } catch {
-          data = {};
-        }
-
-        const message = String(data.message || '').toLowerCase();
-        const isSuccess = response.ok && data.success !== false && !message.includes('error');
-        if (!isSuccess) {
-          throw new Error(data.message || `Request failed (${response.status})`);
-        }
-
-        showFormSuccess();
-      } catch (err) {
-        const detail = err instanceof Error && err.message && !err.message.startsWith('Request failed')
-          ? ` ${err.message}`
-          : '';
-        showFormError(`${CONTACT_ERROR_MESSAGE}${detail}`);
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) {
         resetSubmitButton();
       }
     });
