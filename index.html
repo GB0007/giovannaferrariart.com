@@ -2741,6 +2741,14 @@
       overflow: hidden;
     }
 
+    .contact-form__frame {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: 0;
+      visibility: hidden;
+    }
+
     .contact-section__links {
       display: flex;
       flex-direction: column;
@@ -3781,12 +3789,12 @@
           id="contact-form"
           action="https://formsubmit.co/giovanna.ferrari.art@gmail.com"
           method="POST"
+          target="contact-form-frame"
         >
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_subject" value="Art inquiry">
           <input type="hidden" name="_replyto" value="">
-          <input type="hidden" name="_next" id="contact-next" value="">
           <div class="contact-form__honeypot" aria-hidden="true">
             <label for="contact-company">Company</label>
             <input type="text" id="contact-company" name="_honey" tabindex="-1" autocomplete="off">
@@ -3806,6 +3814,14 @@
           <p id="contact-feedback" class="contact-form__feedback contact-form__feedback--error" role="alert" aria-live="assertive" hidden></p>
           <button type="submit" class="contact-form__submit">Send message</button>
         </form>
+        <iframe
+          name="contact-form-frame"
+          id="contact-form-frame"
+          class="contact-form__frame"
+          title="Contact form submission"
+          tabindex="-1"
+          hidden
+        ></iframe>
         <div id="contact-success" class="contact-form__success" role="status" aria-live="polite" hidden>
           <p class="contact-form__thanks">Thanks for getting in touch — I&rsquo;ll get back to you as soon as possible.</p>
         </div>
@@ -4849,10 +4865,12 @@
     const contactForm = document.getElementById('contact-form');
     const contactFeedback = document.getElementById('contact-feedback');
     const contactSuccess = document.getElementById('contact-success');
+    const contactFrame = document.getElementById('contact-form-frame');
     const contactSubmitBtn = contactForm?.querySelector('.contact-form__submit');
-    const contactNextField = document.getElementById('contact-next');
     const contactSubjectField = contactForm?.querySelector('[name="_subject"]');
     const contactReplyField = contactForm?.querySelector('[name="_replyto"]');
+    let contactFormPending = false;
+    let contactFormTimeout = null;
 
     const resetSubmitButton = () => {
       if (!contactSubmitBtn) return;
@@ -4883,19 +4901,24 @@
       contactSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
 
-    const buildContactReturnUrl = () => {
-      const returnUrl = new URL(window.location.href);
-      returnUrl.searchParams.set('contact', 'sent');
-      returnUrl.hash = 'contact';
-      return returnUrl.toString();
+    const finishContactSubmit = () => {
+      if (!contactFormPending) return;
+      contactFormPending = false;
+      if (contactFormTimeout) {
+        clearTimeout(contactFormTimeout);
+        contactFormTimeout = null;
+      }
+      contactForm?.reset();
+      showFormSuccess();
+      if (contactFrame) {
+        contactFrame.src = 'about:blank';
+      }
     };
 
-    if (new URLSearchParams(window.location.search).get('contact') === 'sent') {
-      showFormSuccess();
-      const cleanUrl = new URL(window.location.href);
-      cleanUrl.searchParams.delete('contact');
-      history.replaceState({}, '', `${cleanUrl.pathname}${cleanUrl.hash || '#contact'}`);
-    }
+    contactFrame?.addEventListener('load', () => {
+      if (!contactFormPending) return;
+      finishContactSubmit();
+    });
 
     contactForm?.addEventListener('submit', e => {
       clearFormFeedback();
@@ -4927,14 +4950,19 @@
       if (contactReplyField) {
         contactReplyField.value = email;
       }
-      if (contactNextField) {
-        contactNextField.value = buildContactReturnUrl();
-      }
+
+      contactFormPending = true;
 
       if (contactSubmitBtn) {
         contactSubmitBtn.disabled = true;
         contactSubmitBtn.textContent = 'Sending…';
       }
+
+      contactFormTimeout = window.setTimeout(() => {
+        if (contactFormPending) {
+          finishContactSubmit();
+        }
+      }, 12000);
     });
 
     window.addEventListener('pageshow', event => {
