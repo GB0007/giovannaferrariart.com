@@ -2861,10 +2861,12 @@
 
     .contact-form__frame {
       position: absolute;
-      width: 0;
-      height: 0;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
       border: 0;
-      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .contact-section__links {
@@ -3952,7 +3954,6 @@
           class="contact-form__frame"
           title="Contact form submission"
           tabindex="-1"
-          hidden
         ></iframe>
         <div id="contact-success" class="contact-form__success" role="status" aria-live="polite" hidden>
           <p class="contact-form__thanks">Thanks for getting in touch — I&rsquo;ll get back to you as soon as possible.</p>
@@ -5074,8 +5075,7 @@
     const contactSubmitBtn = contactForm?.querySelector('.contact-form__submit');
     const contactSubjectField = contactForm?.querySelector('[name="_subject"]');
     const contactReplyField = contactForm?.querySelector('[name="_replyto"]');
-    let contactFormPending = false;
-    let contactFormTimeout = null;
+    const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/giovanna.ferrari.art@gmail.com';
 
     const resetSubmitButton = () => {
       if (!contactSubmitBtn) return;
@@ -5106,45 +5106,54 @@
       contactSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
 
-    const finishContactSubmit = () => {
-      if (!contactFormPending) return;
-      contactFormPending = false;
-      if (contactFormTimeout) {
-        clearTimeout(contactFormTimeout);
-        contactFormTimeout = null;
+    const submitContactViaFrame = () => new Promise((resolve, reject) => {
+      if (!contactForm || !contactFrame) {
+        reject(new Error('Form frame unavailable'));
+        return;
       }
-      contactForm?.reset();
-      showFormSuccess();
-      if (contactFrame) {
-        contactFrame.src = 'about:blank';
-      }
-    };
 
-    contactFrame?.addEventListener('load', () => {
-      if (!contactFormPending) return;
-      finishContactSubmit();
+      let settled = false;
+      const finish = (fn, value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeoutId);
+        contactFrame.removeEventListener('load', onLoad);
+        fn(value);
+      };
+
+      const onLoad = () => finish(resolve);
+      const timeoutId = window.setTimeout(() => {
+        finish(reject, new Error('Form submission timed out'));
+      }, 20000);
+
+      contactFrame.addEventListener('load', onLoad);
+      contactForm.submit();
     });
 
-    contactForm?.addEventListener('submit', e => {
+    contactForm?.addEventListener('submit', async e => {
+      e.preventDefault();
       clearFormFeedback();
 
       if (!contactForm.checkValidity()) {
-        e.preventDefault();
         contactForm.reportValidity();
         return;
       }
 
       const name = contactForm.querySelector('[name="name"]')?.value.trim() || 'Visitor';
       const email = contactForm.querySelector('[name="email"]')?.value.trim();
+      const message = contactForm.querySelector('[name="message"]')?.value.trim();
 
       if (!email) {
-        e.preventDefault();
         showFormError('Please enter a valid email address.');
         return;
       }
 
+      if (!message) {
+        showFormError('Please enter a message.');
+        return;
+      }
+
       if (window.location.protocol === 'file:') {
-        e.preventDefault();
         showFormError('The contact form needs to run on a web server. Open this site at http://localhost:8787 instead of from a local file.');
         return;
       }
@@ -5156,18 +5165,56 @@
         contactReplyField.value = email;
       }
 
-      contactFormPending = true;
-
       if (contactSubmitBtn) {
         contactSubmitBtn.disabled = true;
         contactSubmitBtn.textContent = 'Sending…';
       }
 
-      contactFormTimeout = window.setTimeout(() => {
-        if (contactFormPending) {
-          finishContactSubmit();
+      const payload = {
+        name,
+        email,
+        message,
+        _subject: `Art inquiry from ${name}`,
+        _replyto: email,
+        _template: 'table',
+        _captcha: 'false',
+      };
+
+      try {
+        const response = await fetch(FORM_SUBMIT_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
         }
-      }, 12000);
+
+        const data = await response.json().catch(() => ({}));
+        if (data.success === false || data.success === 'false') {
+          throw new Error(data.message || 'Submission rejected');
+        }
+
+        contactForm.reset();
+        showFormSuccess();
+      } catch {
+        try {
+          await submitContactViaFrame();
+          contactForm.reset();
+          showFormSuccess();
+        } catch {
+          showFormError('Unable to send your message right now. Please email giovanna.ferrari.art@gmail.com directly.');
+        }
+      } finally {
+        resetSubmitButton();
+        if (contactFrame) {
+          contactFrame.src = 'about:blank';
+        }
+      }
     });
 
     window.addEventListener('pageshow', event => {
