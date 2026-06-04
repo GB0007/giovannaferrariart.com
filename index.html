@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giovanna Ferrari — Art</title>
   <meta name="description" content="Transformative art to evoke personal evolution. Mixed media paintings by Giovanna Ferrari.">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFZSGF3X8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7RFZSGF3X8');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1646,37 +1655,15 @@
 
     .about-section__visual {
       position: relative;
-    }
-
-    .about-section__image {
       overflow: hidden;
       aspect-ratio: 3 / 4;
     }
 
-    .about-section__image img {
+    .about-section__visual img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       filter: grayscale(0.25) brightness(0.92);
-    }
-
-    .about-section__credit {
-      margin-top: 0.75rem;
-      font-family: var(--sans);
-      font-size: 0.6875rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .about-section__credit a {
-      color: rgba(245, 240, 235, 0.55);
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .about-section__credit a:hover {
-      color: var(--text);
     }
 
     .about-section__body p {
@@ -3291,7 +3278,7 @@
     <!-- Artist Statement -->
     <div class="statement-panel">
       <div class="statement-panel__bg" aria-hidden="true">
-        <img data-src="assets/january13+-+me.webp" data-lazy-image alt="" loading="lazy" decoding="async">
+        <img src="assets/january13+-+me.webp" alt="" loading="lazy" decoding="async">
       </div>
       <section class="statement" aria-labelledby="artist-statement-title">
         <h2 class="statement__title" id="artist-statement-title">Artist Statement</h2>
@@ -3330,7 +3317,7 @@
           <div class="series-showcase__slides" data-carousel-slides>
             <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Solitary" data-meta="Water" data-group="Water" role="tabpanel">
               <figure class="series-showcase__figure">
-                <img src="assets/water/solitary.jpg" alt="Solitary" loading="lazy" decoding="async">
+                <img src="assets/water/solitary.jpg" alt="Solitary" loading="eager" decoding="async">
               </figure>
               <p class="art-gallery-carousel__caption">Solitary</p>
             </article>
@@ -3505,8 +3492,8 @@
     <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
       <div class="entropy-lab-section__backdrop" aria-hidden="true">
         <div class="entropy-lab-section__video">
-          <video autoplay muted loop playsinline preload="none" data-lazy-video>
-            <source data-src="assets/landscape-loop.mp4" type="video/mp4">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="assets/landscape-loop.mp4" type="video/mp4">
           </video>
         </div>
         <div class="entropy-lab-section__veil"></div>
@@ -3534,7 +3521,7 @@
                   <span class="train-variants__caption-mobile">click me</span>
                 </p>
             <figure class="train-variants__item train-variants__item--lead" data-depth="0">
-              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+              <img src="assets/train.webp" alt="Abstract train" loading="eager" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="1">
               <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
@@ -3748,7 +3735,7 @@
                   <div class="series-showcase__slides" data-carousel-slides>
                     <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Photography" role="tabpanel">
                       <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="lazy" decoding="async">
+                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="eager" decoding="async">
                       </figure>
                       <p class="inspiration-carousel__caption">Stream</p>
                     </article>
@@ -3887,10 +3874,7 @@
         <h2 id="about-title" class="about-section__title">Giovanna Ferrari</h2>
         <div class="about-section__grid">
           <div class="about-section__visual">
-            <div class="about-section__image">
-              <img src="assets/headshot2024.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
-            </div>
-            <p class="about-section__credit">Photo by <a href="https://www.craigthompsonphoto.com/" target="_blank" rel="noopener noreferrer">Craig Thompson</a></p>
+            <img src="assets/headshot2024.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
           </div>
           <div class="about-section__body">
             <p>
@@ -4064,60 +4048,6 @@
 
     document.querySelectorAll('.series-intro__title, .series-intro__line, .series-intro__desc, .about-section__title').forEach(el => revealObserver.observe(el));
 
-    const loadLazyVideo = video => {
-      if (!video || video.dataset.loaded === 'true') return;
-      video.querySelectorAll('source[data-src]').forEach(source => {
-        source.src = source.dataset.src;
-        delete source.dataset.src;
-      });
-      video.dataset.loaded = 'true';
-      video.load();
-      if (video.autoplay) {
-        video.play().catch(() => {});
-      }
-    };
-
-    const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
-    if (lazyVideos.length) {
-      if ('IntersectionObserver' in window) {
-        const lazyVideoObserver = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            loadLazyVideo(entry.target);
-            lazyVideoObserver.unobserve(entry.target);
-          });
-        }, { rootMargin: '600px 0px', threshold: 0 });
-
-        lazyVideos.forEach(video => lazyVideoObserver.observe(video));
-      } else {
-        lazyVideos.forEach(loadLazyVideo);
-      }
-    }
-
-    const loadLazyImage = img => {
-      if (!img || img.dataset.loaded === 'true' || !img.dataset.src) return;
-      img.src = img.dataset.src;
-      delete img.dataset.src;
-      img.dataset.loaded = 'true';
-    };
-
-    const lazyImages = document.querySelectorAll('img[data-lazy-image]');
-    if (lazyImages.length) {
-      if ('IntersectionObserver' in window) {
-        const lazyImageObserver = new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            loadLazyImage(entry.target);
-            lazyImageObserver.unobserve(entry.target);
-          });
-        }, { rootMargin: '0px', threshold: 0.01 });
-
-        lazyImages.forEach(img => lazyImageObserver.observe(img));
-      } else {
-        lazyImages.forEach(loadLazyImage);
-      }
-    }
-
     document.querySelectorAll('[data-statement]').forEach(statementEl => {
       const panel = statementEl.closest('.statement-panel');
       const authorEl = panel?.querySelector('.statement__author');
@@ -4173,7 +4103,6 @@
       let current = 0;
       let touchStartX = 0;
       let touchStartY = 0;
-      let canLoadFilmstripMedia = !isFilmstrip;
 
       if (backdropHost && !backdrop) {
         backdrop = document.createElement('div');
@@ -4250,18 +4179,14 @@
       };
 
       const preloadSlideImages = (...indices) => {
-        if (!isFilmstrip || !canLoadFilmstripMedia) return;
-        [...new Set(indices)].forEach(index => {
-          if (index < 0 || index >= slides.length) return;
+        if (!isFilmstrip) return;
+        indices.forEach(index => {
           const img = slides[index]?.querySelector('img');
           if (!img) return;
-          const isCurrent = index === current;
-          img.loading = isCurrent ? 'eager' : 'lazy';
-          img.fetchPriority = isCurrent ? 'high' : 'low';
+          img.loading = 'eager';
           if (img.complete && img.naturalWidth > 0) return;
           const loader = new Image();
           loader.decoding = 'async';
-          loader.fetchPriority = isCurrent ? 'high' : 'low';
           loader.src = img.currentSrc || img.src;
         });
       };
@@ -4411,25 +4336,9 @@
         slides.forEach(slide => {
           slide.removeAttribute('hidden');
           const img = slide.querySelector('img');
-          if (img) {
-            img.loading = 'lazy';
-            img.fetchPriority = 'low';
-          }
+          if (img) img.loading = 'eager';
         });
-        if ('IntersectionObserver' in window) {
-          const filmstripLoadTarget = root.closest('[data-entropy-panel]') || root;
-          const filmstripMediaObserver = new IntersectionObserver(entries => {
-            if (!entries.some(entry => entry.isIntersecting)) return;
-            canLoadFilmstripMedia = true;
-            preloadSlideImages(current - 1, current, current + 1);
-            applyGoToState(current);
-            requestAnimationFrame(() => updateFilmstripTrack(current, { animate: false }));
-            filmstripMediaObserver.disconnect();
-          }, { rootMargin: '600px 0px', threshold: 0 });
-          filmstripMediaObserver.observe(filmstripLoadTarget);
-        } else {
-          canLoadFilmstripMedia = true;
-        }
+        preloadSlideImages(0, 1, 2);
         slides.forEach(slide => {
           const img = slide.querySelector('img');
           if (img && !img.complete) {
@@ -4472,7 +4381,6 @@
       const updateBackdrop = (index, { crossfade = false } = {}) => {
         const img = slides[index]?.querySelector('img');
         if (!backdropImg || !img) return;
-        if (isFilmstrip && !canLoadFilmstripMedia) return;
 
         const applyImage = () => {
           const src = img.currentSrc || img.src;
@@ -4701,7 +4609,7 @@
         goTo(0);
       }
 
-      if (isArtGallery && !isFilmstrip) startAutoplay();
+      if (isArtGallery) startAutoplay();
     });
 
 
