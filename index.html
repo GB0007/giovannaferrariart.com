@@ -4110,7 +4110,7 @@
             loadLazyImage(entry.target);
             lazyImageObserver.unobserve(entry.target);
           });
-        }, { rootMargin: '300px 0px', threshold: 0 });
+        }, { rootMargin: '0px', threshold: 0.01 });
 
         lazyImages.forEach(img => lazyImageObserver.observe(img));
       } else {
