@@ -3330,7 +3330,7 @@
           <div class="series-showcase__slides" data-carousel-slides>
             <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Solitary" data-meta="Water" data-group="Water" role="tabpanel">
               <figure class="series-showcase__figure">
-                <img src="assets/water/solitary.jpg" alt="Solitary" loading="eager" decoding="async">
+                <img src="assets/water/solitary.jpg" alt="Solitary" loading="lazy" decoding="async">
               </figure>
               <p class="art-gallery-carousel__caption">Solitary</p>
             </article>
@@ -3505,8 +3505,8 @@
     <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
       <div class="entropy-lab-section__backdrop" aria-hidden="true">
         <div class="entropy-lab-section__video">
-          <video autoplay muted loop playsinline preload="auto">
-            <source src="assets/landscape-loop.mp4" type="video/mp4">
+          <video autoplay muted loop playsinline preload="none" data-lazy-video>
+            <source data-src="assets/landscape-loop.mp4" type="video/mp4">
           </video>
         </div>
         <div class="entropy-lab-section__veil"></div>
@@ -3534,7 +3534,7 @@
                   <span class="train-variants__caption-mobile">click me</span>
                 </p>
             <figure class="train-variants__item train-variants__item--lead" data-depth="0">
-              <img src="assets/train.webp" alt="Abstract train" loading="eager" decoding="async">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
             </figure>
             <figure class="train-variants__item" data-depth="1">
               <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
@@ -3748,7 +3748,7 @@
                   <div class="series-showcase__slides" data-carousel-slides>
                     <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Photography" role="tabpanel">
                       <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="eager" decoding="async">
+                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="lazy" decoding="async">
                       </figure>
                       <p class="inspiration-carousel__caption">Stream</p>
                     </article>
@@ -4064,6 +4064,36 @@
 
     document.querySelectorAll('.series-intro__title, .series-intro__line, .series-intro__desc, .about-section__title').forEach(el => revealObserver.observe(el));
 
+    const loadLazyVideo = video => {
+      if (!video || video.dataset.loaded === 'true') return;
+      video.querySelectorAll('source[data-src]').forEach(source => {
+        source.src = source.dataset.src;
+        delete source.dataset.src;
+      });
+      video.dataset.loaded = 'true';
+      video.load();
+      if (video.autoplay) {
+        video.play().catch(() => {});
+      }
+    };
+
+    const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+    if (lazyVideos.length) {
+      if ('IntersectionObserver' in window) {
+        const lazyVideoObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            loadLazyVideo(entry.target);
+            lazyVideoObserver.unobserve(entry.target);
+          });
+        }, { rootMargin: '600px 0px', threshold: 0 });
+
+        lazyVideos.forEach(video => lazyVideoObserver.observe(video));
+      } else {
+        lazyVideos.forEach(loadLazyVideo);
+      }
+    }
+
     document.querySelectorAll('[data-statement]').forEach(statementEl => {
       const panel = statementEl.closest('.statement-panel');
       const authorEl = panel?.querySelector('.statement__author');
@@ -4119,6 +4149,7 @@
       let current = 0;
       let touchStartX = 0;
       let touchStartY = 0;
+      let canLoadFilmstripMedia = !isFilmstrip;
 
       if (backdropHost && !backdrop) {
         backdrop = document.createElement('div');
@@ -4195,14 +4226,18 @@
       };
 
       const preloadSlideImages = (...indices) => {
-        if (!isFilmstrip) return;
-        indices.forEach(index => {
+        if (!isFilmstrip || !canLoadFilmstripMedia) return;
+        [...new Set(indices)].forEach(index => {
+          if (index < 0 || index >= slides.length) return;
           const img = slides[index]?.querySelector('img');
           if (!img) return;
-          img.loading = 'eager';
+          const isCurrent = index === current;
+          img.loading = isCurrent ? 'eager' : 'lazy';
+          img.fetchPriority = isCurrent ? 'high' : 'low';
           if (img.complete && img.naturalWidth > 0) return;
           const loader = new Image();
           loader.decoding = 'async';
+          loader.fetchPriority = isCurrent ? 'high' : 'low';
           loader.src = img.currentSrc || img.src;
         });
       };
@@ -4352,9 +4387,25 @@
         slides.forEach(slide => {
           slide.removeAttribute('hidden');
           const img = slide.querySelector('img');
-          if (img) img.loading = 'eager';
+          if (img) {
+            img.loading = 'lazy';
+            img.fetchPriority = 'low';
+          }
         });
-        preloadSlideImages(0, 1, 2);
+        if ('IntersectionObserver' in window) {
+          const filmstripLoadTarget = root.closest('[data-entropy-panel]') || root;
+          const filmstripMediaObserver = new IntersectionObserver(entries => {
+            if (!entries.some(entry => entry.isIntersecting)) return;
+            canLoadFilmstripMedia = true;
+            preloadSlideImages(current - 1, current, current + 1);
+            applyGoToState(current);
+            requestAnimationFrame(() => updateFilmstripTrack(current, { animate: false }));
+            filmstripMediaObserver.disconnect();
+          }, { rootMargin: '600px 0px', threshold: 0 });
+          filmstripMediaObserver.observe(filmstripLoadTarget);
+        } else {
+          canLoadFilmstripMedia = true;
+        }
         slides.forEach(slide => {
           const img = slide.querySelector('img');
           if (img && !img.complete) {
@@ -4397,6 +4448,7 @@
       const updateBackdrop = (index, { crossfade = false } = {}) => {
         const img = slides[index]?.querySelector('img');
         if (!backdropImg || !img) return;
+        if (isFilmstrip && !canLoadFilmstripMedia) return;
 
         const applyImage = () => {
           const src = img.currentSrc || img.src;
@@ -4625,7 +4677,7 @@
         goTo(0);
       }
 
-      if (isArtGallery) startAutoplay();
+      if (isArtGallery && !isFilmstrip) startAutoplay();
     });
 
 
