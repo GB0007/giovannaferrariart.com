@@ -3291,7 +3291,7 @@
     <!-- Artist Statement -->
     <div class="statement-panel">
       <div class="statement-panel__bg" aria-hidden="true">
-        <img src="assets/january13+-+me.webp" alt="" loading="lazy" decoding="async">
+        <img data-src="assets/january13+-+me.webp" data-lazy-image alt="" loading="lazy" decoding="async">
       </div>
       <section class="statement" aria-labelledby="artist-statement-title">
         <h2 class="statement__title" id="artist-statement-title">Artist Statement</h2>
@@ -4091,6 +4091,30 @@
         lazyVideos.forEach(video => lazyVideoObserver.observe(video));
       } else {
         lazyVideos.forEach(loadLazyVideo);
+      }
+    }
+
+    const loadLazyImage = img => {
+      if (!img || img.dataset.loaded === 'true' || !img.dataset.src) return;
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+      img.dataset.loaded = 'true';
+    };
+
+    const lazyImages = document.querySelectorAll('img[data-lazy-image]');
+    if (lazyImages.length) {
+      if ('IntersectionObserver' in window) {
+        const lazyImageObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            loadLazyImage(entry.target);
+            lazyImageObserver.unobserve(entry.target);
+          });
+        }, { rootMargin: '300px 0px', threshold: 0 });
+
+        lazyImages.forEach(img => lazyImageObserver.observe(img));
+      } else {
+        lazyImages.forEach(loadLazyImage);
       }
     }
 
