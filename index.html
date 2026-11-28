@@ -2928,6 +2928,20 @@
 
     .contact-section__link:hover { color: var(--text); }
 
+    .contact-section__social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .contact-section__social-icon {
+      width: 1.4rem;
+      height: 1.4rem;
+      flex-shrink: 0;
+      fill: currentColor;
+    }
+
     @media (max-width: 1024px) {
       .nav { padding: 1rem 1.5rem; }
       .series-showcase {
@@ -4004,6 +4018,13 @@
         <div class="contact-section__links">
           <a class="contact-section__link" href="mailto:giovanna.ferrari.art@gmail.com">giovanna.ferrari.art@gmail.com</a>
           <a class="contact-section__link" href="https://www.instagram.com/giovanna.ferrari.art/" target="_blank" rel="noopener noreferrer">@giovanna.ferrari.art</a>
+          <a class="contact-section__link contact-section__social-link" href="https://soundcloud.com/miss_beet" target="_blank" rel="noopener noreferrer" aria-label="Listen on SoundCloud">
+            <svg class="contact-section__social-icon" viewBox="0 0 64 32" aria-hidden="true" focusable="false">
+              <path d="M25 26h25c6.1 0 11-4.9 11-11S56.1 4 50 4c-2.1 0-4.2 0.6-5.9 1.7C40.9 2.2 36.3 0 31.2 0 22.8 0 16 6.8 16 15.2V26h9Z"/>
+              <path d="M3 20h2v6H3v-6Zm5-8h2v14H8V12Zm5-5h2v19h-2V7Zm5 4h2v15h-2V11Z"/>
+            </svg>
+            <span>SoundCloud</span>
+          </a>
         </div>
       </div>
     </section>
