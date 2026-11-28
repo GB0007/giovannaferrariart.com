@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giovanna Ferrari — Art</title>
-  <meta name="description" content="Transformative art to evoke personal evolution. Mixed media paintings by Giovanna Ferrari.">
+  <title>Giovanna Ferrari | Contemporary Abstract Artist | Corporate, Healthcare & Commercial Art</title>
+  <meta name="description" content="Giovanna Ferrari is a contemporary abstract artist creating original paintings for corporate offices, healthcare environments, hospitality spaces, and private collectors. Explore large-scale contemporary artwork designed to inspire transformation and wellbeing.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Giovanna Ferrari | Contemporary Abstract Artist | Corporate, Healthcare & Commercial Art">
+  <meta property="og:description" content="Giovanna Ferrari is a contemporary abstract artist creating original paintings for corporate offices, healthcare environments, hospitality spaces, and private collectors. Explore large-scale contemporary artwork designed to inspire transformation and wellbeing.">
+  <meta property="og:url" content="https://giovannaferrariart.com/">
+  <meta property="og:image" content="https://giovannaferrariart.com/hero.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Giovanna Ferrari | Contemporary Abstract Artist | Corporate, Healthcare & Commercial Art">
+  <meta name="twitter:description" content="Giovanna Ferrari is a contemporary abstract artist creating original paintings for corporate offices, healthcare environments, hospitality spaces, and private collectors. Explore large-scale contemporary artwork designed to inspire transformation and wellbeing.">
+  <meta name="twitter:image" content="https://giovannaferrariart.com/hero.png">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RFZSGF3X8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7RFZSGF3X8');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1646,15 +1664,37 @@
 
     .about-section__visual {
       position: relative;
+    }
+
+    .about-section__image {
       overflow: hidden;
       aspect-ratio: 3 / 4;
     }
 
-    .about-section__visual img {
+    .about-section__image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       filter: grayscale(0.25) brightness(0.92);
+    }
+
+    .about-section__credit {
+      margin-top: 0.75rem;
+      font-family: var(--sans);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .about-section__credit a {
+      color: rgba(245, 240, 235, 0.55);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .about-section__credit a:hover {
+      color: var(--text);
     }
 
     .about-section__body p {
@@ -2820,10 +2860,35 @@
       border: 1px solid rgba(220, 100, 120, 0.35);
     }
 
-    .contact-form__feedback--ready {
-      color: rgba(210, 235, 215, 0.95);
+    .contact-form__success {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1rem;
       background: rgba(40, 72, 48, 0.22);
       border: 1px solid rgba(120, 180, 130, 0.28);
+      border-radius: 2px;
+    }
+
+    .contact-form__success[hidden] {
+      display: none;
+    }
+
+    .contact-form__success[role="status"] {
+      animation: contactSuccessIn 0.6s var(--ease) both;
+    }
+
+    @keyframes contactSuccessIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-form__thanks {
+      font-family: var(--serif);
+      font-size: clamp(1.125rem, 2vw, 1.375rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.65;
+      color: rgba(210, 235, 215, 0.95);
     }
 
     .contact-form__honeypot {
@@ -2832,6 +2897,16 @@
       width: 1px;
       height: 1px;
       overflow: hidden;
+    }
+
+    .contact-form__frame {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      border: 0;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .contact-section__links {
@@ -2852,6 +2927,20 @@
     }
 
     .contact-section__link:hover { color: var(--text); }
+
+    .contact-section__social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .contact-section__social-icon {
+      width: 1.4rem;
+      height: 1.4rem;
+      flex-shrink: 0;
+      fill: currentColor;
+    }
 
     @media (max-width: 1024px) {
       .nav { padding: 1rem 1.5rem; }
@@ -3191,10 +3280,10 @@
       </button>
       <div class="nav__backdrop" aria-hidden="true"></div>
       <ul class="nav__links" id="nav-menu">
-        <li><a href="#artist-statement-title">Statement</a></li>
         <li><a href="#art-title">Art</a></li>
-        <li><a href="#entropy-lab-title">Entropy Lab</a></li>
+        <li><a href="#artist-statement-title">Statement</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="#entropy-lab-title">Entropy Lab</a></li>
         <li><a href="#contact" class="nav__link--contact">Contact</a></li>
       </ul>
     </div>
@@ -3204,7 +3293,7 @@
     <!-- Hero -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__image">
-        <img src="hero.png" alt="The Ocean in Love — mixed media painting with vivid turquoise, deep blues, and green ocean-like forms by Giovanna Ferrari" fetchpriority="high" decoding="async">
+        <img src="hero.png" alt="The Ocean in Love — mixed media painting with vivid turquoise, deep blues, and green ocean-like forms by Giovanna Ferrari">
       </div>
       <div class="hero__overlay"></div>
       <div class="hero__content">
@@ -3231,10 +3320,198 @@
       </div>
     </section>
 
+    <div id="art" data-series="water">
+      <div class="series-intro" aria-labelledby="art-title">
+        <h2 class="series-intro__title" id="art-title">Art</h2>
+        <p class="series-intro__desc">Mixed media on canvas (basically everything that I find)</p>
+      </div>
+      <div class="art-gallery-carousel series-showcase" id="art-gallery" data-series="water" data-series-carousel data-carousel-filmstrip tabindex="0" aria-label="Art collection">
+        <nav class="art-gallery-carousel__nav" aria-label="Art collections">
+          <button type="button" class="art-gallery-carousel__nav-item is-active" data-art-collection-nav data-collection="water" aria-selected="true">water</button>
+          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="eruptions" aria-selected="false">eruptions</button>
+          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="corals" aria-selected="false">corals</button>
+          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="cracked" aria-selected="false">cracked</button>
+        </nav>
+        <div class="art-gallery-carousel__stage series-showcase__stage">
+          <div class="art-gallery-carousel__viewport">
+          <div class="series-showcase__slides" data-carousel-slides>
+            <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Solitary" data-meta="Water" data-group="Water" role="tabpanel">
+              <figure class="series-showcase__figure">
+                <img src="assets/water/solitary.jpg" alt="Solitary" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Solitary</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Ocean in Love" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/the-ocean-in-love.jpg" alt="The Ocean in Love" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">The Ocean in Love</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Storm Approaching" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/a%20storm%20approaching.jpg" alt="A Storm Approaching" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">A Storm Approaching</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Becoming an Ocean" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/Becoming-an-Ocean.png" alt="Becoming an Ocean" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Becoming an Ocean</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Embryos" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/embryos.webp" alt="Embryos" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Embryos</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Deep Breathe In" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/a-deep-breathe-in.jpg" alt="A Deep Breathe In" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">A Deep Breathe In</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Deep Breathe Out" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/a-deep-breathe-out.jpeg" alt="A Deep Breathe Out" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">A Deep Breathe Out</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Poised Perspective" data-meta="Water" data-group="Water" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/water/poised%20perspective.webp" alt="Poised Perspective" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Poised Perspective</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Colossal" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/colossal.jpg" alt="Colossal — mixed media painting" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Colossal</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Lavelatla &mdash; The Smoking Mountain" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/Lavelatla---the-smoking-mountain.png" alt="Lavelatla — The Smoking Mountain" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Lavelatla &mdash; The Smoking Mountain</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Bouquet of Fire and Ashes" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/bouquet%20of%20fire%20and%20ashes.webp" alt="Bouquet of Fire and Ashes" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Bouquet of Fire and Ashes</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="As the Earth Burns" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/eruptions/as-the-earth-burns.jpg" alt="As the Earth Burns" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">As the Earth Burns</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anemone II" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/anemone2x1500.jpg" alt="Anemone II" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Anemone II</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Celestial Reef" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Celestial%20Reef.jpg" alt="Celestial Reef" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Celestial Reef</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Fiddler Crab" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Giovanna_Ferrari_The-fiddler-crab_48x60.jpeg" alt="The Fiddler Crab" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">The Fiddler Crab</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="La F&eacute;e Vert" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Giovanna_ferrari_la-fee-vert48x30.jpeg" alt="La Fée Vert" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">La F&eacute;e Vert</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Murmur Reef" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/Murmur-reef%20copy.jpg" alt="Murmur Reef" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Murmur Reef</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anemone" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/anemone-x-1500.jpg" alt="Anemone" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Anemone</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Garden of Currents" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/Corals/the%20garden%20of%20currents.jpg" alt="The Garden of Currents" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">The Garden of Currents</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Cycles" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/cycles.webp" alt="Cycles" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Cycles</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Cellular Awakening" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/cellular-awakening-small.jpg" alt="Cellular Awakening" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Cellular Awakening</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Energy" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/energy.jpeg" alt="Energy" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Energy</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="In Constant Battle" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/in-constant-battle2.jpg" alt="In Constant Battle" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">In Constant Battle</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Hang in There" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/hang-in-there.jpg" alt="Hang in There" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Hang in There</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Heart Explosion" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/heart%20explosion.webp" alt="Heart Explosion" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Heart Explosion</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Love" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/love.webp" alt="Love" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">Love</p>
+            </article>
+            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="When I Close My Eyes" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
+              <figure class="series-showcase__figure">
+                <img src="assets/cracked/when-I-close-my-eyes.webp" alt="When I Close My Eyes" loading="lazy" decoding="async">
+              </figure>
+              <p class="art-gallery-carousel__caption">When I Close My Eyes</p>
+            </article>
+          </div>
+          </div>
+          <div class="series-showcase__controls art-gallery-carousel__controls">
+            <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-prev aria-label="Previous artwork" disabled>&larr;</button>
+            <p class="art-gallery-carousel__caption art-gallery-carousel__caption--controls" data-carousel-caption>Solitary</p>
+            <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-next aria-label="Next artwork">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Artist Statement -->
     <div class="statement-panel">
       <div class="statement-panel__bg" aria-hidden="true">
-        <img src="assets/january13+-+me.webp" alt="" loading="lazy" decoding="async">
+        <img data-src="assets/january13+-+me.webp" data-lazy-image alt="" loading="lazy" decoding="async">
       </div>
       <section class="statement" aria-labelledby="artist-statement-title">
         <h2 class="statement__title" id="artist-statement-title">Artist Statement</h2>
@@ -3256,579 +3533,6 @@
       </section>
     </div>
 
-    <div id="art" data-series="water">
-      <div class="series-intro" aria-labelledby="art-title">
-        <h2 class="series-intro__title" id="art-title">Art</h2>
-        <p class="series-intro__desc">Mixed media on canvas (basically everything that I find)</p>
-      </div>
-      <div class="art-gallery-carousel series-showcase" id="art-gallery" data-series="water" data-series-carousel data-carousel-filmstrip tabindex="0" aria-label="Art collection">
-        <nav class="art-gallery-carousel__nav" aria-label="Art collections">
-          <button type="button" class="art-gallery-carousel__nav-item is-active" data-art-collection-nav data-collection="water" aria-selected="true">water</button>
-          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="eruptions" aria-selected="false">eruptions</button>
-          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="corals" aria-selected="false">corals</button>
-          <button type="button" class="art-gallery-carousel__nav-item" data-art-collection-nav data-collection="cracked" aria-selected="false">cracked</button>
-        </nav>
-        <div class="art-gallery-carousel__stage series-showcase__stage">
-          <div class="art-gallery-carousel__viewport">
-          <div class="series-showcase__slides" data-carousel-slides>
-            <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Solitary" data-meta="Water" data-group="Water" role="tabpanel">
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/water/solitary.jpg" alt="Solitary" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Solitary</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Ocean in Love" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/water/the-ocean-in-love.jpg" alt="The Ocean in Love" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">The Ocean in Love</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Storm Approaching" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/water/a%20storm%20approaching.jpg" alt="A Storm Approaching" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">A Storm Approaching</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Becoming an Ocean" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/water/Becoming-an-Ocean.jpg" alt="Becoming an Ocean" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Becoming an Ocean</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Embryos" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/water/embryos.webp" alt="Embryos" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Embryos</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Deep Breathe In" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/water/a-deep-breathe-in.jpg" alt="A Deep Breathe In" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">A Deep Breathe In</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Lilies" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/water/lilies.jpg" alt="Lilies" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Lilies</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Poised Perspective" data-meta="Water" data-group="Water" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/water/poised%20perspective.jpg" alt="Poised Perspective" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Poised Perspective</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Colossal" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/eruptions/colossal.jpg" alt="Colossal — mixed media painting" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Colossal</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Lavelatla &mdash; The Smoking Mountain" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/eruptions/Lavelatla---the-smoking-mountain.jpg" alt="Lavelatla — The Smoking Mountain" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Lavelatla &mdash; The Smoking Mountain</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Bouquet of Fire and Ashes" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/eruptions/bouquet%20of%20fire%20and%20ashes.jpg" alt="Bouquet of Fire and Ashes" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Bouquet of Fire and Ashes</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="As the Earth Burns" data-meta="Eruptions" data-group="Eruptions" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/eruptions/as-the-earth-burns.jpg" alt="As the Earth Burns" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">As the Earth Burns</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anemone II" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/Corals/anemone2x1500.jpg" alt="Anemone II" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Anemone II</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Celestial Reef" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/Corals/Celestial%20Reef.jpg" alt="Celestial Reef" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Celestial Reef</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Fiddler Crab" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/Corals/Giovanna_Ferrari_The-fiddler-crab_48x60.jpg" alt="The Fiddler Crab" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">The Fiddler Crab</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="La F&eacute;e Vert" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/Corals/Giovanna_ferrari_la-fee-vert48x30.jpg" alt="La Fée Vert" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">La F&eacute;e Vert</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Murmur Reef" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Corals/Murmur-reef%20copy.jpg" alt="Murmur Reef" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Murmur Reef</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anemone" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/Corals/anemone-x-1500.jpg" alt="Anemone" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Anemone</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Garden of Currents" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/Corals/the%20garden%20of%20currents.jpg" alt="The Garden of Currents" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">The Garden of Currents</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Jelly Fish" data-meta="Corals" data-group="Corals" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/Corals/Jelly%20Fish.jpg" alt="Jelly Fish" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Jelly Fish</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Cycles" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/cracked/cycles.jpg" alt="Cycles" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Cycles</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Cellular Awakening" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/cracked/cellular-awakening-small.jpg" alt="Cellular Awakening" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Cellular Awakening</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Energy" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/cracked/energy.jpeg" alt="Energy" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Energy</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="In Constant Battle" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/cracked/in-constant-battle2.jpg" alt="In Constant Battle" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">In Constant Battle</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Hang in There" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/cracked/hang-in-there.jpg" alt="Hang in There" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Hang in There</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Heart Explosion" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/cracked/heart%20explosion.webp" alt="Heart Explosion" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Heart Explosion</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Love" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/cracked/love.jpg" alt="Love" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">Love</p>
-            </article>
-            <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="When I Close My Eyes" data-meta="Cracked" data-group="Cracked" role="tabpanel" hidden>
-              <figure class="series-showcase__figure">
-                <img src="assets/opt/cracked/when-I-close-my-eyes.jpg" alt="When I Close My Eyes" loading="lazy" decoding="async">
-              </figure>
-              <p class="art-gallery-carousel__caption">When I Close My Eyes</p>
-            </article>
-          </div>
-          </div>
-          <div class="series-showcase__controls art-gallery-carousel__controls">
-            <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-prev aria-label="Previous artwork" disabled>&larr;</button>
-            <p class="art-gallery-carousel__caption art-gallery-carousel__caption--controls" data-carousel-caption>Solitary</p>
-            <button type="button" class="series-showcase__arrow art-gallery-carousel__arrow" data-carousel-next aria-label="Next artwork">&rarr;</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Entropy Lab -->
-    <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
-      <div class="entropy-lab-section__backdrop" aria-hidden="true">
-        <div class="entropy-lab-section__video">
-          <video muted loop playsinline preload="none">
-            <source src="assets/landscape-loop.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="entropy-lab-section__veil"></div>
-      </div>
-      <div class="series-intro">
-        <h2 class="series-intro__title" id="entropy-lab-title">Entropy Lab</h2>
-        <p class="series-intro__desc">random creative work</p>
-      </div>
-
-      <div class="entropy-lab-carousel" data-entropy-carousel tabindex="0" aria-label="Entropy Lab experiments">
-        <nav class="entropy-lab-carousel__nav" aria-label="Entropy Lab sections">
-          <button type="button" class="entropy-lab-carousel__nav-item is-active" data-entropy-nav aria-selected="true">the tunnel</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">energy doodles</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">digital art</button>
-          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">photography</button>
-        </nav>
-
-        <div class="entropy-lab-carousel__viewport">
-          <article class="entropy-lab-carousel__panel is-active" data-entropy-panel role="tabpanel" aria-label="The tunnel">
-            <div class="train-variants" id="the-tunnel" aria-label="The tunnel">
-              <div class="train-variants__scene">
-                <div class="train-variants__track">
-                <p class="train-variants__caption">
-                  <span class="train-variants__caption-desktop">move your<br>mouse and<br>tickle me</span>
-                  <span class="train-variants__caption-mobile">click me</span>
-                </p>
-            <figure class="train-variants__item train-variants__item--lead" data-depth="0">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="1">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="2">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="3">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="4">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="5">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="6">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="7">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="8">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="9">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="10">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="11">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="12">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="13">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="14">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="15">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="16">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="17">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="18">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="19">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="20">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="21">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="22">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="23">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="24">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="25">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="26">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="27">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="28">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="29">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="30">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="31">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="32">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="33">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="34">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="35">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="36">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="37">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="38">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="39">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="40">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="41">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item" data-depth="42">
-              <img src="assets/digital art/train.webp" alt="Abstract train" loading="lazy" decoding="async">
-            </figure>
-            <figure class="train-variants__item train-variants__item--snake-head" data-depth="43" data-tunnel-snake-head tabindex="0" role="button" aria-label="Tickle me">
-              <img src="assets/opt/me-snake.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
-            </figure>
-                </div>
-                <div class="train-variants__verse" data-tunnel-verse aria-live="polite">
-                  <div class="train-variants__ticker">
-                    <div class="train-variants__ticker-track">
-                      <span class="train-variants__ticker-text">With every creative work  I enter the tunnel.  When I come out,  I am a little happier  than before.</span>
-                      <span class="train-variants__ticker-text" aria-hidden="true">With every creative work  I enter the tunnel.  When I come out,  I am a little happier  than before.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Energy doodles" hidden>
-            <div class="entropy-panel entropy-panel--energy">
-              <p class="entropy-panel__desc">Intuitive energy mapping of situation, places, and people</p>
-              <div class="statement-panel statement-panel--energy-doodles" aria-label="Energy doodles">
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy I" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_2139.jpg" alt="Energy I — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy II" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_2142.jpg" alt="Energy II — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy III" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_2708.jpg" alt="Energy III — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy IV" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_2751.jpg" alt="Energy IV — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy V" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_2754.jpg" alt="Energy V — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy VI" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_3187-EDIT.jpg" alt="Energy VI — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Energy VII" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/IMG_3190.jpg" alt="Energy VII — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Positano" data-meta="Entropy Lab">
-                  <img src="assets/opt/doodles/positano.jpg" alt="Positano — energy doodle by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-              </div>
-            </div>
-          </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Digital art" hidden>
-            <div class="entropy-panel entropy-panel--digital-art">
-              <p class="entropy-panel__desc">Selected digital works</p>
-              <div class="statement-panel statement-panel--digital-art" aria-label="Digital art">
-                <figure class="statement-panel__visual" data-lightbox data-title="Intro" data-meta="Digital art">
-                  <img src="assets/digital%20art/intro.jpg" alt="Intro — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Train" data-meta="Digital art">
-                  <img src="assets/digital%20art/train.webp" alt="Train — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="As Above So Below" data-meta="Digital art">
-                  <img src="assets/digital%20art/as%20above%20so%20below.webp" alt="As Above So Below — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="The Tower" data-meta="Digital art">
-                  <img src="assets/digital%20art/the-tower.webp" alt="The Tower — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="UFO" data-meta="Digital art">
-                  <img src="assets/digital%20art/UFO.jpg" alt="UFO — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="Univers" data-meta="Digital art">
-                  <img src="assets/digital%20art/univers.jpg" alt="Univers — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="L'Attesa" data-meta="Digital art">
-                  <img src="assets/digital%20art/L%27ATTESA.jpg" alt="L'Attesa — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-                <figure class="statement-panel__visual" data-lightbox data-title="I Just Wanna Be With You Right Now" data-meta="Digital art">
-                  <img src="assets/opt/digital%20art/I-just-wanna-be-with-you-right-now.jpg" alt="I Just Wanna Be With You Right Now — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
-                </figure>
-              </div>
-            </div>
-          </article>
-          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Photography" hidden>
-            <div class="entropy-panel entropy-panel--photography">
-              <p class="entropy-panel__desc">Selected photography</p>
-              <div class="inspiration-carousel" data-series-carousel data-carousel-filmstrip tabindex="0" aria-label="Photography">
-                <div class="inspiration-carousel__stage series-showcase__stage">
-                  <div class="art-gallery-carousel__viewport">
-                  <div class="series-showcase__slides" data-carousel-slides>
-                    <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Photography" role="tabpanel">
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Stream</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Railroad" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/2.railroad.webp" alt="Photograph — Railroad" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Railroad</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Against the Sky" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/3.against%20the%20sky.webp" alt="Photograph — Against the Sky" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Against the Sky</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Carrara" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/4.carrara.jpg" alt="Photograph — Carrara" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Carrara</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="St. Michelle" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/st%20michelle.jpg" alt="Photograph — St. Michelle" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">St. Michelle</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anything Possible" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/5.%20anything%20possible.webp" alt="Photograph — Anything Possible" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Anything Possible</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Above the Clouds" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/6.%20above%20the%20clouds.webp" alt="Photograph — Above the Clouds" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Above the Clouds</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sisi" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/7%20sisi.jpg" alt="Photograph — Sisi" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Sisi</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Melting" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/8%20melting.jpg" alt="Photograph — Melting" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Melting</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Foam" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/9%20foam.jpg" alt="Photograph — Foam" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Foam</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Red" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/10%20red.jpg" alt="Photograph — Red" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Red</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Havasupai" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/11%20havasupai.jpg" alt="Photograph — Havasupai" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Havasupai</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Sign" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/12%20a%20sign.webp" alt="Photograph — A Sign" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">A Sign</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Wheel of Life" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/wheel%20of%20life.jpg" alt="Photograph — Wheel of Life" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Wheel of Life</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Rainbow" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/13%20rainbow.jpg" alt="Photograph — Rainbow" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Rainbow</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Eye on the Horizon" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/over-new-york.jpg" alt="Photograph — The Eye on the Horizon" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">The Eye on the Horizon</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sunset" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/Inspiration/14%20sunset.webp" alt="Photograph — Sunset" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">Sunset</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0488" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/15%20IMG_0488.jpg" alt="Photograph — IMG 0488" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">IMG 0488</p>
-                    </article>
-                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0494" data-meta="Photography" role="tabpanel" hidden>
-                      <figure class="series-showcase__figure">
-                        <img src="assets/opt/Inspiration/16%20IMG_0494.jpg" alt="Photograph — IMG 0494" loading="lazy" decoding="async">
-                      </figure>
-                      <p class="inspiration-carousel__caption">IMG 0494</p>
-                    </article>
-                  </div>
-                  </div>
-                  <div class="series-showcase__controls">
-                    <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-prev aria-label="Previous photograph" disabled>&larr;</button>
-                    <p class="inspiration-carousel__caption inspiration-carousel__caption--controls" data-carousel-caption aria-live="polite">Stream</p>
-                    <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-next aria-label="Next photograph">&rarr;</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-        <div class="entropy-lab-carousel__controls">
-          <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-prev aria-label="Previous experiment" disabled>&larr;</button>
-          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 04</p>
-          <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-next aria-label="Next experiment">&rarr;</button>
-        </div>
-      </div>
-    </section>
-
     <!-- About Me -->
     <section id="about" class="about-section" aria-labelledby="about-title">
       <div class="about-section__inner">
@@ -3836,7 +3540,10 @@
         <h2 id="about-title" class="about-section__title">Giovanna Ferrari</h2>
         <div class="about-section__grid">
           <div class="about-section__visual">
-            <img src="assets/opt/headshot2024.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
+            <div class="about-section__image">
+              <img src="assets/headshot2024.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
+            </div>
+            <p class="about-section__credit">Photo by <a href="https://www.craigthompsonphoto.com/" target="_blank" rel="noopener noreferrer">Craig Thompson</a></p>
           </div>
           <div class="about-section__body">
             <p>
@@ -3876,6 +3583,385 @@
       </div>
     </section>
 
+    <!-- Entropy Lab -->
+    <section id="entropy-lab" class="entropy-lab-section" aria-labelledby="entropy-lab-title">
+      <div class="entropy-lab-section__backdrop" aria-hidden="true">
+        <div class="entropy-lab-section__video">
+          <video autoplay muted loop playsinline preload="none" data-lazy-video>
+            <source data-src="assets/landscape-loop.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="entropy-lab-section__veil"></div>
+      </div>
+      <div class="series-intro">
+        <h2 class="series-intro__title" id="entropy-lab-title">Entropy Lab</h2>
+        <p class="series-intro__desc">random creative work</p>
+      </div>
+
+      <div class="entropy-lab-carousel" data-entropy-carousel tabindex="0" aria-label="Entropy Lab experiments">
+        <nav class="entropy-lab-carousel__nav" aria-label="Entropy Lab sections">
+          <button type="button" class="entropy-lab-carousel__nav-item is-active" data-entropy-nav aria-selected="true">the tunnel</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">energy doodles</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">digital art</button>
+          <button type="button" class="entropy-lab-carousel__nav-item" data-entropy-nav aria-selected="false">photography</button>
+        </nav>
+
+        <div class="entropy-lab-carousel__viewport">
+          <article class="entropy-lab-carousel__panel is-active" data-entropy-panel role="tabpanel" aria-label="The tunnel">
+            <div class="train-variants" id="the-tunnel" aria-label="The tunnel">
+              <div class="train-variants__scene">
+                <div class="train-variants__track">
+                <p class="train-variants__caption">
+                  <span class="train-variants__caption-desktop">move your<br>mouse and<br>tickle me</span>
+                  <span class="train-variants__caption-mobile">click me</span>
+                </p>
+            <figure class="train-variants__item train-variants__item--lead" data-depth="0">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="1">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="2">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="3">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="4">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="5">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="6">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="7">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="8">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="9">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="10">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="11">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="12">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="13">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="14">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="15">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="16">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="17">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="18">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="19">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="20">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="21">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="22">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="23">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="24">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="25">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="26">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="27">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="28">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="29">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="30">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="31">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="32">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="33">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="34">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="35">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="36">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="37">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="38">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="39">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="40">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="41">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item" data-depth="42">
+              <img src="assets/train.webp" alt="Abstract train" loading="lazy" decoding="async">
+            </figure>
+            <figure class="train-variants__item train-variants__item--snake-head" data-depth="43" data-tunnel-snake-head tabindex="0" role="button" aria-label="Tickle me">
+              <img src="assets/me-snake.jpg" alt="Portrait of Giovanna Ferrari" loading="lazy" decoding="async">
+            </figure>
+                </div>
+                <div class="train-variants__verse" data-tunnel-verse aria-live="polite">
+                  <div class="train-variants__ticker">
+                    <div class="train-variants__ticker-track">
+                      <span class="train-variants__ticker-text">With every creative work  I enter the tunnel.  When I come out,  I am a little happier  than before.</span>
+                      <span class="train-variants__ticker-text" aria-hidden="true">With every creative work  I enter the tunnel.  When I come out,  I am a little happier  than before.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Energy doodles" hidden>
+            <div class="entropy-panel entropy-panel--energy">
+              <p class="entropy-panel__desc">Intuitive energy mapping of situation, places, and people</p>
+              <div class="statement-panel statement-panel--energy-doodles" aria-label="Energy doodles">
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy I" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2139.jpg" alt="Energy I — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy II" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2142.jpg" alt="Energy II — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy III" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2708.jpg" alt="Energy III — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy IV" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2751.jpg" alt="Energy IV — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy V" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_2754.jpg" alt="Energy V — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy VI" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_3187-EDIT.jpg" alt="Energy VI — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Energy VII" data-meta="Entropy Lab">
+                  <img src="assets/doodles/IMG_3190.jpg" alt="Energy VII — doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Positano" data-meta="Entropy Lab">
+                  <img src="assets/doodles/positano.jpg" alt="Positano — energy doodle by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+              </div>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Digital art" hidden>
+            <div class="entropy-panel entropy-panel--digital-art">
+              <p class="entropy-panel__desc">Selected digital works</p>
+              <div class="statement-panel statement-panel--digital-art" aria-label="Digital art">
+                <figure class="statement-panel__visual" data-lightbox data-title="Intro" data-meta="Digital art">
+                  <img src="assets/digital%20art/intro.jpg" alt="Intro — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Train" data-meta="Digital art">
+                  <img src="assets/digital%20art/train.webp" alt="Train — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="As Above So Below" data-meta="Digital art">
+                  <img src="assets/digital%20art/as%20above%20so%20below.webp" alt="As Above So Below — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="The Tower" data-meta="Digital art">
+                  <img src="assets/digital%20art/the-tower.webp" alt="The Tower — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="UFO" data-meta="Digital art">
+                  <img src="assets/digital%20art/UFO.jpg" alt="UFO — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="Univers" data-meta="Digital art">
+                  <img src="assets/digital%20art/univers.jpg" alt="Univers — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="L'Attesa" data-meta="Digital art">
+                  <img src="assets/digital%20art/L%27ATTESA.jpg" alt="L'Attesa — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+                <figure class="statement-panel__visual" data-lightbox data-title="I Just Wanna Be With You Right Now" data-meta="Digital art">
+                  <img src="assets/digital%20art/I-just-wanna-be-with-you-right-now.webp" alt="I Just Wanna Be With You Right Now — digital art by Giovanna Ferrari" loading="lazy" decoding="async">
+                </figure>
+              </div>
+            </div>
+          </article>
+          <article class="entropy-lab-carousel__panel" data-entropy-panel role="tabpanel" aria-label="Photography" hidden>
+            <div class="entropy-panel entropy-panel--photography">
+              <p class="entropy-panel__desc">Selected photography</p>
+              <div class="inspiration-carousel" data-series-carousel data-carousel-filmstrip tabindex="0" aria-label="Photography">
+                <div class="inspiration-carousel__stage series-showcase__stage">
+                  <div class="art-gallery-carousel__viewport">
+                  <div class="series-showcase__slides" data-carousel-slides>
+                    <article class="series-showcase__slide is-active" data-carousel-slide data-lightbox data-title="Stream" data-meta="Photography" role="tabpanel">
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/1.%20stream.webp" alt="Photograph — Stream" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Stream</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Railroad" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/2.railroad.webp" alt="Photograph — Railroad" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Railroad</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Against the Sky" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/3.against%20the%20sky.webp" alt="Photograph — Against the Sky" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Against the Sky</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Carrara" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/4.carrara.webp" alt="Photograph — Carrara" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Carrara</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="St. Michelle" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/st%20michelle.jpg" alt="Photograph — St. Michelle" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">St. Michelle</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Anything Possible" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/5.%20anything%20possible.webp" alt="Photograph — Anything Possible" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Anything Possible</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Above the Clouds" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/6.%20above%20the%20clouds.webp" alt="Photograph — Above the Clouds" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Above the Clouds</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sisi" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/7%20sisi.webp" alt="Photograph — Sisi" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Sisi</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Melting" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/8%20melting.webp" alt="Photograph — Melting" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Melting</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Foam" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/9%20foam.webp" alt="Photograph — Foam" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Foam</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Red" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/10%20red.webp" alt="Photograph — Red" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Red</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Havasupai" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/11%20havasupai.webp" alt="Photograph — Havasupai" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Havasupai</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="A Sign" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/12%20a%20sign.webp" alt="Photograph — A Sign" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">A Sign</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Wheel of Life" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/wheel%20of%20life.jpg" alt="Photograph — Wheel of Life" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Wheel of Life</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Rainbow" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/13%20rainbow.webp" alt="Photograph — Rainbow" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Rainbow</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="The Eye on the Horizon" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/over-new-york.jpg" alt="Photograph — The Eye on the Horizon" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">The Eye on the Horizon</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="Sunset" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/14%20sunset.webp" alt="Photograph — Sunset" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">Sunset</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0488" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/15%20IMG_0488.webp" alt="Photograph — IMG 0488" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">IMG 0488</p>
+                    </article>
+                    <article class="series-showcase__slide" data-carousel-slide data-lightbox data-title="IMG 0494" data-meta="Photography" role="tabpanel" hidden>
+                      <figure class="series-showcase__figure">
+                        <img src="assets/Inspiration/16%20IMG_0494.webp" alt="Photograph — IMG 0494" loading="lazy" decoding="async">
+                      </figure>
+                      <p class="inspiration-carousel__caption">IMG 0494</p>
+                    </article>
+                  </div>
+                  </div>
+                  <div class="series-showcase__controls">
+                    <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-prev aria-label="Previous photograph" disabled>&larr;</button>
+                    <p class="inspiration-carousel__caption inspiration-carousel__caption--controls" data-carousel-caption aria-live="polite">Stream</p>
+                    <button type="button" class="series-showcase__arrow inspiration-carousel__arrow" data-carousel-next aria-label="Next photograph">&rarr;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="entropy-lab-carousel__controls">
+          <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-prev aria-label="Previous experiment" disabled>&larr;</button>
+          <p class="series-showcase__counter entropy-lab-carousel__counter" data-entropy-counter aria-live="polite">01 / 04</p>
+          <button type="button" class="series-showcase__arrow entropy-lab-carousel__arrow" data-entropy-next aria-label="Next experiment">&rarr;</button>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
       <div class="contact-section__backdrop" aria-hidden="true">
@@ -3889,13 +3975,20 @@
           Interested in a piece, a commission, or exhibiting together?
           Send a message and I&rsquo;ll get back to you.
         </p>
-        <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
-          <input type="hidden" name="access_key" value="270069d1-375d-4ec7-b1e3-f874f3be638e">
-          <input type="hidden" name="from_name" value="Giovanna Ferrari Art">
-          <input type="hidden" name="subject" value="Art inquiry">
+        <form
+          class="contact-form"
+          id="contact-form"
+          action="https://formsubmit.co/giovanna.ferrari.art@gmail.com"
+          method="POST"
+          target="contact-form-frame"
+        >
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_subject" value="Art inquiry">
+          <input type="hidden" name="_replyto" value="">
           <div class="contact-form__honeypot" aria-hidden="true">
             <label for="contact-company">Company</label>
-            <input type="checkbox" id="contact-company" name="botcheck" tabindex="-1" autocomplete="off">
+            <input type="text" id="contact-company" name="_honey" tabindex="-1" autocomplete="off">
           </div>
           <div class="contact-form__field">
             <label for="contact-name">Name</label>
@@ -3909,12 +4002,29 @@
             <label for="contact-message">Message</label>
             <textarea id="contact-message" name="message" required></textarea>
           </div>
-          <p id="contact-feedback" class="contact-form__feedback" role="status" aria-live="polite" hidden></p>
+          <p id="contact-feedback" class="contact-form__feedback contact-form__feedback--error" role="alert" aria-live="assertive" hidden></p>
           <button type="submit" class="contact-form__submit">Send message</button>
         </form>
+        <iframe
+          name="contact-form-frame"
+          id="contact-form-frame"
+          class="contact-form__frame"
+          title="Contact form submission"
+          tabindex="-1"
+        ></iframe>
+        <div id="contact-success" class="contact-form__success" role="status" aria-live="polite" hidden>
+          <p class="contact-form__thanks">Thanks for getting in touch — I&rsquo;ll get back to you as soon as possible.</p>
+        </div>
         <div class="contact-section__links">
           <a class="contact-section__link" href="mailto:giovanna.ferrari.art@gmail.com">giovanna.ferrari.art@gmail.com</a>
           <a class="contact-section__link" href="https://www.instagram.com/giovanna.ferrari.art/" target="_blank" rel="noopener noreferrer">@giovanna.ferrari.art</a>
+          <a class="contact-section__link contact-section__social-link" href="https://soundcloud.com/miss_beet" target="_blank" rel="noopener noreferrer" aria-label="Listen on SoundCloud">
+            <svg class="contact-section__social-icon" viewBox="0 0 64 32" aria-hidden="true" focusable="false">
+              <path d="M25 26h25c6.1 0 11-4.9 11-11S56.1 4 50 4c-2.1 0-4.2 0.6-5.9 1.7C40.9 2.2 36.3 0 31.2 0 22.8 0 16 6.8 16 15.2V26h9Z"/>
+              <path d="M3 20h2v6H3v-6Zm5-8h2v14H8V12Zm5-5h2v19h-2V7Zm5 4h2v15h-2V11Z"/>
+            </svg>
+            <span>SoundCloud</span>
+          </a>
         </div>
       </div>
     </section>
@@ -3941,24 +4051,6 @@
     window.addEventListener('load', () => {
       hero?.classList.add('active');
     });
-
-    const entropyVideo = document.querySelector('.entropy-lab-section__video video');
-    if (entropyVideo) {
-      const startEntropyVideo = () => {
-        entropyVideo.preload = 'auto';
-        entropyVideo.play().catch(() => {});
-      };
-      if ('IntersectionObserver' in window) {
-        const videoObserver = new IntersectionObserver(entries => {
-          if (!entries.some(entry => entry.isIntersecting)) return;
-          startEntropyVideo();
-          videoObserver.disconnect();
-        }, { rootMargin: '240px' });
-        videoObserver.observe(entropyVideo);
-      } else {
-        startEntropyVideo();
-      }
-    }
 
     const nav = document.querySelector('.nav');
     const updateNavScroll = () => {
@@ -4010,6 +4102,60 @@
     }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.series-intro__title, .series-intro__line, .series-intro__desc, .about-section__title').forEach(el => revealObserver.observe(el));
+
+    const loadLazyVideo = video => {
+      if (!video || video.dataset.loaded === 'true') return;
+      video.querySelectorAll('source[data-src]').forEach(source => {
+        source.src = source.dataset.src;
+        delete source.dataset.src;
+      });
+      video.dataset.loaded = 'true';
+      video.load();
+      if (video.autoplay) {
+        video.play().catch(() => {});
+      }
+    };
+
+    const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+    if (lazyVideos.length) {
+      if ('IntersectionObserver' in window) {
+        const lazyVideoObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            loadLazyVideo(entry.target);
+            lazyVideoObserver.unobserve(entry.target);
+          });
+        }, { rootMargin: '600px 0px', threshold: 0 });
+
+        lazyVideos.forEach(video => lazyVideoObserver.observe(video));
+      } else {
+        lazyVideos.forEach(loadLazyVideo);
+      }
+    }
+
+    const loadLazyImage = img => {
+      if (!img || img.dataset.loaded === 'true' || !img.dataset.src) return;
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+      img.dataset.loaded = 'true';
+    };
+
+    const lazyImages = document.querySelectorAll('img[data-lazy-image]');
+    if (lazyImages.length) {
+      if ('IntersectionObserver' in window) {
+        const lazyImageObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            loadLazyImage(entry.target);
+            lazyImageObserver.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px', threshold: 0.01 });
+
+        lazyImages.forEach(img => lazyImageObserver.observe(img));
+      } else {
+        lazyImages.forEach(loadLazyImage);
+      }
+    }
 
     document.querySelectorAll('[data-statement]').forEach(statementEl => {
       const panel = statementEl.closest('.statement-panel');
@@ -4066,6 +4212,7 @@
       let current = 0;
       let touchStartX = 0;
       let touchStartY = 0;
+      let canLoadFilmstripMedia = !isFilmstrip;
 
       if (backdropHost && !backdrop) {
         backdrop = document.createElement('div');
@@ -4142,14 +4289,18 @@
       };
 
       const preloadSlideImages = (...indices) => {
-        if (!isFilmstrip) return;
-        indices.forEach(index => {
+        if (!isFilmstrip || !canLoadFilmstripMedia) return;
+        [...new Set(indices)].forEach(index => {
+          if (index < 0 || index >= slides.length) return;
           const img = slides[index]?.querySelector('img');
           if (!img) return;
-          img.loading = 'eager';
+          const isCurrent = index === current;
+          img.loading = isCurrent ? 'eager' : 'lazy';
+          img.fetchPriority = isCurrent ? 'high' : 'low';
           if (img.complete && img.naturalWidth > 0) return;
           const loader = new Image();
           loader.decoding = 'async';
+          loader.fetchPriority = isCurrent ? 'high' : 'low';
           loader.src = img.currentSrc || img.src;
         });
       };
@@ -4298,8 +4449,26 @@
       if (isFilmstrip) {
         slides.forEach(slide => {
           slide.removeAttribute('hidden');
+          const img = slide.querySelector('img');
+          if (img) {
+            img.loading = 'lazy';
+            img.fetchPriority = 'low';
+          }
         });
-        preloadSlideImages(0, 1, 2);
+        if ('IntersectionObserver' in window) {
+          const filmstripLoadTarget = root.closest('[data-entropy-panel]') || root;
+          const filmstripMediaObserver = new IntersectionObserver(entries => {
+            if (!entries.some(entry => entry.isIntersecting)) return;
+            canLoadFilmstripMedia = true;
+            preloadSlideImages(current - 1, current, current + 1);
+            applyGoToState(current);
+            requestAnimationFrame(() => updateFilmstripTrack(current, { animate: false }));
+            filmstripMediaObserver.disconnect();
+          }, { rootMargin: '600px 0px', threshold: 0 });
+          filmstripMediaObserver.observe(filmstripLoadTarget);
+        } else {
+          canLoadFilmstripMedia = true;
+        }
         slides.forEach(slide => {
           const img = slide.querySelector('img');
           if (img && !img.complete) {
@@ -4342,6 +4511,7 @@
       const updateBackdrop = (index, { crossfade = false } = {}) => {
         const img = slides[index]?.querySelector('img');
         if (!backdropImg || !img) return;
+        if (isFilmstrip && !canLoadFilmstripMedia) return;
 
         const applyImage = () => {
           const src = img.currentSrc || img.src;
@@ -4570,7 +4740,7 @@
         goTo(0);
       }
 
-      if (isArtGallery) startAutoplay();
+      if (isArtGallery && !isFilmstrip) startAutoplay();
     });
 
 
@@ -4859,7 +5029,7 @@
         trainVisibilityObserver.observe(trainPanel);
       }
 
-      const TRAIN_BODY_SRC = 'assets/digital art/train.webp';
+      const TRAIN_BODY_SRC = 'assets/train.webp';
       const TRAIN_LAUGH_SRC = 'assets/laugh.JPG';
       const trainSnakeHead = trainSection.querySelector('[data-tunnel-snake-head]');
       const trainBodyImages = trainItems
@@ -5040,74 +5210,118 @@
 
     const contactForm = document.getElementById('contact-form');
     const contactFeedback = document.getElementById('contact-feedback');
+    const contactSuccess = document.getElementById('contact-success');
+    const contactFrame = document.getElementById('contact-form-frame');
     const contactSubmitBtn = contactForm?.querySelector('.contact-form__submit');
-    const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+    const contactSubjectField = contactForm?.querySelector('[name="_subject"]');
+    const contactReplyField = contactForm?.querySelector('[name="_replyto"]');
+    const FORM_SUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/giovanna.ferrari.art@gmail.com';
 
-    const setSending = sending => {
+    const resetSubmitButton = () => {
       if (!contactSubmitBtn) return;
-      contactSubmitBtn.disabled = sending;
-      contactSubmitBtn.textContent = sending ? 'Sending…' : 'Send message';
+      contactSubmitBtn.disabled = false;
+      contactSubmitBtn.textContent = 'Send message';
     };
 
     const clearFormFeedback = () => {
       if (!contactFeedback) return;
       contactFeedback.textContent = '';
       contactFeedback.hidden = true;
-      contactFeedback.classList.remove('contact-form__feedback--error', 'contact-form__feedback--ready');
     };
 
     const showFormError = message => {
       if (!contactFeedback) return;
       contactFeedback.textContent = message;
-      contactFeedback.classList.add('contact-form__feedback--error');
-      contactFeedback.classList.remove('contact-form__feedback--ready');
       contactFeedback.hidden = false;
+      contactFeedback.focus?.();
     };
 
-    const showFormReady = message => {
-      if (!contactFeedback) return;
-      contactFeedback.textContent = message;
-      contactFeedback.classList.add('contact-form__feedback--ready');
-      contactFeedback.classList.remove('contact-form__feedback--error');
-      contactFeedback.hidden = false;
+    const showFormSuccess = () => {
+      if (contactSuccess) {
+        contactSuccess.hidden = false;
+      }
+      if (contactForm) {
+        contactForm.hidden = true;
+      }
+      contactSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
+
+    const submitContactViaFrame = () => new Promise((resolve, reject) => {
+      if (!contactForm || !contactFrame) {
+        reject(new Error('Form frame unavailable'));
+        return;
+      }
+
+      let settled = false;
+      const finish = (fn, value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeoutId);
+        contactFrame.removeEventListener('load', onLoad);
+        fn(value);
+      };
+
+      const onLoad = () => finish(resolve);
+      const timeoutId = window.setTimeout(() => {
+        finish(reject, new Error('Form submission timed out'));
+      }, 20000);
+
+      contactFrame.addEventListener('load', onLoad);
+      contactForm.submit();
+    });
 
     contactForm?.addEventListener('submit', async e => {
       e.preventDefault();
       clearFormFeedback();
-
-      if (contactForm.querySelector('[name="botcheck"]')?.checked) return;
 
       if (!contactForm.checkValidity()) {
         contactForm.reportValidity();
         return;
       }
 
-      const name = contactForm.querySelector('[name="name"]')?.value.trim();
+      const name = contactForm.querySelector('[name="name"]')?.value.trim() || 'Visitor';
       const email = contactForm.querySelector('[name="email"]')?.value.trim();
       const message = contactForm.querySelector('[name="message"]')?.value.trim();
-      const accessKey = contactForm.querySelector('[name="access_key"]')?.value.trim();
 
-      if (!name || !email || !message) {
-        showFormError('Please add your name, email, and a message.');
+      if (!email) {
+        showFormError('Please enter a valid email address.');
         return;
       }
 
-      if (!accessKey || accessKey === 'YOUR_ACCESS_KEY_HERE') {
-        showFormError('This form is not ready to send yet.');
+      if (!message) {
+        showFormError('Please enter a message.');
         return;
       }
 
-      const subjectField = contactForm.querySelector('[name="subject"]');
-      if (subjectField) subjectField.value = `Art inquiry from ${name}`;
+      if (window.location.protocol === 'file:') {
+        showFormError('The contact form needs to run on a web server. Open this site at http://localhost:8787 instead of from a local file.');
+        return;
+      }
 
-      const payload = Object.fromEntries(new FormData(contactForm).entries());
-      payload.replyto = email;
-      delete payload.botcheck;
+      if (contactSubjectField) {
+        contactSubjectField.value = `Art inquiry from ${name}`;
+      }
+      if (contactReplyField) {
+        contactReplyField.value = email;
+      }
 
-      setSending(true);
+      if (contactSubmitBtn) {
+        contactSubmitBtn.disabled = true;
+        contactSubmitBtn.textContent = 'Sending…';
+      }
+
+      const payload = {
+        name,
+        email,
+        message,
+        _subject: `Art inquiry from ${name}`,
+        _replyto: email,
+        _template: 'table',
+        _captcha: 'false',
+      };
+
       try {
-        const response = await fetch(FORM_ENDPOINT, {
+        const response = await fetch(FORM_SUBMIT_ENDPOINT, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -5115,19 +5329,37 @@
           },
           body: JSON.stringify(payload),
         });
-        const data = await response.json().catch(() => ({}));
-        if (response.status !== 200 || data.success === false) {
-          throw new Error(data.message || 'The message could not be sent.');
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
         }
+
+        const data = await response.json().catch(() => ({}));
+        if (data.success === false || data.success === 'false') {
+          throw new Error(data.message || 'Submission rejected');
+        }
+
         contactForm.reset();
-        showFormReady('Thanks — your message was sent. I’ll get back to you soon.');
-      } catch (error) {
-        const detail = error && error.message && error.message !== 'Failed to fetch'
-          ? error.message
-          : 'The message could not be sent. Please try again.';
-        showFormError(detail);
+        showFormSuccess();
+      } catch {
+        try {
+          await submitContactViaFrame();
+          contactForm.reset();
+          showFormSuccess();
+        } catch {
+          showFormError('Unable to send your message right now. Please email giovanna.ferrari.art@gmail.com directly.');
+        }
       } finally {
-        setSending(false);
+        resetSubmitButton();
+        if (contactFrame) {
+          contactFrame.src = 'about:blank';
+        }
+      }
+    });
+
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) {
+        resetSubmitButton();
       }
     });
   
